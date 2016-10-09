@@ -1,9 +1,12 @@
 import controller.CandidateController;
 import controller.DepartmentController;
 import domain.Candidate;
+import domain.Department;
+import org.apache.commons.lang.RandomStringUtils;
 import repository.CandidateRepository;
 import repository.DepartmentRepository;
 import repository.Repository;
+import repository.RepositoryInterface;
 import util.UbbArray;
 import validator.CandidateValidator;
 import validator.DepartmentValidator;
@@ -22,29 +25,31 @@ public class Main {
 
         Console console = new Console(candidateController, departmentController);
 
+        loadCandidates(candidateRepository, 5);
+        loadDepartments(departmentRepository, 5);
         console.run();
-//        return;
-        Candidate c1 = new Candidate(1, "c1", "111111111", "some address");
-        Candidate c2 = new Candidate(2, "c2", "222222222", "some address");
-        Candidate c3 = new Candidate(3, "c3", "333333333", "some address");
+    }
 
-        UbbArray<Candidate> arr = new UbbArray<Candidate>();
-        arr.add(c1);
-        arr.add(c2);
-        arr.add(c3);
+    private static void loadCandidates(RepositoryInterface repository, Integer howMany) {
+        for(int i = 0; i < howMany; i++) {
+            repository.insert(new Candidate(
+                    repository.getNextId(),
+                    "Candidate" + i,
+                    RandomStringUtils.randomNumeric(10),
+                    "Street " + RandomStringUtils.randomAlphabetic(10) +
+                            ", nr " + RandomStringUtils.randomNumeric(3) +
+                            ", City " + RandomStringUtils.randomAlphabetic(6)
+            ));
+        }
+    }
 
-        for (int i = 0; i < arr.getSize(); i++) {
-            System.out.println(arr.getAt(i));
-        }
-        arr.removeAt(arr.find(c1));
-        System.out.println("=======================");
-        for (int i = 0; i < arr.getSize(); i++) {
-            System.out.println(arr.getAt(i));
-        }
-        arr.removeAt(arr.find(c3));
-        System.out.println("=======================");
-        for (int i = 0; i < arr.getSize(); i++) {
-            System.out.println(arr.getAt(i));
+    private static void loadDepartments(RepositoryInterface repository, Integer howMany) {
+        for(int i = 0; i < howMany; i++) {
+            repository.insert(new Department(
+                    repository.getNextId(),
+                    "Department" + i,
+                    Integer.valueOf(RandomStringUtils.randomNumeric(3))
+            ));
         }
     }
 }

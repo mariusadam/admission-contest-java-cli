@@ -1,7 +1,9 @@
 package controller;
 
 import domain.Department;
+import domain.Entity;
 import repository.DepartmentRepository;
+import util.UbbArray;
 import validator.DepartmentValidator;
 import java.util.NoSuchElementException;
 
@@ -68,5 +70,10 @@ public class DepartmentController {
      */
     public Department delete(Integer id) {
         return this.departmentRepository.delete(id);
+    }
+
+    @SuppressWarnings("unchecked")
+    public UbbArray<Entity> getAll() {
+        return this.departmentRepository.getItems();
     }
 }
