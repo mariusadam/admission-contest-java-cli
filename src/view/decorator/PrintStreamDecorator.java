@@ -1,4 +1,4 @@
-package view.menu.decorator;
+package view.decorator;
 
 import org.apache.commons.lang.StringUtils;
 
