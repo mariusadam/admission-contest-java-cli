@@ -11,12 +11,12 @@ import java.util.TreeMap;
 /**
  * Created by marius on 10/13/16.
  */
-public class MainMenu {
+public class Menu implements MenuInterface{
     private Map<String, CommandInterface> commandMap;
     private Scanner                      scanner;
     private PrintStream                  out;
 
-    public MainMenu(Scanner scanner, PrintStream out) {
+    public Menu(Scanner scanner, PrintStream out) {
         this.commandMap = new TreeMap<>();
         this.scanner    = scanner;
         this.out        = out;

@@ -19,20 +19,6 @@ public class Department extends Entity{
     }
 
     /**
-     * @return {@link Integer}
-     */
-    public Integer getId() {
-        return this.id;
-    }
-
-    /**
-     * @param id {@link Integer}
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    /**
      * @param name {@link String}
      */
     public void setName(String name) {

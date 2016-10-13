@@ -21,13 +21,6 @@ public class Entity {
         return id;
     }
 
-    /**
-     * @param id {@link Integer}
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Entity && this.id.equals(((Entity) obj).id);
