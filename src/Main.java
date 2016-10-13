@@ -1,3 +1,11 @@
+import command.candidate.AddCandidateCommand;
+import command.candidate.DeleteCandidateCommand;
+import command.candidate.PrintCandidatesCommand;
+import command.candidate.UpdateCandidateCommand;
+import command.department.AddDepartmentCommand;
+import command.department.DeleteDepartmentCommand;
+import command.department.PrintDepartmentsCommand;
+import command.department.UpdateDepartmentCommand;
 import controller.CandidateController;
 import controller.DepartmentController;
 import domain.Candidate;
@@ -5,12 +13,13 @@ import domain.Department;
 import org.apache.commons.lang.RandomStringUtils;
 import repository.CandidateRepository;
 import repository.DepartmentRepository;
-import repository.Repository;
 import repository.RepositoryInterface;
-import util.UbbArray;
+import util.helper.PrintTableHelper;
 import validator.CandidateValidator;
 import validator.DepartmentValidator;
-import view.Console;
+import view.menu.MainMenu;
+
+import java.util.Scanner;
 
 public class Main {
 
@@ -23,11 +32,27 @@ public class Main {
         DepartmentValidator departmentValidator = new DepartmentValidator();
         DepartmentController departmentController = new DepartmentController(departmentRepository, departmentValidator);
 
-        Console console = new Console(candidateController, departmentController);
+        MainMenu menu = new MainMenu(new Scanner(System.in), System.out);
 
+        loadCommands(menu, candidateController, departmentController);
         loadCandidates(candidateRepository, 5);
         loadDepartments(departmentRepository, 5);
-        console.run();
+
+        menu.show();
+    }
+
+    private static void loadCommands(MainMenu menu, CandidateController candidateController, DepartmentController departmentController) {
+        PrintTableHelper tableHelper = new PrintTableHelper(40, menu.getOut());
+
+        menu.addCommand(new AddCandidateCommand   ("1", "Add a new candidate", candidateController));
+        menu.addCommand(new UpdateCandidateCommand("2", "Update a candidate" , candidateController));
+        menu.addCommand(new DeleteCandidateCommand("3", "Delete a candidate" , candidateController));
+        menu.addCommand(new PrintCandidatesCommand("4", "Show all candidates", candidateController, tableHelper));
+
+        menu.addCommand(new AddDepartmentCommand   ("5", "Add a new department", departmentController));
+        menu.addCommand(new UpdateDepartmentCommand("6", "Update a department" , departmentController));
+        menu.addCommand(new DeleteDepartmentCommand("7", "Delete a department" , departmentController));
+        menu.addCommand(new PrintDepartmentsCommand("8", "Show all departments", departmentController, tableHelper));
     }
 
     private static void loadCandidates(RepositoryInterface repository, Integer howMany) {

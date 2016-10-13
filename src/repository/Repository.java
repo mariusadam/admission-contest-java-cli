@@ -2,7 +2,7 @@ package repository;
 
 import domain.Entity;
 import exception.DuplicateIdException;
-import util.UbbArray;
+import util.GenericArray;
 
 import java.util.NoSuchElementException;
 
@@ -10,10 +10,10 @@ import java.util.NoSuchElementException;
  *
  */
 public class Repository implements RepositoryInterface{
-    private UbbArray<Entity> items;
+    private GenericArray<Entity> items;
 
     public Repository() {
-        this.items = new UbbArray<Entity>();
+        this.items = new GenericArray<Entity>();
     }
 
     /**
@@ -38,8 +38,8 @@ public class Repository implements RepositoryInterface{
      */
     @Override
     public Entity delete(Integer id) {
-        Entity mockEntity = new Entity(id);
-        return this.items.removeAt(this.items.find(mockEntity));
+        Entity deleted = this.findById(id);
+        return this.items.removeAt(this.items.find(deleted));
     }
 
     /**
@@ -97,10 +97,10 @@ public class Repository implements RepositoryInterface{
 
     /**
      *
-     * @return {@link UbbArray} The object containing all the entities
+     * @return {@link GenericArray} The object containing all the entities
      */
     @Override
-    public UbbArray<Entity> getItems() {
+    public GenericArray<Entity> getItems() {
         return this.items;
     }
 }

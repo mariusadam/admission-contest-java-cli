@@ -1,12 +1,9 @@
 package domain;
 
-import javafx.scene.effect.Reflection;
-
 /**
  * Created by marius on 10/8/16.
  */
-
-public class Candidate extends Entity{
+public class Candidate extends Entity {
     private String name;
     private String phone;
     private String address;

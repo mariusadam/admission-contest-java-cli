@@ -1,6 +1,8 @@
 package repository;
 
 import domain.Candidate;
+import domain.Entity;
+import exception.CandidateException;
 
 import java.util.NoSuchElementException;
 
@@ -11,6 +13,21 @@ public class CandidateRepository extends Repository {
 
     public CandidateRepository() {
         super();
+    }
+
+    /**
+     * Inserts a new entity into the repository
+     *
+     * @param obj The object to be inserted
+     * @throws exception.DuplicateIdException If there is already an entity with the same id
+     */
+    @Override
+    public void insert(Entity obj) {
+        if (!(obj instanceof Candidate)) {
+            throw new CandidateException("Inserted objects must be of type Candidate.");
+        }
+
+        super.insert(obj);
     }
 
     /**

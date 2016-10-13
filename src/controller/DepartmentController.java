@@ -3,7 +3,7 @@ package controller;
 import domain.Department;
 import domain.Entity;
 import repository.DepartmentRepository;
-import util.UbbArray;
+import util.GenericArray;
 import validator.DepartmentValidator;
 import java.util.NoSuchElementException;
 
@@ -73,7 +73,7 @@ public class DepartmentController {
     }
 
     @SuppressWarnings("unchecked")
-    public UbbArray<Entity> getAll() {
+    public GenericArray<Entity> getAll() {
         return this.departmentRepository.getItems();
     }
 }

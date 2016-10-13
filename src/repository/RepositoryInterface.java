@@ -2,7 +2,7 @@ package repository;
 
 import domain.Entity;
 import exception.DuplicateIdException;
-import util.UbbArray;
+import util.GenericArray;
 
 /**
  *
@@ -42,9 +42,9 @@ public interface RepositoryInterface {
 
     /**
      *
-     * @return {@link UbbArray} The object containing all the entities
+     * @return {@link GenericArray} The object containing all the entities
      */
-    public UbbArray getItems();
+    public GenericArray getItems();
 
     /**
      * Returns the id of the last inserted entity

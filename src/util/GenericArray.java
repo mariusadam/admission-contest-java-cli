@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
  *
  * @param <T>
  */
-public class UbbArray<T>
+public class GenericArray<T>
 {
     /**
      * Default initial capacity.
@@ -18,7 +18,7 @@ public class UbbArray<T>
     private Integer size;
     private Integer capacity;
 
-    public UbbArray() {
+    public GenericArray() {
         this.size = 0;
         this.capacity = DEFAULT_CAPACITY;
         this.elements = new Object[this.capacity];

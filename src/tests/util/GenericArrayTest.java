@@ -1,16 +1,14 @@
 package tests.util;
 
-import util.UbbArray;
-
-import static org.junit.Assert.*;
+import util.GenericArray;
 
 /**
  *
  */
-public class UbbArrayTest {
+public class GenericArrayTest {
     @org.junit.Test
     public void add() throws Exception {
-        UbbArray t = new UbbArray();
+        GenericArray t = new GenericArray();
         t.add(1);
         t.add(1);
         t.add(1);

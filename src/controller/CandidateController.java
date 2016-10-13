@@ -3,7 +3,7 @@ package controller;
 import domain.Candidate;
 import domain.Entity;
 import repository.CandidateRepository;
-import util.UbbArray;
+import util.GenericArray;
 import validator.CandidateValidator;
 import java.util.NoSuchElementException;
 
@@ -82,7 +82,7 @@ public class CandidateController {
     }
 
     @SuppressWarnings("unchecked")
-    public UbbArray<Entity> getAll() {
+    public GenericArray<Entity> getAll() {
         return this.candidateRepository.getItems();
     }
 }

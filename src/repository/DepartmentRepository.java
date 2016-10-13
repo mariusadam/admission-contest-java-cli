@@ -1,6 +1,9 @@
 package repository;
 
 import domain.Department;
+import domain.Entity;
+import exception.DepartmentException;
+
 import java.util.NoSuchElementException;
 
 /**
@@ -10,6 +13,21 @@ public class DepartmentRepository extends Repository {
 
     public DepartmentRepository() {
         super();
+    }
+
+    /**
+     * Inserts a new entity into the repository
+     *
+     * @param obj The object to be inserted
+     * @throws exception.DuplicateIdException If there is already an entity with the same id
+     */
+    @Override
+    public void insert(Entity obj) {
+        if (!(obj instanceof Department)) {
+            throw new DepartmentException("Inserted objects must be of type Department.");
+        }
+
+        super.insert(obj);
     }
 
     /**
