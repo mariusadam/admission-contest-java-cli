@@ -6,26 +6,32 @@ import java.util.Scanner;
 /**
  * Created by marius on 10/13/16.
  */
-public abstract class AbstractCommand {
+public abstract class AbstractCommand implements CommandInterface {
     private String key;
-    private String text;
+    private String description;
 
     /**
      *
      * @param key                 The key which identifies the command
-     * @param text                Short description for the command
+     * @param description                Short description for the command
      */
-    public AbstractCommand(String key, String text) {
+    public AbstractCommand(String key, String description) {
         this.key = key;
-        this.text = text;
+        this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getKey() {
         return key;
     }
 
-    public String getText() {
-        return text;
+    /**
+     * {@inheritDoc}
+     */
+    public String getDescription() {
+        return description;
     }
 
     /**

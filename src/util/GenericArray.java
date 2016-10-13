@@ -124,6 +124,15 @@ public class GenericArray<T>
     }
 
     /**
+     * Removes all the elements from the array
+     */
+    public void clear() {
+        this.size = 0;
+        this.capacity = DEFAULT_CAPACITY;
+        this.elements = new Object[this.capacity];
+    }
+
+    /**
      * Allocates a new space for the elements
      */
     private void resize() {

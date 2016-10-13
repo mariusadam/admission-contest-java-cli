@@ -36,8 +36,8 @@ public class Main {
         MainMenu menu = new MainMenu(new Scanner(System.in), System.out);
 
         loadCommands(menu, candidateController, departmentController);
-        loadCandidates(candidateRepository, 5);
-        loadDepartments(departmentRepository, 5);
+        loadCandidates(candidateRepository, 500);
+        loadDepartments(departmentRepository, 500);
 
         menu.show();
     }
@@ -56,6 +56,7 @@ public class Main {
         menu.addCommand(new UpdateDepartmentCommand("6", "Update a department" , departmentController));
         menu.addCommand(new DeleteDepartmentCommand("7", "Delete a department" , departmentController));
         menu.addCommand(new PrintDepartmentsCommand("8", "Show all departments", departmentController, tableHelper));
+
     }
 
     private static void loadCandidates(RepositoryInterface repository, Integer howMany) {
