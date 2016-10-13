@@ -4,6 +4,9 @@ import controller.CandidateController;
 import domain.Candidate;
 import exception.CandidateException;
 
+import java.io.PrintStream;
+import java.util.Scanner;
+
 /**
  * Created by marius on 10/13/16.
  */
@@ -20,25 +23,27 @@ public class AddCandidateCommand extends AbstractCandidateCommand {
 
     /**
      * Executes the current command
+     * @param scanner
+     * @param out
      */
     @Override
-    public void execute() {
+    public void execute(Scanner scanner, PrintStream out) {
         String name;
         String phone;
         String address;
 
-        this.out.print("Enter the name of the candidate: ");
-        name = this.scanner.nextLine();
-        this.out.print("Enter the phone of the candidate: ");
-        phone = this.scanner.nextLine();
-        this.out.print("Enter the address of the candidate: ");
-        address = this.scanner.nextLine();
+        out.print("Enter the name of the candidate: ");
+        name = scanner.nextLine();
+        out.print("Enter the phone of the candidate: ");
+        phone = scanner.nextLine();
+        out.print("Enter the address of the candidate: ");
+        address = scanner.nextLine();
 
         try {
             Candidate cand = this.candidateController.create(name, phone, address);
-            this.out.println("Added " + cand);
+            out.println("Added " + cand);
         } catch (CandidateException ex) {
-            this.out.println(ex.getMessage());
+            out.println(ex.getMessage());
         }
     }
 }

@@ -30,9 +30,6 @@ public class MainMenu {
     }
 
     public void addCommand(AbstractCommand command) {
-        command.setScanner(this.scanner);
-        command.setOut(this.out);
-
         this.commandMap.put(command.getKey(), command);
     }
 
@@ -52,7 +49,7 @@ public class MainMenu {
                     this.out.println("Unknown command: " + cmdStr);
                     continue;
                 }
-                command.execute();
+                command.execute(this.scanner, this.out);
             } catch (Exception ex) {
                 this.out.println(ex.getMessage());
             }

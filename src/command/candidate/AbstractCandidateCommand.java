@@ -16,19 +16,6 @@ abstract public class AbstractCandidateCommand extends AbstractCommand {
      *
      * @param key                 The key which identifies the command
      * @param text                Short description for the command
-     * @param scanner             The input scanner
-     * @param out                 The output stream
-     * @param candidateController The controller which handles candidates
-     */
-    public AbstractCandidateCommand(String key, String text, Scanner scanner, PrintStream out, CandidateController candidateController) {
-        super(key, text, scanner, out);
-        this.candidateController = candidateController;
-    }
-
-    /**
-     *
-     * @param key                 The key which identifies the command
-     * @param text                Short description for the command
      * @param candidateController The controller wich handles candidates
      */
     public AbstractCandidateCommand(String key, String text, CandidateController candidateController) {
@@ -38,6 +25,8 @@ abstract public class AbstractCandidateCommand extends AbstractCommand {
 
     /**
      * Executes the current command
+     * @param scanner
+     * @param out
      */
-    abstract public void execute();
+    abstract public void execute(Scanner scanner, PrintStream out);
 }

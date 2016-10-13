@@ -1,9 +1,11 @@
 package command.candidate;
 
-import command.AbstractCommand;
 import controller.CandidateController;
 import domain.Candidate;
 import exception.CandidateException;
+
+import java.io.PrintStream;
+import java.util.Scanner;
 
 /**
  * Created by marius on 10/13/16.
@@ -21,29 +23,31 @@ public class UpdateCandidateCommand extends AbstractCandidateCommand {
 
     /**
      * Executes the current command
+     * @param scanner
+     * @param out
      */
     @Override
-    public void execute() {
+    public void execute(Scanner scanner, PrintStream out) {
         Integer id;
         String name;
         String phone;
         String address;
 
-        this.out.print("Enter the id of the candidate you wish to modify: ");
-        id = this.scanner.nextInt();
-        this.scanner.nextLine();
-        this.out.print("Enter the new name of the candidate or leave id blank to not change it: ");
-        name = this.scanner.nextLine();
-        this.out.print("Enter the new phone of the candidate or leave id blank to not change it: ");
-        phone = this.scanner.nextLine();
-        this.out.print("Enter the new addressof the candidate or leave id blank to not change it: ");
-        address = this.scanner.nextLine();
+        out.print("Enter the id of the candidate you wish to modify: ");
+        id = scanner.nextInt();
+        scanner.nextLine();
+        out.print("Enter the new name of the candidate or leave id blank to not change it: ");
+        name = scanner.nextLine();
+        out.print("Enter the new phone of the candidate or leave id blank to not change it: ");
+        phone = scanner.nextLine();
+        out.print("Enter the new addressof the candidate or leave id blank to not change it: ");
+        address = scanner.nextLine();
 
         try {
             Candidate cand = this.candidateController.update(id, name, phone, address);
-            this.out.println("Updated " + cand);
+            out.println("Updated " + cand);
         } catch (CandidateException ex) {
-            this.out.println(ex.getMessage());
+            out.println(ex.getMessage());
         }
     }
 }

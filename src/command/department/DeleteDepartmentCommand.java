@@ -3,7 +3,9 @@ package command.department;
 import controller.DepartmentController;
 import domain.Department;
 
+import java.io.PrintStream;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 /**
  * Created by marius on 10/13/16.
@@ -20,19 +22,21 @@ public class DeleteDepartmentCommand extends AbstractDepartmentCommand{
 
     /**
      * Executes the current command
+     * @param scanner
+     * @param out
      */
     @Override
-    public void execute() {
+    public void execute(Scanner scanner, PrintStream out) {
         Integer id;
 
-        this.out.print("Enter the id of the department you with to modify: ");
-        id = this.scanner.nextInt();
-        this.scanner.nextLine();
+        out.print("Enter the id of the department you with to modify: ");
+        id = scanner.nextInt();
+        scanner.nextLine();
         try {
             Department department = this.departmentController.delete(id);
-            this.out.println("Deleted: " + department);
+            out.println("Deleted: " + department);
         } catch (NoSuchElementException ex) {
-            this.out.println("Could not find the department with id " + id);
+            out.println("Could not find the department with id " + id);
         }
     }
 }

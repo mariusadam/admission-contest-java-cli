@@ -2,6 +2,9 @@ package command.common;
 
 import command.AbstractCommand;
 
+import java.io.PrintStream;
+import java.util.Scanner;
+
 /**
  * Created by mariusadam on 10/13/16.
  */
@@ -16,10 +19,12 @@ public class ExitCommand extends AbstractCommand {
 
     /**
      * Executes the current command
+     * @param scanner
+     * @param out
      */
     @Override
-    public void execute() {
-        this.out.println("Exiting now...");
+    public void execute(Scanner scanner, PrintStream out) {
+        out.println("Exiting now...");
         System.exit(0);
     }
 }

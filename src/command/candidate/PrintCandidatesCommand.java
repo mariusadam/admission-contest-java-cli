@@ -1,11 +1,13 @@
 package command.candidate;
 
 import controller.CandidateController;
-import dnl.utils.text.table.TextTable;
 import domain.Candidate;
 import domain.Entity;
 import util.GenericArray;
 import util.helper.PrintTableHelper;
+
+import java.io.PrintStream;
+import java.util.Scanner;
 
 /**
  * Created by marius on 10/13/16.
@@ -25,9 +27,11 @@ public class PrintCandidatesCommand extends AbstractCandidateCommand {
 
     /**
      * Executes the current command
+     * @param scanner
+     * @param out
      */
     @Override
-    public void execute() {
+    public void execute(Scanner scanner, PrintStream out) {
         String[] columns = {"id", "name", "phone", "address"};
         GenericArray<Entity> candidates = this.candidateController.getAll();
         Object[][] data = new Object[candidates.getSize()][];

@@ -4,6 +4,9 @@ import controller.DepartmentController;
 import domain.Department;
 import exception.DepartmentException;
 
+import java.io.PrintStream;
+import java.util.Scanner;
+
 /**
  * Created by marius on 10/13/16.
  */
@@ -19,26 +22,28 @@ public class UpdateDepartmentCommand extends AbstractDepartmentCommand {
 
     /**
      * Executes the current command
+     * @param scanner
+     * @param out
      */
     @Override
-    public void execute() {
+    public void execute(Scanner scanner, PrintStream out) {
         Integer id;
         String name;
         Integer numberOfSeats;
 
-        this.out.print("Enter the id of the department you with to modify: ");
-        id = this.scanner.nextInt();
-        this.scanner.nextLine();
-        this.out.print("Enter the new phone of the department or leave id blank to not change it: ");
-        name = this.scanner.nextLine();
-        this.out.print("Enter the number of seats of the department or leave id blank to not change it: ");
-        numberOfSeats = this.scanner.nextInt();
+        out.print("Enter the id of the department you with to modify: ");
+        id = scanner.nextInt();
+        scanner.nextLine();
+        out.print("Enter the new phone of the department or leave id blank to not change it: ");
+        name = scanner.nextLine();
+        out.print("Enter the number of seats of the department or leave id blank to not change it: ");
+        numberOfSeats = scanner.nextInt();
 
         try {
             Department department = this.departmentController.update(id, name, numberOfSeats);
-            this.out.println("Updated " + department);
+            out.println("Updated " + department);
         } catch (DepartmentException ex) {
-            this.out.println(ex.getMessage());
+            out.println(ex.getMessage());
         }
     }
 }

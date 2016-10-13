@@ -3,7 +3,9 @@ package command.candidate;
 import controller.CandidateController;
 import domain.Candidate;
 
+import java.io.PrintStream;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 /**
  * Created by marius on 10/13/16.
@@ -21,19 +23,21 @@ public class DeleteCandidateCommand extends AbstractCandidateCommand{
 
     /**
      * Executes the current command
+     * @param scanner
+     * @param out
      */
     @Override
-    public void execute() {
+    public void execute(Scanner scanner, PrintStream out) {
         Integer id;
-        this.out.print("Enter the id of the candidate you wish to delete: ");
-        id = this.scanner.nextInt();
-        this.scanner.nextLine();
+        out.print("Enter the id of the candidate you wish to delete: ");
+        id = scanner.nextInt();
+        scanner.nextLine();
 
         try {
             Candidate candidate = this.candidateController.delete(id);
-            this.out.println("Deleted: " + candidate);
+            out.println("Deleted: " + candidate);
         } catch (NoSuchElementException ex) {
-            this.out.println("Could not find the candidate with id " + id);
+            out.println("Could not find the candidate with id " + id);
         }
     }
 }

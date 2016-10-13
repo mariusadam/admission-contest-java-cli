@@ -3,6 +3,9 @@ package command.department;
 import command.AbstractCommand;
 import controller.DepartmentController;
 
+import java.io.PrintStream;
+import java.util.Scanner;
+
 /**
  * Created by marius on 10/13/16.
  */
@@ -22,6 +25,8 @@ abstract public class AbstractDepartmentCommand extends AbstractCommand{
 
     /**
      * Executes the current command
+     * @param scanner
+     * @param out
      */
-    abstract public void execute();
+    abstract public void execute(Scanner scanner, PrintStream out);
 }

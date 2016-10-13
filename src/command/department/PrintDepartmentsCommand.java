@@ -6,6 +6,9 @@ import domain.Entity;
 import util.GenericArray;
 import util.helper.PrintTableHelper;
 
+import java.io.PrintStream;
+import java.util.Scanner;
+
 /**
  * Created by marius on 10/13/16.
  */
@@ -24,9 +27,11 @@ public class PrintDepartmentsCommand extends AbstractDepartmentCommand {
 
     /**
      * Executes the current command
+     * @param scanner
+     * @param out
      */
     @Override
-    public void execute() {
+    public void execute(Scanner scanner, PrintStream out) {
         String[] columns = {"id", "name", "number of seats"};
         GenericArray<Entity> departments = this.departmentController.getAll();
         Object[][] data = new Object[departments.getSize()][];
