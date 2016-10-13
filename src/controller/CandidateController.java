@@ -5,6 +5,8 @@ import domain.Entity;
 import repository.CandidateRepository;
 import util.GenericArray;
 import validator.CandidateValidator;
+import validator.ValidatorInterface;
+
 import java.util.NoSuchElementException;
 
 /**
@@ -12,14 +14,14 @@ import java.util.NoSuchElementException;
  */
 public class CandidateController {
     private CandidateRepository candidateRepository;
-    private CandidateValidator validator;
+    private ValidatorInterface validator;
 
     /**
      *
      * @param candidateRepository  The repository class for Candidate entities
      * @param validator            The validator for the Candidate entity
      */
-    public CandidateController(CandidateRepository candidateRepository, CandidateValidator validator) {
+    public CandidateController(CandidateRepository candidateRepository, ValidatorInterface validator) {
         this.candidateRepository = candidateRepository;
         this.validator = validator;
     }

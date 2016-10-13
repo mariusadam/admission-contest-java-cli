@@ -24,6 +24,7 @@ import validator.DepartmentValidator;
 
 import view.menu.Menu;
 import view.menu.MenuInterface;
+import view.menu.decorator.PrintStreamDecorator;
 
 import java.util.Scanner;
 
@@ -31,14 +32,12 @@ public class Main {
 
     public static void main(String[] args) {
         CandidateRepository candidateRepository = new CandidateRepository();
-        CandidateValidator candidateValidator = new CandidateValidator();
-        CandidateController candidateController = new CandidateController(candidateRepository, candidateValidator);
+        CandidateController candidateController = new CandidateController(candidateRepository, new CandidateValidator());
 
         DepartmentRepository departmentRepository = new DepartmentRepository();
-        DepartmentValidator departmentValidator = new DepartmentValidator();
-        DepartmentController departmentController = new DepartmentController(departmentRepository, departmentValidator);
+        DepartmentController departmentController = new DepartmentController(departmentRepository, new DepartmentValidator());
 
-        MenuInterface menu = new Menu(new Scanner(System.in), System.out);
+        MenuInterface menu = new Menu(new Scanner(System.in), new PrintStreamDecorator(System.out, 40));
 
         loadCommands(menu, candidateController, departmentController);
 
