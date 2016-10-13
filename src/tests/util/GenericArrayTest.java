@@ -8,7 +8,7 @@ import util.GenericArray;
 public class GenericArrayTest {
     @org.junit.Test
     public void add() throws Exception {
-        GenericArray t = new GenericArray();
+        GenericArray<Integer> t = new GenericArray<>();
         t.add(1);
         t.add(1);
         t.add(1);

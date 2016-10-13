@@ -2,6 +2,7 @@ import command.candidate.AddCandidateCommand;
 import command.candidate.DeleteCandidateCommand;
 import command.candidate.PrintCandidatesCommand;
 import command.candidate.UpdateCandidateCommand;
+import command.common.ExitCommand;
 import command.department.AddDepartmentCommand;
 import command.department.DeleteDepartmentCommand;
 import command.department.PrintDepartmentsCommand;
@@ -43,6 +44,8 @@ public class Main {
 
     private static void loadCommands(MainMenu menu, CandidateController candidateController, DepartmentController departmentController) {
         PrintTableHelper tableHelper = new PrintTableHelper(40, menu.getOut());
+
+        menu.addCommand(new ExitCommand("0", "Exit"));
 
         menu.addCommand(new AddCandidateCommand   ("1", "Add a new candidate", candidateController));
         menu.addCommand(new UpdateCandidateCommand("2", "Update a candidate" , candidateController));

@@ -16,17 +16,11 @@ public class CandidateHelper {
      */
     public static Candidate createFromCsvString(String csvString) {
         String[] parts = StringUtils.split(csvString, ",");
-
-        if (parts.length != 4) {
-            throw new CandidateException(String.format("Cannot create a Candidate objet with csv string %s", csvString));
+        if(parts.length != 4) {
+            throw new CandidateException(String.format("Cannot create a Candidate object with csv string %s", new Object[]{csvString}));
+        } else {
+            return new Candidate(Integer.parseInt(parts[0]), parts[1], parts[2], parts[3]);
         }
-
-        return new Candidate(
-                Integer.parseInt(parts[0]),
-                parts[1],
-                parts[2],
-                parts[3]
-        );
     }
 
     /**
@@ -34,12 +28,6 @@ public class CandidateHelper {
      * @return String
      */
     public static String toCsvFormat(Candidate obj) {
-        return String.format(
-                "%s,%s,%s,%s",
-                obj.getId().toString(),
-                obj.getName(),
-                obj.getPhone(),
-                obj.getAddress()
-                );
+        return String.format("%s,%s,%s,%s", obj.getId().toString(), obj.getName(), obj.getPhone(), obj.getAddress());
     }
 }
