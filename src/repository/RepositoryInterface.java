@@ -7,21 +7,21 @@ import util.GenericArray;
 /**
  *
  */
-public interface RepositoryInterface {
+public interface RepositoryInterface<T extends Entity> {
     /**
      * Inserts a new entity into the repository
      *
      * @param obj The object to be inserted
      * @throws DuplicateIdException If there is already an entity with the same id
      */
-    public void insert(Entity obj);
+    public void insert(T obj);
     /**
      * Removes the entity from the repository
      *
      * @param id The id of the entity to be deleted
      * @return Entity The deleted entity
      */
-    public Entity delete(Integer id);
+    public T delete(Integer id);
 
     /**
      * Updates the given entity by identifying the entity from
@@ -44,7 +44,7 @@ public interface RepositoryInterface {
      *
      * @return {@link GenericArray} The object containing all the entities
      */
-    public GenericArray getItems();
+    public Entity[] getAll();
 
     /**
      * Returns the id of the last inserted entity

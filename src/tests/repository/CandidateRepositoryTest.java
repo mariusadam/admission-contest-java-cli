@@ -8,8 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import repository.CandidateRepository;
-import util.helper.loader.CandidateLoader;
-import util.helper.loader.LoaderInterface;
+import util.helper.loader.file.CandidateCsvLoader;
+import util.helper.loader.file.FileLoaderInterface;
 
 import static org.junit.Assert.*;
 
@@ -18,12 +18,12 @@ import static org.junit.Assert.*;
  */
 public class CandidateRepositoryTest {
     private CandidateRepository repository;
-    private LoaderInterface     loader;
+    private FileLoaderInterface loader;
 
     @Before
     public void setUp() throws Exception {
         this.repository = new CandidateRepository();
-        this.loader     = new CandidateLoader();
+        this.loader     = new CandidateCsvLoader();
     }
 
     @After
@@ -36,11 +36,11 @@ public class CandidateRepositoryTest {
     public void insert() throws Exception {
         Candidate c1 = new Candidate(1, "name1", "12431", "address1");
         this.repository.insert(c1);
-        assertEquals(1, this.repository.getItems().getSize().intValue());
+        assertEquals(1, this.repository.getAll().getSize().intValue());
 
         Candidate c2 = new Candidate(2, "name2", "12433431", "address2");
         this.repository.insert(c2);
-        assertEquals(2, this.repository.getItems().getSize().intValue());
+        assertEquals(2, this.repository.getAll().getSize().intValue());
 
         assertSame(this.repository.findById(c1.getId()), c1);
         assertSame(this.repository.findById(c2.getId()), c2);
@@ -62,12 +62,12 @@ public class CandidateRepositoryTest {
 
     @Test
     public void delete() throws Exception {
-        this.loader.load(this.repository, 10);
-        assertEquals(10, this.repository.getItems().getSize().intValue());
+        this.loader.loadFromMemory(this.repository, 10);
+        assertEquals(10, this.repository.getAll().getSize().intValue());
 
         for(int i = 10; i >= 1; i--) {
             this.repository.delete(this.repository.getLastId());
-            assertEquals(i - 1, this.repository.getItems().getSize().intValue());
+            assertEquals(i - 1, this.repository.getAll().getSize().intValue());
         }
     }
 
@@ -156,7 +156,7 @@ public class CandidateRepositoryTest {
 
     @Test
     public void getItems() throws Exception {
-        assertTrue(this.repository.getItems() != null);
+        assertTrue(this.repository.getAll() != null);
     }
 
 }

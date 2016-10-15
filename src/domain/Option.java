@@ -34,4 +34,9 @@ public class Option extends Entity {
     public void setDepartment(Department department) {
         this.department = department;
     }
+
+    @Override
+    public String toCsvFormat() {
+        return String.format("%s,%s,%s", id.toString(), candidate.getId().toString(), department.getId().toString());
+    }
 }

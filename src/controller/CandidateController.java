@@ -1,27 +1,30 @@
 package controller;
 
 import domain.Candidate;
+import domain.Department;
 import domain.Entity;
-import repository.CandidateRepository;
+import repository.CandidateRepositoryInterface;
 import util.GenericArray;
-import validator.CandidateValidator;
 import validator.ValidatorInterface;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.NoSuchElementException;
 
 /**
  *
  */
 public class CandidateController {
-    private CandidateRepository candidateRepository;
-    private ValidatorInterface validator;
+    private CandidateRepositoryInterface candidateRepository;
+    private ValidatorInterface           validator;
 
     /**
      *
      * @param candidateRepository  The repository class for Candidate entities
      * @param validator            The validator for the Candidate entity
      */
-    public CandidateController(CandidateRepository candidateRepository, ValidatorInterface validator) {
+    public CandidateController(CandidateRepositoryInterface candidateRepository, ValidatorInterface validator) {
         this.candidateRepository = candidateRepository;
         this.validator = validator;
     }
@@ -83,8 +86,7 @@ public class CandidateController {
         return this.candidateRepository.delete(id);
     }
 
-    @SuppressWarnings("unchecked")
-    public GenericArray<Entity> getAll() {
-        return this.candidateRepository.getItems();
+    public Collection<Candidate> getAll() {
+        return Arrays.asList(this.candidateRepository.getAll());
     }
 }

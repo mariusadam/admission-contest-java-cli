@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 /**
  *
  */
-public class CandidateRepository extends Repository {
+public class CandidateRepository extends Repository implements CandidateRepositoryInterface{
 
     public CandidateRepository() {
         super();

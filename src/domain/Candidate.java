@@ -67,4 +67,9 @@ public class Candidate extends Entity {
     public String toString() {
         return "Candidate " + this.name + " with id " + this.id;
     }
+
+    @Override
+    public String toCsvFormat() {
+        return String.format("%s,%s,%s,%s", id.toString(), name, phone, address);
+    }
 }

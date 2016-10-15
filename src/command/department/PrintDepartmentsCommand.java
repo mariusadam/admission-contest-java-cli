@@ -7,6 +7,8 @@ import util.GenericArray;
 import util.helper.PrintTableHelper;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Scanner;
 
 /**
@@ -33,17 +35,17 @@ public class PrintDepartmentsCommand extends AbstractDepartmentCommand {
     @Override
     public void execute(Scanner scanner, PrintStream out) {
         String[] columns = {"id", "name", "number of seats"};
-        GenericArray<Entity> departments = this.departmentController.getAll();
-        Object[][] data = new Object[departments.getSize()][];
+        Collection<Department> departments = this.departmentController.getAll();
+        Object[][] data = new Object[departments.size()][];
 
-        for (int i = 0; i < departments.getSize(); i++) {
-            Department department = (Department) departments.getAt(i);
+        int poz = 0;
+        for (Department dep : departments) {
             Object[] row = {
-                    department.getId(),
-                    department.getName(),
-                    department.getNumberOfSeats(),
+                    dep.getId(),
+                    dep.getName(),
+                    dep.getNumberOfSeats(),
             };
-            data[i] = row;
+            data[poz++] = row;
         }
 
         tableHelper.printItems(columns, data);

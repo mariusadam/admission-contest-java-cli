@@ -1,20 +1,16 @@
-package util.helper.loader;
+package util.helper.loader.memory;
 
 import domain.Candidate;
 import org.apache.commons.lang.RandomStringUtils;
 import repository.RepositoryInterface;
 
 /**
- * Created by marius on 10/13/16.
+ * Created by marius on 10/15/16.
  */
-public class CandidateLoader implements LoaderInterface {
-    /**
-     * @param repository A repository object
-     * @param howMany    The number of entities to create/load
-     */
+public class CandidateMemoryLoader implements MemoryLoaderInterface {
     @Override
     public void load(RepositoryInterface repository, int howMany) {
-        for(int i = 0; i < howMany; i++) {
+        for (int i = 0; i < howMany; i++) {
             repository.insert(new Candidate(
                     repository.getNextId(),
                     "Candidate" + i,

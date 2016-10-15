@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 /**
  *
  */
-public class DepartmentRepository extends Repository {
+public class DepartmentRepository extends Repository implements DepartmentRepositoryInterface{
 
     public DepartmentRepository() {
         super();

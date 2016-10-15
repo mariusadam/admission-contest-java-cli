@@ -53,4 +53,9 @@ public class Department extends Entity{
     public String toString() {
         return "Department " + this.name + " with id " + this.id;
     }
+
+    @Override
+    public String toCsvFormat() {
+        return String.format("%s,%s,%s", id.toString(), name, numberOfSeats.toString());
+    }
 }

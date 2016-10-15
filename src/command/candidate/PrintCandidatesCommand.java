@@ -7,6 +7,7 @@ import util.GenericArray;
 import util.helper.PrintTableHelper;
 
 import java.io.PrintStream;
+import java.util.Collection;
 import java.util.Scanner;
 
 /**
@@ -33,18 +34,18 @@ public class PrintCandidatesCommand extends AbstractCandidateCommand {
     @Override
     public void execute(Scanner scanner, PrintStream out) {
         String[] columns = {"id", "name", "phone", "address"};
-        GenericArray<Entity> candidates = this.candidateController.getAll();
-        Object[][] data = new Object[candidates.getSize()][];
+        Collection<Candidate> candidates = this.candidateController.getAll();
+        Object[][] data = new Object[candidates.size()][];
 
-        for (int i = 0; i < candidates.getSize(); i++) {
-            Candidate candidate = (Candidate) candidates.getAt(i);
+        int poz = 0;
+        for (Candidate candidate : candidates) {
             Object[] row = {
                     candidate.getId(),
                     candidate.getName(),
                     candidate.getPhone(),
                     candidate.getAddress(),
             };
-            data[i] = row;
+            data[poz++] = row;
         }
 
         this.tableHelper.printItems(columns, data);

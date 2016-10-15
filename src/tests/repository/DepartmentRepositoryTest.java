@@ -2,15 +2,14 @@ package tests.repository;
 
 import domain.Candidate;
 import domain.Department;
-import exception.CandidateException;
 import exception.DepartmentException;
 import exception.DuplicateIdException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import repository.DepartmentRepository;
-import util.helper.loader.DepartmentLoader;
-import util.helper.loader.LoaderInterface;
+import util.helper.loader.file.DepartmentCsvLoader;
+import util.helper.loader.file.FileLoaderInterface;
 
 import static org.junit.Assert.*;
 
@@ -19,12 +18,12 @@ import static org.junit.Assert.*;
  */
 public class DepartmentRepositoryTest {
     private DepartmentRepository repository;
-    private LoaderInterface      loader;
+    private FileLoaderInterface loader;
 
     @Before
     public void setUp() throws Exception {
         this.repository = new DepartmentRepository();
-        this.loader     = new DepartmentLoader();
+        this.loader     = new DepartmentCsvLoader();
     }
 
     @After
@@ -37,11 +36,11 @@ public class DepartmentRepositoryTest {
     public void insert() throws Exception {
         Department d1 = new Department(1, "dep1", 10);
         this.repository.insert(d1);
-        assertEquals(1, this.repository.getItems().getSize().intValue());
+        assertEquals(1, this.repository.getAll().getSize().intValue());
 
         Department d2 = new Department(2, "dep2", 9);
         this.repository.insert(d2);
-        assertEquals(2, this.repository.getItems().getSize().intValue());
+        assertEquals(2, this.repository.getAll().getSize().intValue());
 
         assertSame(this.repository.findById(d1.getId()), d1);
         assertSame(this.repository.findById(d2.getId()), d2);
@@ -65,12 +64,12 @@ public class DepartmentRepositoryTest {
     public void delete() throws Exception {
         int nrOfDepartments = 50;
 
-        this.loader.load(this.repository, nrOfDepartments);
-        assertEquals(nrOfDepartments, this.repository.getItems().getSize().intValue());
+        this.loader.loadFromMemory(this.repository, nrOfDepartments);
+        assertEquals(nrOfDepartments, this.repository.getAll().getSize().intValue());
 
         for(int i = nrOfDepartments; i >= 1; i--) {
             this.repository.delete(this.repository.getLastId());
-            assertEquals(i - 1, this.repository.getItems().getSize().intValue());
+            assertEquals(i - 1, this.repository.getAll().getSize().intValue());
         }
     }
 
@@ -158,7 +157,7 @@ public class DepartmentRepositoryTest {
 
     @Test
     public void getItems() throws Exception {
-        assertTrue(this.repository.getItems() != null);
+        assertTrue(this.repository.getAll() != null);
     }
 
 }

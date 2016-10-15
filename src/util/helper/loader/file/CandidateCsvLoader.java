@@ -1,14 +1,33 @@
-package util.helper;
+package util.helper.loader.file;
 
 import domain.Candidate;
-import domain.Entity;
 import exception.CandidateException;
 import org.apache.commons.lang.StringUtils;
+import repository.RepositoryInterface;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Created by marius on 10/13/16.
  */
-public class CandidateHelper {
+public class CandidateCsvLoader implements FileLoaderInterface {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void load(RepositoryInterface repository, String filename) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))){
+            String line;
+            while ((line = reader.readLine()) != null) {
+                repository.insert(createFromCsvString(line));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      *
      * @param csvString The string from which to create the entity
@@ -21,13 +40,5 @@ public class CandidateHelper {
         } else {
             return new Candidate(Integer.parseInt(parts[0]), parts[1], parts[2], parts[3]);
         }
-    }
-
-    /**
-     * @param obj The object to be converted to csv format
-     * @return String
-     */
-    public static String toCsvFormat(Candidate obj) {
-        return String.format("%s,%s,%s,%s", obj.getId().toString(), obj.getName(), obj.getPhone(), obj.getAddress());
     }
 }

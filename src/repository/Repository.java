@@ -1,19 +1,21 @@
 package repository;
 
+import domain.Candidate;
 import domain.Entity;
 import exception.DuplicateIdException;
 import util.GenericArray;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 /**
  *
  */
 public class Repository implements RepositoryInterface{
-    private GenericArray<Entity> items;
+    protected final ArrayList<Entity> items;
 
     public Repository() {
-        this.items = new GenericArray<Entity>();
+        this.items = new ArrayList<>();
     }
 
     /**
@@ -24,7 +26,7 @@ public class Repository implements RepositoryInterface{
      */
     @Override
     public void insert(Entity obj) {
-        if (this.items.has(obj)) {
+        if (this.items.contains(obj)) {
             throw new DuplicateIdException();
         }
         this.items.add(obj);
@@ -39,7 +41,9 @@ public class Repository implements RepositoryInterface{
     @Override
     public Entity delete(Integer id) {
         Entity deleted = this.findById(id);
-        return this.items.removeAt(this.items.find(deleted));
+        this.items.remove(deleted);
+
+        return deleted;
     }
 
     /**
@@ -50,7 +54,14 @@ public class Repository implements RepositoryInterface{
      */
     @Override
     public void update(Entity entity) {
-        this.items.set(this.items.find(entity), entity);
+        this.items.replaceAll(e -> {
+            if (e.getId() == entity.getId()) {
+                return entity;
+            }
+
+            return e;
+        });
+//        this.items.set(this.items.indexOf(entity), entity);
     }
 
     /**
@@ -62,9 +73,9 @@ public class Repository implements RepositoryInterface{
      */
     @Override
     public Entity findById(Integer id) {
-        for (int i = 0; i < this.items.getSize(); i++) {
-            if (this.items.getAt(i).getId() == id) {
-                return this.items.getAt(i);
+        for(Entity e : this.items) {
+            if (e.getId() == id) {
+                return e;
             }
         }
         throw new NoSuchElementException("Could not find the entity with id " + id);
@@ -78,9 +89,10 @@ public class Repository implements RepositoryInterface{
     @Override
     public Integer getLastId() {
         Integer lastId = Integer.MIN_VALUE;
-        for (int i = 0; i < this.items.getSize(); i++) {
-            lastId = lastId < this.items.getAt(i).getId() ? this.items.getAt(i).getId() : lastId;
+        for (Entity e : this.items) {
+            lastId = lastId < e.getId() ? e.getId() : lastId;
         }
+
         lastId = lastId == Integer.MIN_VALUE ? null : lastId;
         return lastId;
     }
@@ -100,7 +112,7 @@ public class Repository implements RepositoryInterface{
      * @return {@link GenericArray} The object containing all the entities
      */
     @Override
-    public GenericArray<Entity> getItems() {
-        return this.items;
+    public Entity[] getAll() {
+        return this.items.toArray(new Entity[this.items.size()]);
     }
 }

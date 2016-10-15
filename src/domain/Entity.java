@@ -3,7 +3,7 @@ package domain;
 /**
  *
  */
-public class Entity {
+public abstract class Entity {
     protected Integer id;
 
     /**
@@ -25,4 +25,6 @@ public class Entity {
     public boolean equals(Object obj) {
         return obj instanceof Entity && this.id.equals(((Entity) obj).id);
     }
+
+    public abstract String toCsvFormat();
 }

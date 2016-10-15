@@ -2,26 +2,30 @@ package controller;
 
 import domain.Department;
 import domain.Entity;
-import repository.DepartmentRepository;
+import repository.DepartmentRepositoryInterface;
 import util.GenericArray;
-import validator.DepartmentValidator;
+import validator.ValidatorInterface;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.NoSuchElementException;
 
 /**
  *
  */
 public class DepartmentController {
-    private DepartmentRepository departmentRepository;
-    private DepartmentValidator  departmentValidator;
+    private DepartmentRepositoryInterface departmentRepository;
+    private ValidatorInterface            validator;
 
     /**
      *
      * @param departmentRepository The repository class for Department entities
      * @param departmentValidator  The validator for Department entity
      */
-    public DepartmentController(DepartmentRepository departmentRepository, DepartmentValidator departmentValidator) {
+    public DepartmentController(DepartmentRepositoryInterface departmentRepository, ValidatorInterface departmentValidator) {
         this.departmentRepository = departmentRepository;
-        this.departmentValidator = departmentValidator;
+        this.validator = departmentValidator;
     }
 
     /**
@@ -38,7 +42,7 @@ public class DepartmentController {
                 numberOfSeats
         );
 
-        this.departmentValidator.validate(department);
+        this.validator.validate(department);
         this.departmentRepository.insert(department);
 
         return department;
@@ -56,7 +60,7 @@ public class DepartmentController {
 
         department.setName(newName);
         department.setNumberOfSeats(newNumberOfSeats);
-        this.departmentValidator.validate(department);
+        this.validator.validate(department);
         this.departmentRepository.update(department);
 
         return department;
@@ -72,8 +76,7 @@ public class DepartmentController {
         return this.departmentRepository.delete(id);
     }
 
-    @SuppressWarnings("unchecked")
-    public GenericArray<Entity> getAll() {
-        return this.departmentRepository.getItems();
+    public Collection<Department> getAll() {
+        return Arrays.asList(this.departmentRepository.getAll());
     }
 }
