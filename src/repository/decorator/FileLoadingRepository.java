@@ -19,6 +19,7 @@ public class FileLoadingRepository<T extends Entity> extends RepositoryDecorator
         super(repository);
         this.loader = loader;
         this.filename = filename;
+        this.loadFromFile();
     }
 
     private void loadFromFile() {

@@ -18,8 +18,8 @@ public class CandidateMemoryLoader<T extends Candidate> implements MemoryLoaderI
                     "Candidate" + i,
                     RandomStringUtils.randomNumeric(10),
                     "Street " + RandomStringUtils.randomAlphabetic(10) +
-                            ", nr " + RandomStringUtils.randomNumeric(3) +
-                            ", City " + RandomStringUtils.randomAlphabetic(6)
+                            " - nr " + RandomStringUtils.randomNumeric(3) +
+                            " - City " + RandomStringUtils.randomAlphabetic(6)
             ));
         }
     }

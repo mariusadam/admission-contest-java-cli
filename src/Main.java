@@ -38,8 +38,6 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        SaverInterface csvSaver = new CsvFileSaver();
-
         String canidatesFile = "candidates.txt";
         RepositoryInterface<Candidate> decoratedCandRepo =
                 new FileSavingRepository<>(
@@ -48,7 +46,7 @@ public class Main {
                                 new CandidateCsvLoader<>(),
                                 canidatesFile
                         ),
-                        csvSaver,
+                        new CsvFileSaver<>(),
                         canidatesFile
                 );
         CandidateController candidateController = new CandidateController(decoratedCandRepo, new CandidateValidator());
@@ -58,7 +56,7 @@ public class Main {
                 new FileLoadingRepository<>(
                         new FileSavingRepository<>(
                                 new Repository<>(),
-                                csvSaver,
+                                new CsvFileSaver<>(),
                                 departmentsFile
                         ),
                         new DepartmentCsvLoader<>(),
@@ -72,8 +70,8 @@ public class Main {
         MemoryLoaderInterface<Department> memDepLoader = new DepartmentMemoryLoader<>();
         MemoryLoaderInterface<Candidate> memCandLoader = new CandidateMemoryLoader<>();
 
-//        memDepLoader.load(decoratedDepRepo, 1000);
-//        memCandLoader.load(decoratedCandRepo, 1000);
+//        memDepLoader.load(decoratedDepRepo, 10);
+//        memCandLoader.load(decoratedCandRepo, 10);
 
         menu.show();
     }
