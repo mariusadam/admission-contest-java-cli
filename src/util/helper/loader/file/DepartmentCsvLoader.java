@@ -12,10 +12,11 @@ import java.io.IOException;
 /**
  * Created by marius on 10/13/16.
  */
-public class DepartmentCsvLoader implements FileLoaderInterface {
+public class DepartmentCsvLoader<T extends Department> implements FileLoaderInterface<T> {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void load(RepositoryInterface repository, String filename) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))){

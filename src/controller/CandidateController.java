@@ -1,13 +1,9 @@
 package controller;
 
 import domain.Candidate;
-import domain.Department;
-import domain.Entity;
-import repository.CandidateRepositoryInterface;
-import util.GenericArray;
+import repository.RepositoryInterface;
 import validator.ValidatorInterface;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.NoSuchElementException;
@@ -16,15 +12,15 @@ import java.util.NoSuchElementException;
  *
  */
 public class CandidateController {
-    private CandidateRepositoryInterface candidateRepository;
-    private ValidatorInterface           validator;
+    private RepositoryInterface<Candidate> candidateRepository;
+    private ValidatorInterface             validator;
 
     /**
      *
      * @param candidateRepository  The repository class for Candidate entities
      * @param validator            The validator for the Candidate entity
      */
-    public CandidateController(CandidateRepositoryInterface candidateRepository, ValidatorInterface validator) {
+    public CandidateController(RepositoryInterface<Candidate> candidateRepository, ValidatorInterface validator) {
         this.candidateRepository = candidateRepository;
         this.validator = validator;
     }
@@ -87,6 +83,6 @@ public class CandidateController {
     }
 
     public Collection<Candidate> getAll() {
-        return Arrays.asList(this.candidateRepository.getAll());
+        return this.candidateRepository.getAll();
     }
 }

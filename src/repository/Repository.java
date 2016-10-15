@@ -1,18 +1,18 @@
 package repository;
 
-import domain.Candidate;
 import domain.Entity;
 import exception.DuplicateIdException;
 import util.GenericArray;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.NoSuchElementException;
 
 /**
  *
  */
-public class Repository implements RepositoryInterface{
-    protected final ArrayList<Entity> items;
+public class Repository<T extends Entity> implements RepositoryInterface<T> {
+    protected final ArrayList<T> items;
 
     public Repository() {
         this.items = new ArrayList<>();
@@ -25,7 +25,7 @@ public class Repository implements RepositoryInterface{
      * @throws DuplicateIdException If there is already an entity with the same id
      */
     @Override
-    public void insert(Entity obj) {
+    public void insert(T obj) {
         if (this.items.contains(obj)) {
             throw new DuplicateIdException();
         }
@@ -39,8 +39,8 @@ public class Repository implements RepositoryInterface{
      * @return Entity The deleted entity
      */
     @Override
-    public Entity delete(Integer id) {
-        Entity deleted = this.findById(id);
+    public T delete(Integer id) {
+        T deleted = this.findById(id);
         this.items.remove(deleted);
 
         return deleted;
@@ -53,15 +53,14 @@ public class Repository implements RepositoryInterface{
      * @param entity The entity to be updated
      */
     @Override
-    public void update(Entity entity) {
+    public void update(T entity) {
         this.items.replaceAll(e -> {
-            if (e.getId() == entity.getId()) {
+            if (e.getId().equals(entity.getId())) {
                 return entity;
             }
 
             return e;
         });
-//        this.items.set(this.items.indexOf(entity), entity);
     }
 
     /**
@@ -72,8 +71,8 @@ public class Repository implements RepositoryInterface{
      * @throws NoSuchElementException If the searched entity is not found
      */
     @Override
-    public Entity findById(Integer id) {
-        for(Entity e : this.items) {
+    public T findById(Integer id) {
+        for(T e : this.items) {
             if (e.getId() == id) {
                 return e;
             }
@@ -112,7 +111,7 @@ public class Repository implements RepositoryInterface{
      * @return {@link GenericArray} The object containing all the entities
      */
     @Override
-    public Entity[] getAll() {
-        return this.items.toArray(new Entity[this.items.size()]);
+    public Collection<T> getAll() {
+        return this.items;
     }
 }

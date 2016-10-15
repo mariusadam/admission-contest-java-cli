@@ -4,42 +4,44 @@ import domain.Candidate;
 import domain.Entity;
 import repository.RepositoryInterface;
 
+import java.util.Collection;
+
 /**
  * Created by marius on 10/15/16.
  */
-public abstract class RepositoryDecorator implements RepositoryInterface {
-    protected final RepositoryInterface repository;
+public abstract class RepositoryDecorator<T extends Entity> implements RepositoryInterface<T> {
+    protected final RepositoryInterface<T> repository;
 
     /**
      *
      * @param repository The repository object to be decorated
      */
-    public RepositoryDecorator(RepositoryInterface repository) {
+    public RepositoryDecorator(RepositoryInterface<T> repository) {
         this.repository = repository;
     }
 
     @Override
-    public void insert(Entity obj) {
+    public void insert(T obj) {
         this.repository.insert(obj);
     }
 
     @Override
-    public Entity delete(Integer id) {
+    public T delete(Integer id) {
         return this.repository.delete(id);
     }
 
     @Override
-    public void update(Entity entity) {
+    public void update(T entity) {
         this.repository.update(entity);
     }
 
     @Override
-    public Entity findById(Integer id) {
+    public T findById(Integer id) {
         return this.repository.findById(id);
     }
 
     @Override
-    public Entity[] getAll() {
+    public Collection<T> getAll() {
         return this.repository.getAll();
     }
 

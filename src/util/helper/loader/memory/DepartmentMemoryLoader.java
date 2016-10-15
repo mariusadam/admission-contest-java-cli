@@ -7,7 +7,8 @@ import repository.RepositoryInterface;
 /**
  * Created by marius on 10/15/16.
  */
-public class DepartmentMemoryLoader implements MemoryLoaderInterface {
+public class DepartmentMemoryLoader<T extends Department> implements MemoryLoaderInterface<T> {
+    @SuppressWarnings("unchecked")
     @Override
     public void load(RepositoryInterface repository, int howMany) {
         for(int i = 0; i < howMany; i++) {

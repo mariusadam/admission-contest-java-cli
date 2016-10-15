@@ -4,6 +4,8 @@ import domain.Entity;
 import exception.DuplicateIdException;
 import util.GenericArray;
 
+import java.util.Collection;
+
 /**
  *
  */
@@ -29,7 +31,7 @@ public interface RepositoryInterface<T extends Entity> {
      *
      * @param entity The entity to be updated
      */
-    public void update(Entity entity);
+    public void update(T entity);
 
     /**
      * Searches for an entity with a given id
@@ -38,13 +40,13 @@ public interface RepositoryInterface<T extends Entity> {
      * @return Entity The searched entity
      * @throws java.util.NoSuchElementException If the searched entity is not found
      */
-    public Entity findById(Integer id);
+    public T findById(Integer id);
 
     /**
      *
      * @return {@link GenericArray} The object containing all the entities
      */
-    public Entity[] getAll();
+    public Collection<T> getAll();
 
     /**
      * Returns the id of the last inserted entity

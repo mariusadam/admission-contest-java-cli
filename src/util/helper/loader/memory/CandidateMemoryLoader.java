@@ -1,13 +1,15 @@
 package util.helper.loader.memory;
 
 import domain.Candidate;
+import domain.Department;
 import org.apache.commons.lang.RandomStringUtils;
 import repository.RepositoryInterface;
 
 /**
  * Created by marius on 10/15/16.
  */
-public class CandidateMemoryLoader implements MemoryLoaderInterface {
+public class CandidateMemoryLoader<T extends Candidate> implements MemoryLoaderInterface<T> {
+    @SuppressWarnings("unchecked")
     @Override
     public void load(RepositoryInterface repository, int howMany) {
         for (int i = 0; i < howMany; i++) {

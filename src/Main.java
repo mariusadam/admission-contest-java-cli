@@ -11,10 +11,10 @@ import command.department.UpdateDepartmentCommand;
 import controller.CandidateController;
 import controller.DepartmentController;
 
+import domain.Candidate;
+import domain.Department;
 import repository.*;
 
-import repository.decorator.CandidateRepositoryDecorator;
-import repository.decorator.DepartmentFileRepositoryDecorator;
 import repository.decorator.FileLoadingRepository;
 import repository.decorator.FileSavingRepository;
 import util.helper.PrintTableHelper;
@@ -41,43 +41,39 @@ public class Main {
         SaverInterface csvSaver = new CsvFileSaver();
 
         String canidatesFile = "candidates.txt";
-        CandidateRepositoryInterface decoratedandRepo =
-                new CandidateRepositoryDecorator(
-                        new FileSavingRepository(
-                                new FileLoadingRepository(
-                                        new CandidateRepository(),
-                                        new CandidateCsvLoader(),
-                                        canidatesFile
-                                ),
-                                csvSaver,
+        RepositoryInterface<Candidate> decoratedCandRepo =
+                new FileSavingRepository<>(
+                        new FileLoadingRepository<>(
+                                new Repository<>(),
+                                new CandidateCsvLoader<>(),
                                 canidatesFile
-                        )
+                        ),
+                        csvSaver,
+                        canidatesFile
                 );
-        CandidateController candidateController = new CandidateController(decoratedandRepo, new CandidateValidator());
+        CandidateController candidateController = new CandidateController(decoratedCandRepo, new CandidateValidator());
 
         String departmentsFile = "departments.txt";
-        DepartmentRepositoryInterface decoratedDepRepo =
-                new DepartmentFileRepositoryDecorator(
-                        new FileLoadingRepository(
-                                new FileSavingRepository(
-                                        new DepartmentRepository(),
-                                        csvSaver,
-                                        departmentsFile
-                                ),
-                                new DepartmentCsvLoader(),
+        RepositoryInterface<Department> decoratedDepRepo =
+                new FileLoadingRepository<>(
+                        new FileSavingRepository<>(
+                                new Repository<>(),
+                                csvSaver,
                                 departmentsFile
-                        )
+                        ),
+                        new DepartmentCsvLoader<>(),
+                        departmentsFile
                 );
         DepartmentController departmentController = new DepartmentController(decoratedDepRepo, new DepartmentValidator());
 
         MenuInterface menu = new Menu(new Scanner(System.in), new IndentablePrintStream(System.out, 40));
         loadCommands(menu, candidateController, departmentController);
 
-        MemoryLoaderInterface memDepLoader = new DepartmentMemoryLoader();
-        MemoryLoaderInterface memCandLoader = new CandidateMemoryLoader();
+        MemoryLoaderInterface<Department> memDepLoader = new DepartmentMemoryLoader<>();
+        MemoryLoaderInterface<Candidate> memCandLoader = new CandidateMemoryLoader<>();
 
-        memDepLoader.load(decoratedDepRepo, 10);
-        memCandLoader.load(decoratedandRepo, 10);
+//        memDepLoader.load(decoratedDepRepo, 1000);
+//        memCandLoader.load(decoratedCandRepo, 1000);
 
         menu.show();
     }

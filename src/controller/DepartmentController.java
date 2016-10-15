@@ -1,12 +1,9 @@
 package controller;
 
 import domain.Department;
-import domain.Entity;
-import repository.DepartmentRepositoryInterface;
-import util.GenericArray;
+import repository.RepositoryInterface;
 import validator.ValidatorInterface;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.NoSuchElementException;
@@ -15,15 +12,15 @@ import java.util.NoSuchElementException;
  *
  */
 public class DepartmentController {
-    private DepartmentRepositoryInterface departmentRepository;
-    private ValidatorInterface            validator;
+    private RepositoryInterface<Department> departmentRepository;
+    private ValidatorInterface              validator;
 
     /**
      *
      * @param departmentRepository The repository class for Department entities
      * @param departmentValidator  The validator for Department entity
      */
-    public DepartmentController(DepartmentRepositoryInterface departmentRepository, ValidatorInterface departmentValidator) {
+    public DepartmentController(RepositoryInterface<Department> departmentRepository, ValidatorInterface departmentValidator) {
         this.departmentRepository = departmentRepository;
         this.validator = departmentValidator;
     }
@@ -77,6 +74,6 @@ public class DepartmentController {
     }
 
     public Collection<Department> getAll() {
-        return Arrays.asList(this.departmentRepository.getAll());
+        return this.departmentRepository.getAll();
     }
 }
