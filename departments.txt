@@ -17,5 +17,4 @@
 16,Department6,571
 17,Department7,40
 18,Department8,185
-19,Department9,745
-20,231,131111
+19,666666666666,666

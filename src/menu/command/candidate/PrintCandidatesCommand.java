@@ -11,7 +11,7 @@ import java.util.Scanner;
 /**
  * Created by marius on 10/13/16.
  */
-public class PrintCandidatesCommand extends AbstractCandidateCommand {
+public class PrintCandidatesCommand extends BaseCandidateCommand {
     private PrintTableHelper tableHelper;
 
     /**

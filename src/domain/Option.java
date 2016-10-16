@@ -39,4 +39,13 @@ public class Option extends Entity {
     public String toCsvFormat() {
         return String.format("%s,%s,%s", id.toString(), candidate.getId().toString(), department.getId().toString());
     }
+
+    @Override
+    public Option clone() throws CloneNotSupportedException {
+        Option cloned     = (Option) super.clone();
+        cloned.candidate  = this.candidate;
+        cloned.department = this.department;
+
+        return cloned;
+    }
 }

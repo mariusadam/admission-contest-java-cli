@@ -1,3 +1,5 @@
+import controller.OptionController;
+import domain.Option;
 import menu.MenuItemInterface;
 import menu.command.candidate.AddCandidateCommand;
 import menu.command.candidate.DeleteCandidateCommand;
@@ -15,6 +17,7 @@ import controller.DepartmentController;
 
 import domain.Candidate;
 import domain.Department;
+import menu.command.option.AddOptionCommand;
 import repository.*;
 
 import repository.decorator.FileLoadingRepository;
@@ -23,6 +26,7 @@ import util.helper.PrintTableHelper;
 
 import util.helper.loader.file.CandidateCsvLoader;
 import util.helper.loader.file.DepartmentCsvLoader;
+import util.helper.loader.file.OptionCsvLoader;
 import util.helper.loader.memory.CandidateMemoryLoader;
 import util.helper.loader.memory.DepartmentMemoryLoader;
 import util.helper.loader.memory.MemoryLoaderInterface;
@@ -31,6 +35,7 @@ import validator.CandidateValidator;
 import validator.DepartmentValidator;
 
 import menu.Menu;
+import validator.OptionValidaor;
 import view.decorator.IndentablePrintStream;
 
 import java.util.Scanner;
@@ -64,8 +69,34 @@ public class Main {
                 );
         DepartmentController departmentController = new DepartmentController(decoratedDepRepo, new DepartmentValidator());
 
+        String optionsFile = "options.txt";
+        RepositoryInterface<Option> decoratedOptRepo =
+                new FileLoadingRepository<>(
+                        new FileSavingRepository<>(
+                                new Repository<>(),
+                                new CsvFileSaver<>(),
+                                optionsFile
+                        ),
+                        new OptionCsvLoader<>(decoratedCandRepo, decoratedDepRepo),
+                        optionsFile
+                );
+        OptionController optionController = new OptionController(decoratedOptRepo, decoratedCandRepo, decoratedDepRepo, new OptionValidaor());
+
         Menu menu = new Menu("1", "Main menu");
-        loadCommands(menu, candidateController, departmentController);
+        Menu candidatesMenu  = new Menu("1", "Candidates menu");
+        Menu departmentsMenu = new Menu("2", "Departments menu");
+        Menu optionMenu      = new Menu("3", "Options menu");
+
+        menu.addItem(new GoBackCommand("0", "Exit the program...."));
+        menu.addItem(candidatesMenu);
+        menu.addItem(departmentsMenu);
+        menu.addItem(optionMenu);
+
+        PrintTableHelper helper = new PrintTableHelper(40, System.out);
+
+        loadOptionsCommands(optionMenu, optionController, helper);
+        loadCandidatesCommands(candidatesMenu, candidateController, helper);
+        loadDepartmentsCommands(departmentsMenu, departmentController, helper);
 
         MemoryLoaderInterface<Department> memDepLoader = new DepartmentMemoryLoader<>();
         MemoryLoaderInterface<Candidate> memCandLoader = new CandidateMemoryLoader<>();
@@ -76,35 +107,39 @@ public class Main {
         menu.execute(new Scanner(System.in), new IndentablePrintStream(System.out, 50));
     }
 
-    private static void loadCommands(Menu menu, CandidateController candidateController, DepartmentController departmentController) {
-        PrintTableHelper tableHelper = new PrintTableHelper(40, System.out);
-
-        Menu submenu1 = new Menu("1", "Candidates menu");
-        Menu submenu2 = new Menu("2", "Departments menu");
-
+    private static void loadCandidatesCommands(Menu menu, CandidateController controller, PrintTableHelper helper) {
+        Menu submenu1 = new Menu("1", "Crud");
         menu.addItem(submenu1);
-        menu.addItem(submenu2);
-        menu.addItem(new ExitCommand("0", "Exit..."));
 
-        Menu submenu11 = new Menu("1", "Crud");
-        Menu submenu21 = new Menu("1", "Crud");
-        submenu1.addItem(submenu11);
-        submenu2.addItem(submenu21);
-
-        submenu11.addItem(new AddCandidateCommand("1", "Add a new candidate", candidateController));
-        submenu11.addItem(new UpdateCandidateCommand("2", "Update a candidate", candidateController));
-        submenu11.addItem(new DeleteCandidateCommand("3", "Delete a candidate", candidateController));
-        submenu11.addItem(new GoBackCommand("0", "Go Back"));
-
-        submenu1.addItem(new PrintCandidatesCommand("2", "Show all candidates", candidateController, tableHelper));
+        submenu1.addItem(new AddCandidateCommand("1", "Add a new candidate", controller));
+        submenu1.addItem(new UpdateCandidateCommand("2", "Update a candidate", controller));
+        submenu1.addItem(new DeleteCandidateCommand("3", "Delete a candidate", controller));
         submenu1.addItem(new GoBackCommand("0", "Go Back"));
 
-        submenu21.addItem(new AddDepartmentCommand("1", "Add a new department", departmentController));
-        submenu21.addItem(new UpdateDepartmentCommand("2", "Update a department", departmentController));
-        submenu21.addItem(new DeleteDepartmentCommand("3", "Delete a department", departmentController));
-        submenu21.addItem(new GoBackCommand("0", "Go Back"));
+        menu.addItem(new PrintCandidatesCommand("2", "Show all candidates", controller, helper));
+        menu.addItem(new GoBackCommand("0", "Go Back"));
+    }
 
-        submenu2.addItem(new PrintDepartmentsCommand("2", "Show all departments", departmentController, tableHelper));
-        submenu2.addItem(new GoBackCommand("0", "Go Back"));
+    private static void loadDepartmentsCommands(Menu menu, DepartmentController controller, PrintTableHelper helper) {
+        Menu submenu1 = new Menu("1", "Crud");
+        menu.addItem(submenu1);
+
+        submenu1.addItem(new AddDepartmentCommand("1", "Add a new department", controller));
+        submenu1.addItem(new UpdateDepartmentCommand("2", "Update a department", controller));
+        submenu1.addItem(new DeleteDepartmentCommand("3", "Delete a department", controller));
+        submenu1.addItem(new GoBackCommand("0", "Go Back"));
+
+        menu.addItem(new PrintDepartmentsCommand("2", "Show all departments", controller, helper));
+        menu.addItem(new GoBackCommand("0", "Go Back"));
+    }
+
+    private static void loadOptionsCommands(Menu menu, OptionController controller, PrintTableHelper helper) {
+        Menu submenu1 = new Menu("1", "Crud");
+        menu.addItem(submenu1);
+
+        submenu1.addItem(new AddOptionCommand("1", "Place a option for a candidate", controller));
+        submenu1.addItem(new GoBackCommand("0", "Enemy spotted, fallback..."));
+
+        menu.addItem(new GoBackCommand("0", "Return"));
     }
 }

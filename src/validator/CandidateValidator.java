@@ -2,7 +2,7 @@ package validator;
 
 import domain.Candidate;
 import domain.Entity;
-import exception.CandidateException;
+import exception.InvalidCandidateException;
 
 /**
  *
@@ -10,9 +10,9 @@ import exception.CandidateException;
 public class CandidateValidator implements ValidatorInterface{
 
     @Override
-    public void validate(Entity obj) {
+    public void validate(Entity obj) throws InvalidCandidateException {
         if (!(obj instanceof Candidate)) {
-            throw new CandidateException("Invalid Candidate object.");
+            throw new InvalidCandidateException("Invalid Candidate object.");
         }
 
         //// TODO: 10/14/16 properly validate this object too

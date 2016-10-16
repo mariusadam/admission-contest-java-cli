@@ -2,7 +2,9 @@ package menu.command.candidate;
 
 import controller.CandidateController;
 import domain.Candidate;
-import exception.CandidateException;
+import exception.DuplicateEntryException;
+import exception.InvalidCandidateException;
+import exception.InvalidEntityException;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -10,7 +12,7 @@ import java.util.Scanner;
 /**
  * Created by marius on 10/13/16.
  */
-public class AddCandidateCommand extends AbstractCandidateCommand {
+public class AddCandidateCommand extends BaseCandidateCommand {
 
     /**
      * @param key                 The key which identifies the menu.command
@@ -42,8 +44,8 @@ public class AddCandidateCommand extends AbstractCandidateCommand {
         try {
             Candidate cand = this.candidateController.create(name, phone, address);
             out.println("Added " + cand);
-        } catch (CandidateException ex) {
-            out.println(ex.getMessage());
+        } catch (InvalidEntityException | DuplicateEntryException e) {
+            e.printStackTrace(out);
         }
     }
 }

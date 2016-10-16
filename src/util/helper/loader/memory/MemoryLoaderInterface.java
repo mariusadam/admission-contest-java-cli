@@ -15,4 +15,6 @@ public interface MemoryLoaderInterface<T extends Entity> {
      */
     public void load(RepositoryInterface<T> repository, int howMany);
 
+    public Entity getNewEntity(RepositoryInterface<T> repository);
+
 }

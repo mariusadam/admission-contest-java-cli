@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  * Created by marius on 10/13/16.
  */
-public class DeleteDepartmentCommand extends AbstractDepartmentCommand{
+public class DeleteDepartmentCommand extends BaseDepartmentCommand {
     /**
      * @param key                  The key which identifies the menu.command
      * @param text                 Short description for the menu.command

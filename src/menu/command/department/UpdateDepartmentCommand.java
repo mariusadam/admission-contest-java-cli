@@ -2,7 +2,8 @@ package menu.command.department;
 
 import controller.DepartmentController;
 import domain.Department;
-import exception.DepartmentException;
+import exception.InvalidDepartmentException;
+import exception.InvalidEntityException;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 /**
  * Created by marius on 10/13/16.
  */
-public class UpdateDepartmentCommand extends AbstractDepartmentCommand {
+public class UpdateDepartmentCommand extends BaseDepartmentCommand {
     /**
      * @param key                  The key which identifies the menu.command
      * @param text                 Short description for the menu.command
@@ -42,8 +43,8 @@ public class UpdateDepartmentCommand extends AbstractDepartmentCommand {
         try {
             Department department = this.departmentController.update(id, name, numberOfSeats);
             out.println("Updated " + department);
-        } catch (DepartmentException ex) {
-            out.println(ex.getMessage());
+        } catch (InvalidEntityException e) {
+            e.printStackTrace(out);
         }
     }
 }

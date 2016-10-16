@@ -52,11 +52,14 @@ public class Menu extends MenuItem {
         }
     }
 
-    private String getContextualKey(String key) {
-        if (this.getParent() != null) {
-            System.out.println(this.getParent().getKey() + this.getKey() + key);
-            return this.getParent().getKey() + this.getKey() + key;
+    private String getContextualKeyRec(MenuItemInterface node) {
+        if (node.getParent() == null) {
+            return node.getKey();
         }
-        return this.getKey() + key;
+        return getContextualKeyRec(node.getParent()) + node.getKey();
+    }
+
+    private String getContextualKey(String key) {
+        return this.getContextualKeyRec(this) + key;
     }
 }

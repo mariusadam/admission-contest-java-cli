@@ -9,8 +9,8 @@ import java.util.Scanner;
 /**
  * Created by marius on 10/13/16.
  */
-abstract public class AbstractDepartmentCommand extends MenuItem {
-    protected DepartmentController departmentController;
+abstract class BaseDepartmentCommand extends MenuItem {
+    DepartmentController departmentController;
 
     /**
      *
@@ -18,7 +18,7 @@ abstract public class AbstractDepartmentCommand extends MenuItem {
      * @param text                 Short description for the menu.command
      * @param departmentController The controller which handles departments
      */
-    public AbstractDepartmentCommand(String key, String text, DepartmentController departmentController) {
+    BaseDepartmentCommand(String key, String text, DepartmentController departmentController) {
         super(key, text);
         this.departmentController = departmentController;
     }

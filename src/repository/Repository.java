@@ -1,7 +1,7 @@
 package repository;
 
 import domain.Entity;
-import exception.DuplicateIdException;
+import exception.DuplicateEntryException;
 import util.GenericArray;
 
 import java.util.ArrayList;
@@ -22,12 +22,12 @@ public class Repository<T extends Entity> implements RepositoryInterface<T> {
      * Inserts a new entity into the repository
      *
      * @param obj The object to be inserted
-     * @throws DuplicateIdException If there is already an entity with the same id
+     * @throws DuplicateEntryException If there is already an entity with the same id
      */
     @Override
-    public void insert(T obj) {
+    public void insert(T obj) throws DuplicateEntryException {
         if (this.items.contains(obj)) {
-            throw new DuplicateIdException();
+            throw new DuplicateEntryException();
         }
         this.items.add(obj);
     }
@@ -70,11 +70,16 @@ public class Repository<T extends Entity> implements RepositoryInterface<T> {
      * @return Entity The searched entity
      * @throws NoSuchElementException If the searched entity is not found
      */
+    @SuppressWarnings("unchecked")
     @Override
     public T findById(Integer id) {
         for(T e : this.items) {
             if (e.getId() == id) {
-                return e;
+                try {
+                    return (T) e.clone();
+                } catch (CloneNotSupportedException e1) {
+                    e1.printStackTrace();
+                }
             }
         }
         throw new NoSuchElementException("Could not find the entity with id " + id);

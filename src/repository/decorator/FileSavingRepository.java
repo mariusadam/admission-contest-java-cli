@@ -1,6 +1,7 @@
 package repository.decorator;
 
 import domain.Entity;
+import exception.DuplicateEntryException;
 import repository.RepositoryInterface;
 import util.helper.saver.SaverInterface;
 
@@ -18,7 +19,7 @@ public class FileSavingRepository<T extends Entity> extends RepositoryDecorator<
     }
 
     @Override
-    public void insert(T obj) {
+    public void insert(T obj) throws DuplicateEntryException {
         super.insert(obj);
         this.saveToFile();
     }

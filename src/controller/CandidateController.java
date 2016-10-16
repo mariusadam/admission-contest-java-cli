@@ -1,6 +1,8 @@
 package controller;
 
 import domain.Candidate;
+import exception.DuplicateEntryException;
+import exception.InvalidEntityException;
 import repository.RepositoryInterface;
 import validator.ValidatorInterface;
 
@@ -17,7 +19,7 @@ public class CandidateController {
 
     /**
      *
-     * @param candidateRepository  The repository class for Candidate entities
+     * @param candidateRepository  The optionRepository class for Candidate entities
      * @param validator            The validator for the Candidate entity
      */
     public CandidateController(RepositoryInterface<Candidate> candidateRepository, ValidatorInterface validator) {
@@ -32,7 +34,7 @@ public class CandidateController {
      * @param address The address of the candidate
      * @return The newly created Candidate object
      */
-    public Candidate create(String name, String phone, String address) {
+    public Candidate create(String name, String phone, String address) throws InvalidEntityException, DuplicateEntryException {
         Candidate candidate = new Candidate(
                 this.candidateRepository.getNextId(),
                 name,
@@ -54,7 +56,7 @@ public class CandidateController {
      * @param newAddress The new address of the candidate
      * @return The newly update Candidate object
      */
-    public Candidate update(Integer id, String newName, String newPhone, String newAddress) {
+    public Candidate update(Integer id, String newName, String newPhone, String newAddress) throws InvalidEntityException {
         Candidate candidate = this.candidateRepository.findById(id);
 
         if (!newName.isEmpty()) {

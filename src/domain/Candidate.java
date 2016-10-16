@@ -21,6 +21,13 @@ public class Candidate extends Entity {
         this.address = address;
     }
 
+    protected Candidate(Candidate other) {
+        super(other.getId());
+        this.name = other.getName();
+        this.phone = other.getPhone();
+        this.address = other.getAddress();
+    }
+
     /**
      * @return {@link String}
      */
@@ -71,5 +78,15 @@ public class Candidate extends Entity {
     @Override
     public String toCsvFormat() {
         return String.format("%s,%s,%s,%s", id.toString(), name, phone, address);
+    }
+
+    @Override
+    public Candidate clone() throws CloneNotSupportedException {
+        Candidate cloned = (Candidate) super.clone();
+        cloned.name      = this.name;
+        cloned.phone     = this.phone;
+        cloned.address   = this.address;
+
+        return cloned;
     }
 }

@@ -1,7 +1,7 @@
 package repository.decorator;
 
-import domain.Candidate;
 import domain.Entity;
+import exception.DuplicateEntryException;
 import repository.RepositoryInterface;
 
 import java.util.Collection;
@@ -21,7 +21,7 @@ public abstract class RepositoryDecorator<T extends Entity> implements Repositor
     }
 
     @Override
-    public void insert(T obj) {
+    public void insert(T obj) throws DuplicateEntryException {
         this.repository.insert(obj);
     }
 

@@ -47,11 +47,4 @@ public abstract class MenuItem implements MenuItemInterface {
     public void setParent(MenuItemInterface parent) {
         this.parent = parent;
     }
-
-    /**
-     * Executes the current menu.command
-     * @param scanner
-     * @param out
-     */
-    abstract public void execute(Scanner scanner, PrintStream out);
 }

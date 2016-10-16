@@ -1,7 +1,7 @@
 package repository;
 
 import domain.Entity;
-import exception.DuplicateIdException;
+import exception.DuplicateEntryException;
 import util.GenericArray;
 
 import java.util.Collection;
@@ -14,9 +14,9 @@ public interface RepositoryInterface<T extends Entity> {
      * Inserts a new entity into the repository
      *
      * @param obj The object to be inserted
-     * @throws DuplicateIdException If there is already an entity with the same id
+     * @throws DuplicateEntryException If there is already an entity with the same id
      */
-    public void insert(T obj);
+    public void insert(T obj) throws DuplicateEntryException;
     /**
      * Removes the entity from the repository
      *

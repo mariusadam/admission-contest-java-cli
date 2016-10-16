@@ -1,6 +1,9 @@
 package controller;
 
 import domain.Department;
+import exception.DuplicateEntryException;
+import exception.InvalidDepartmentException;
+import exception.InvalidEntityException;
 import repository.RepositoryInterface;
 import validator.ValidatorInterface;
 
@@ -17,7 +20,7 @@ public class DepartmentController {
 
     /**
      *
-     * @param departmentRepository The repository class for Department entities
+     * @param departmentRepository The optionRepository class for Department entities
      * @param departmentValidator  The validator for Department entity
      */
     public DepartmentController(RepositoryInterface<Department> departmentRepository, ValidatorInterface departmentValidator) {
@@ -26,13 +29,13 @@ public class DepartmentController {
     }
 
     /**
-     * Creates, validates, and inserts the Department in the repository
+     * Creates, validates, and inserts the Department in the optionRepository
      *
      * @param name          The name of the department
      * @param numberOfSeats The numberOfSeats of the department
      * @return Department   The newly created Department entity
      */
-    public Department create(String name, Integer numberOfSeats) {
+    public Department create(String name, Integer numberOfSeats) throws InvalidEntityException, DuplicateEntryException {
         Department department = new Department(
                 this.departmentRepository.getNextId(),
                 name,
@@ -52,7 +55,7 @@ public class DepartmentController {
      * @param newNumberOfSeats    The new numberOfSeats of the department
      * @return {@link Department} The updated department
      */
-    public Department update(Integer id, String newName, Integer newNumberOfSeats) {
+    public Department update(Integer id, String newName, Integer newNumberOfSeats) throws InvalidEntityException {
         Department department = this.departmentRepository.findById(id);
 
         department.setName(newName);

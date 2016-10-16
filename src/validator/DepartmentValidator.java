@@ -2,7 +2,7 @@ package validator;
 
 import domain.Department;
 import domain.Entity;
-import exception.DepartmentException;
+import exception.InvalidDepartmentException;
 
 /**
  *
@@ -10,9 +10,9 @@ import exception.DepartmentException;
 public class DepartmentValidator implements ValidatorInterface{
     
     @Override
-    public void validate(Entity obj) {
+    public void validate(Entity obj) throws InvalidDepartmentException {
         if (!(obj instanceof Department)) {
-            throw new DepartmentException("Invalid Candidate object.");
+            throw new InvalidDepartmentException("Invalid Candidate object.");
         }
         
         //// TODO: 10/14/16 properly validate the object 

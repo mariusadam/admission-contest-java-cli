@@ -58,4 +58,13 @@ public class Department extends Entity{
     public String toCsvFormat() {
         return String.format("%s,%s,%s", id.toString(), name, numberOfSeats.toString());
     }
+
+    @Override
+    public Department clone() throws CloneNotSupportedException {
+        Department cloned    = (Department) super.clone();
+        cloned.name          = this.name;
+        cloned.numberOfSeats = this.numberOfSeats;
+
+        return cloned;
+    }
 }

@@ -15,8 +15,11 @@ public class GoBackCommand extends MenuItem {
 
     @Override
     public void execute(Scanner scanner, PrintStream out) {
-        if (this.getParent() != null) {
+        if (this.getParent().getParent() != null) {
             this.getParent().getParent().execute(scanner, out);
+        } else {
+            out.println("Exiting now...");
+            System.exit(0);
         }
     }
 }

@@ -2,7 +2,8 @@ package menu.command.candidate;
 
 import controller.CandidateController;
 import domain.Candidate;
-import exception.CandidateException;
+import exception.InvalidCandidateException;
+import exception.InvalidEntityException;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 /**
  * Created by marius on 10/13/16.
  */
-public class UpdateCandidateCommand extends AbstractCandidateCommand {
+public class UpdateCandidateCommand extends BaseCandidateCommand {
 
     /**
      * @param key                 The key which identifies the menu.command
@@ -46,8 +47,8 @@ public class UpdateCandidateCommand extends AbstractCandidateCommand {
         try {
             Candidate cand = this.candidateController.update(id, name, phone, address);
             out.println("Updated " + cand);
-        } catch (CandidateException ex) {
-            out.println(ex.getMessage());
+        } catch (InvalidEntityException e) {
+            e.printStackTrace(out);
         }
     }
 }

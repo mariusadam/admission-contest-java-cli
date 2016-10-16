@@ -3,7 +3,7 @@ package domain;
 /**
  *
  */
-public abstract class Entity {
+public abstract class Entity implements Cloneable{
     protected Integer id;
 
     /**
@@ -27,4 +27,12 @@ public abstract class Entity {
     }
 
     public abstract String toCsvFormat();
+
+    @Override
+    public Entity clone() throws CloneNotSupportedException {
+        Entity cloned = (Entity) super.clone();
+        cloned.id = this.id;
+
+        return cloned;
+    }
 }
