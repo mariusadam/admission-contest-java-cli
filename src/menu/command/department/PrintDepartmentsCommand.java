@@ -1,13 +1,10 @@
-package command.department;
+package menu.command.department;
 
 import controller.DepartmentController;
 import domain.Department;
-import domain.Entity;
-import util.GenericArray;
 import util.helper.PrintTableHelper;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
 
@@ -18,8 +15,8 @@ public class PrintDepartmentsCommand extends AbstractDepartmentCommand {
     private PrintTableHelper tableHelper;
 
     /**
-     * @param key                  The key which identifies the command
-     * @param text                 Short description for the command
+     * @param key                  The key which identifies the menu.command
+     * @param text                 Short description for the menu.command
      * @param departmentController The controller which handles departments
      */
     public PrintDepartmentsCommand(String key, String text, DepartmentController departmentController, PrintTableHelper tableHelper) {
@@ -28,7 +25,7 @@ public class PrintDepartmentsCommand extends AbstractDepartmentCommand {
     }
 
     /**
-     * Executes the current command
+     * Executes the current menu.command
      * @param scanner
      * @param out
      */

@@ -1,12 +1,14 @@
-import command.candidate.AddCandidateCommand;
-import command.candidate.DeleteCandidateCommand;
-import command.candidate.PrintCandidatesCommand;
-import command.candidate.UpdateCandidateCommand;
-import command.common.ExitCommand;
-import command.department.AddDepartmentCommand;
-import command.department.DeleteDepartmentCommand;
-import command.department.PrintDepartmentsCommand;
-import command.department.UpdateDepartmentCommand;
+import menu.MenuItemInterface;
+import menu.command.candidate.AddCandidateCommand;
+import menu.command.candidate.DeleteCandidateCommand;
+import menu.command.candidate.PrintCandidatesCommand;
+import menu.command.candidate.UpdateCandidateCommand;
+import menu.command.common.ExitCommand;
+import menu.command.common.GoBackCommand;
+import menu.command.department.AddDepartmentCommand;
+import menu.command.department.DeleteDepartmentCommand;
+import menu.command.department.PrintDepartmentsCommand;
+import menu.command.department.UpdateDepartmentCommand;
 
 import controller.CandidateController;
 import controller.DepartmentController;
@@ -25,12 +27,10 @@ import util.helper.loader.memory.CandidateMemoryLoader;
 import util.helper.loader.memory.DepartmentMemoryLoader;
 import util.helper.loader.memory.MemoryLoaderInterface;
 import util.helper.saver.CsvFileSaver;
-import util.helper.saver.SaverInterface;
 import validator.CandidateValidator;
 import validator.DepartmentValidator;
 
-import view.menu.Menu;
-import view.menu.MenuInterface;
+import menu.Menu;
 import view.decorator.IndentablePrintStream;
 
 import java.util.Scanner;
@@ -64,7 +64,7 @@ public class Main {
                 );
         DepartmentController departmentController = new DepartmentController(decoratedDepRepo, new DepartmentValidator());
 
-        MenuInterface menu = new Menu(new Scanner(System.in), new IndentablePrintStream(System.out, 40));
+        Menu menu = new Menu("1", "Main menu");
         loadCommands(menu, candidateController, departmentController);
 
         MemoryLoaderInterface<Department> memDepLoader = new DepartmentMemoryLoader<>();
@@ -73,23 +73,38 @@ public class Main {
 //        memDepLoader.load(decoratedDepRepo, 10);
 //        memCandLoader.load(decoratedCandRepo, 10);
 
-        menu.show();
+        menu.execute(new Scanner(System.in), new IndentablePrintStream(System.out, 50));
     }
 
-    private static void loadCommands(MenuInterface menu, CandidateController candidateController, DepartmentController departmentController) {
+    private static void loadCommands(Menu menu, CandidateController candidateController, DepartmentController departmentController) {
         PrintTableHelper tableHelper = new PrintTableHelper(40, System.out);
 
-        menu.addCommand(new ExitCommand("0", "Exit"));
+        Menu submenu1 = new Menu("1", "Candidates menu");
+        Menu submenu2 = new Menu("2", "Departments menu");
 
-        menu.addCommand(new AddCandidateCommand("1", "Add a new candidate", candidateController));
-        menu.addCommand(new UpdateCandidateCommand("2", "Update a candidate", candidateController));
-        menu.addCommand(new DeleteCandidateCommand("3", "Delete a candidate", candidateController));
-        menu.addCommand(new PrintCandidatesCommand("4", "Show all candidates", candidateController, tableHelper));
+        menu.addItem(submenu1);
+        menu.addItem(submenu2);
+        menu.addItem(new ExitCommand("0", "Exit..."));
 
-        menu.addCommand(new AddDepartmentCommand("5", "Add a new department", departmentController));
-        menu.addCommand(new UpdateDepartmentCommand("6", "Update a department", departmentController));
-        menu.addCommand(new DeleteDepartmentCommand("7", "Delete a department", departmentController));
-        menu.addCommand(new PrintDepartmentsCommand("8", "Show all departments", departmentController, tableHelper));
+        Menu submenu11 = new Menu("1", "Crud");
+        Menu submenu21 = new Menu("1", "Crud");
+        submenu1.addItem(submenu11);
+        submenu2.addItem(submenu21);
 
+        submenu11.addItem(new AddCandidateCommand("1", "Add a new candidate", candidateController));
+        submenu11.addItem(new UpdateCandidateCommand("2", "Update a candidate", candidateController));
+        submenu11.addItem(new DeleteCandidateCommand("3", "Delete a candidate", candidateController));
+        submenu11.addItem(new GoBackCommand("0", "Go Back"));
+
+        submenu1.addItem(new PrintCandidatesCommand("2", "Show all candidates", candidateController, tableHelper));
+        submenu1.addItem(new GoBackCommand("0", "Go Back"));
+
+        submenu21.addItem(new AddDepartmentCommand("1", "Add a new department", departmentController));
+        submenu21.addItem(new UpdateDepartmentCommand("2", "Update a department", departmentController));
+        submenu21.addItem(new DeleteDepartmentCommand("3", "Delete a department", departmentController));
+        submenu21.addItem(new GoBackCommand("0", "Go Back"));
+
+        submenu2.addItem(new PrintDepartmentsCommand("2", "Show all departments", departmentController, tableHelper));
+        submenu2.addItem(new GoBackCommand("0", "Go Back"));
     }
 }

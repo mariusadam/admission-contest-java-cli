@@ -1,4 +1,4 @@
-package command;
+package menu;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -6,21 +6,25 @@ import java.util.Scanner;
 /**
  * Created by marius on 10/13/16.
  */
-public interface CommandInterface {
+public interface MenuItemInterface {
     /**
      *
-     * @return The key which indentifies the command
+     * @return The key which indentifies the menu.command
      */
     public String getKey();
 
     /**
      *
-     * @return A short Description of the command
+     * @return A short Description of the menu.command
      */
     public String getDescription();
 
+    public MenuItemInterface getParent();
+
+    public void setParent(MenuItemInterface parent);
+
     /**
-     * Executes the current command
+     * Executes the current menu.command
      * @param scanner
      * @param out
      */

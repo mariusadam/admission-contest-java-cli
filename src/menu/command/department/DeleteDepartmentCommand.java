@@ -1,4 +1,4 @@
-package command.department;
+package menu.command.department;
 
 import controller.DepartmentController;
 import domain.Department;
@@ -12,8 +12,8 @@ import java.util.Scanner;
  */
 public class DeleteDepartmentCommand extends AbstractDepartmentCommand{
     /**
-     * @param key                  The key which identifies the command
-     * @param text                 Short description for the command
+     * @param key                  The key which identifies the menu.command
+     * @param text                 Short description for the menu.command
      * @param departmentController The controller which handles departments
      */
     public DeleteDepartmentCommand(String key, String text, DepartmentController departmentController) {
@@ -21,7 +21,7 @@ public class DeleteDepartmentCommand extends AbstractDepartmentCommand{
     }
 
     /**
-     * Executes the current command
+     * Executes the current menu.command
      * @param scanner
      * @param out
      */

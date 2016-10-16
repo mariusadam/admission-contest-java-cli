@@ -1,4 +1,4 @@
-package command.candidate;
+package menu.command.candidate;
 
 import controller.CandidateController;
 import domain.Candidate;
@@ -13,8 +13,8 @@ import java.util.Scanner;
 public class DeleteCandidateCommand extends AbstractCandidateCommand{
 
     /**
-     * @param key                 The key which identifies the command
-     * @param text                Short description for the command
+     * @param key                 The key which identifies the menu.command
+     * @param text                Short description for the menu.command
      * @param candidateController The controller which handles candidates
      */
     public DeleteCandidateCommand(String key, String text, CandidateController candidateController) {
@@ -22,7 +22,7 @@ public class DeleteCandidateCommand extends AbstractCandidateCommand{
     }
 
     /**
-     * Executes the current command
+     * Executes the current menu.command
      * @param scanner
      * @param out
      */

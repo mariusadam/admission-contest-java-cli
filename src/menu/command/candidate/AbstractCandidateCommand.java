@@ -1,6 +1,6 @@
-package command.candidate;
+package menu.command.candidate;
 
-import command.AbstractCommand;
+import menu.MenuItem;
 import controller.CandidateController;
 
 import java.io.PrintStream;
@@ -9,13 +9,13 @@ import java.util.Scanner;
 /**
  * Created by marius on 10/13/16.
  */
-abstract public class AbstractCandidateCommand extends AbstractCommand {
+abstract public class AbstractCandidateCommand extends MenuItem {
     protected CandidateController candidateController;
 
     /**
      *
-     * @param key                 The key which identifies the command
-     * @param text                Short description for the command
+     * @param key                 The key which identifies the menu.command
+     * @param text                Short description for the menu.command
      * @param candidateController The controller wich handles candidates
      */
     public AbstractCandidateCommand(String key, String text, CandidateController candidateController) {
@@ -24,7 +24,7 @@ abstract public class AbstractCandidateCommand extends AbstractCommand {
     }
 
     /**
-     * Executes the current command
+     * Executes the current menu.command
      * @param scanner
      * @param out
      */

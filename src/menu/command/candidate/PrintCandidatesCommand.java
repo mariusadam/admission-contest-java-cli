@@ -1,9 +1,7 @@
-package command.candidate;
+package menu.command.candidate;
 
 import controller.CandidateController;
 import domain.Candidate;
-import domain.Entity;
-import util.GenericArray;
 import util.helper.PrintTableHelper;
 
 import java.io.PrintStream;
@@ -17,8 +15,8 @@ public class PrintCandidatesCommand extends AbstractCandidateCommand {
     private PrintTableHelper tableHelper;
 
     /**
-     * @param key                 The key which identifies the command
-     * @param text                Short description for the command
+     * @param key                 The key which identifies the menu.command
+     * @param text                Short description for the menu.command
      * @param candidateController The controller which handles candidates
      */
     public PrintCandidatesCommand(String key, String text, CandidateController candidateController, PrintTableHelper tableHelper) {
@@ -27,7 +25,7 @@ public class PrintCandidatesCommand extends AbstractCandidateCommand {
     }
 
     /**
-     * Executes the current command
+     * Executes the current menu.command
      * @param scanner
      * @param out
      */
