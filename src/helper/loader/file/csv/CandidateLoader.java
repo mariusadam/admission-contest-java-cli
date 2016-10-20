@@ -11,6 +11,10 @@ import java.util.Arrays;
  * @author Marius Adam
  */
 public class CandidateLoader extends BaseCsvLoader<Candidate> {
+    public CandidateLoader(ValidatorInterface<Candidate> validator) {
+        super(validator);
+    }
+
     public CandidateLoader(ValidatorInterface<Candidate> validator, String propertySeparator) {
         super(validator, propertySeparator);
     }

@@ -26,7 +26,7 @@ public abstract class Entity implements Cloneable{
         return obj instanceof Entity && this.id.equals(((Entity) obj).id);
     }
 
-    public abstract String toCsvFormat();
+    public abstract String toCsvFormat(String separator);
 
     @Override
     public Entity clone() throws CloneNotSupportedException {

@@ -9,16 +9,16 @@ import java.io.IOException;
 /**
  * @author Marius Adam
  */
-public abstract class FileSaver implements FileSaverInterface{
+public abstract class FileSaver<T> implements FileSaverInterface<T>{
     /**
      * {@inheritDoc}
      */
     @Override
-    public void save(RepositoryInterface repository, String filename) {
+    public void save(RepositoryInterface<T> repository, String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (Object entity : repository.getAll()) {
                 writer.write(this.transform(entity));
-                writer.write('\n');
+                writer.newLine();
             }
         } catch (IOException e) {
             e.printStackTrace();

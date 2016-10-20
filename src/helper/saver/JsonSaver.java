@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 /**
  * @author Marius Adam
  */
-public class JsonSaver extends FileSaver {
+public class JsonSaver<T> extends FileSaver<T> {
     @Override
     public String transform(Object object) {
         Field[] fields = this.getAllFields(object.getClass());
@@ -26,7 +26,7 @@ public class JsonSaver extends FileSaver {
         return jsonObject.toString();
     }
 
-    private <T> Field[] getAllFields(Class<T> clazz) {
+    private <E> Field[] getAllFields(Class<E> clazz) {
         Class<?> parent = clazz.getSuperclass();
 
         if(parent != null) {

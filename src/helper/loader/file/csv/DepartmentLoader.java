@@ -11,6 +11,10 @@ import java.util.Arrays;
  * @author Marius Adam
  */
 public class DepartmentLoader extends BaseCsvLoader<Department> {
+    public DepartmentLoader(ValidatorInterface<Department> validator) {
+        super(validator);
+    }
+
     public DepartmentLoader(ValidatorInterface<Department> validator, String propertySeparator) {
         super(validator, propertySeparator);
     }

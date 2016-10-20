@@ -1,4 +1,5 @@
 import controller.OptionController;
+import domain.Option;
 import helper.Bootstrap;
 import menu.command.candidate.AddCandidateCommand;
 import menu.command.candidate.DeleteCandidateCommand;
@@ -31,17 +32,21 @@ import view.decorator.IndentablePrintStream;
 
 import java.util.Scanner;
 
+@SuppressWarnings("unchecked")
 public class Main {
 
     public static void main(String[] args) {
 
-        CandidateController candidateController   = new CandidateController(Bootstrap.getCandidateRepo(), new CandidateValidator());
-        DepartmentController departmentController = new DepartmentController(Bootstrap.getDepartmentRepo(), new DepartmentValidator());
+        Bootstrap boot = new Bootstrap();
+
+        CandidateController candidateController   = new CandidateController(boot.getCandidateRepo(), boot.getValidator(Candidate.class));
+        DepartmentController departmentController = new DepartmentController(boot.getDepartmentRepo(), boot.getValidator(Department.class));
         OptionController optionController         = new OptionController(
-                Bootstrap.getOptionRepository(),
-                Bootstrap.getCandidateRepo(),
-                Bootstrap.getDepartmentRepo(),
-                new OptionValidator());
+                boot.getOptionRepository(),
+                boot.getCandidateRepo(),
+                boot.getDepartmentRepo(),
+                boot.getValidator(Option.class)
+        );
 
         Menu menu            = new Menu("1", "Main menu");
         Menu candidatesMenu  = new Menu("1", "Candidates menu");
@@ -62,8 +67,11 @@ public class Main {
         MemoryLoaderInterface<Department> memDepLoader = new DepartmentMemoryLoader();
         MemoryLoaderInterface<Candidate> memCandLoader = new CandidateMemoryLoader();
 
-        memDepLoader.load(Bootstrap.getDepartmentRepo(), 3);
-        memCandLoader.load(Bootstrap.getCandidateRepo(), 3);
+        boolean loadFromMemory = false;
+        if(loadFromMemory) {
+            memDepLoader.load(boot.getDepartmentRepo(), 10);
+            memCandLoader.load(boot.getCandidateRepo(), 10);
+        }
 
         menu.execute(new Scanner(System.in), new IndentablePrintStream(System.out, 50));
     }

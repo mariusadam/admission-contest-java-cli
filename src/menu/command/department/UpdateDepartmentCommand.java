@@ -8,7 +8,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 /**
- * Created by marius on 10/13/16.
+ * @author Marius Adam.
  */
 public class UpdateDepartmentCommand extends BaseDepartmentCommand {
     /**
@@ -39,11 +39,12 @@ public class UpdateDepartmentCommand extends BaseDepartmentCommand {
         out.print("Enter the number of seats of the department or leave id blank to not change it: ");
         numberOfSeats = scanner.nextInt();
 
+        Department department = null;
         try {
-            Department department = this.departmentController.update(id, name, numberOfSeats);
+            department = this.departmentController.update(id, name, numberOfSeats);
             out.println("Updated " + department);
         } catch (InvalidObjectException e) {
-            e.printStackTrace(out);
+            e.printStackTrace();
         }
     }
 }

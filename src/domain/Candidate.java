@@ -76,8 +76,17 @@ public class Candidate extends Entity {
     }
 
     @Override
-    public String toCsvFormat() {
-        return String.format("%s,%s,%s,%s", id.toString(), name, phone, address);
+    public String toCsvFormat(String separator) {
+        return String.format(
+                "%s%s%s%s%s%s%s",
+                id.toString(),
+                separator,
+                name,
+                separator,
+                phone,
+                separator,
+                address
+        );
     }
 
     @Override

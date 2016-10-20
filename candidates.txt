@@ -1,0 +1,10 @@
+9 | Candidate9 | 2751958763 | Street NGnBtEeuFe - nr 060 - City urkUPk
+8 | Candidate8 | 2473524972 | Street AcKBIiCzum - nr 627 - City TiCaIB
+7 | Candidate7 | 6754257798 | Street NRVBpoPyTg - nr 437 - City EesffY
+6 | Candidate6 | 8931704357 | Street LLYonBoBAH - nr 810 - City yCPljR
+5 | Candidate5 | 7997396722 | Street WlmMrpjDyq - nr 788 - City PMTzcC
+4 | Candidate4 | 2386041355 | Street AxwVjZUrjK - nr 740 - City pjsDtJ
+3 | Candidate3 | 1440352329 | Street uOcsbfvSDc - nr 905 - City tqkdhZ
+2 | Candidate2 | 3275167738 | Street OsBQVYegpY - nr 312 - City jsBFpX
+1 | Candidate1 | 4878146085 | Street CuPQuVWFQT - nr 365 - City EoHccq
+0 | Candidate0 | 8061845070 | Street cilApRtveS - nr 830 - City OIvHOz

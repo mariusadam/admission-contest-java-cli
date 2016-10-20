@@ -19,4 +19,7 @@ abstract class BaseMemoryLoader<T> implements MemoryLoaderInterface<T> {
             }
         }
     }
+
+    public abstract T getNewEntity(RepositoryInterface<T> repository);
+
 }

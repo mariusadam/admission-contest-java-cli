@@ -9,10 +9,10 @@ import helper.saver.FileSaverInterface;
  * @author Marius Adam
  */
 public class FileSavingRepository<T extends Entity> extends RepositoryDecorator<T> {
-    private FileSaverInterface saver;
-    private String             filename;
+    private FileSaverInterface<T> saver;
+    private String                filename;
 
-    public FileSavingRepository(RepositoryInterface<T> repository, FileSaverInterface saver, String filename) {
+    public FileSavingRepository(RepositoryInterface<T> repository, FileSaverInterface<T> saver, String filename) {
         super(repository);
         this.saver = saver;
         this.filename = filename;

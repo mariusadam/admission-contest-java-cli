@@ -17,6 +17,12 @@ public class OptionLoader extends BaseCsvLoader<Option> {
     private RepositoryInterface<Candidate>  candidateRepository;
     private RepositoryInterface<Department> departmentRepository;
 
+    public OptionLoader(ValidatorInterface<Option> validator, RepositoryInterface<Candidate> cr, RepositoryInterface<Department> dr) {
+        super(validator);
+        this.candidateRepository = cr;
+        this.departmentRepository = dr;
+    }
+
     public OptionLoader(ValidatorInterface<Option> validator, String separator, RepositoryInterface<Candidate> cr, RepositoryInterface<Department> dr) {
         super(validator, separator);
         this.candidateRepository = cr;

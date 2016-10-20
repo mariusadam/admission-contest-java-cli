@@ -1,6 +1,5 @@
 package helper.loader.memory;
 
-import domain.Entity;
 import repository.RepositoryInterface;
 
 /**
@@ -14,7 +13,4 @@ public interface MemoryLoaderInterface<T> {
      * @param howMany    The number of entities to create/loadFromMemory
      */
     public void load(RepositoryInterface<T> repository, int howMany);
-
-    public T getNewEntity(RepositoryInterface<T> repository);
-
 }

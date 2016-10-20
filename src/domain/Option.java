@@ -36,8 +36,15 @@ public class Option extends Entity {
     }
 
     @Override
-    public String toCsvFormat() {
-        return String.format("%s,%s,%s", id.toString(), candidate.getId().toString(), department.getId().toString());
+    public String toCsvFormat(String separator) {
+        return String.format(
+                "%s%s%s%s%s",
+                id.toString(),
+                separator,
+                candidate.getId().toString(),
+                separator,
+                department.getId().toString()
+        );
     }
 
     @Override

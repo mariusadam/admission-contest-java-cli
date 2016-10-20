@@ -34,7 +34,7 @@ public class OptionController {
 
     public Option create(Integer candidateIt, Integer departmentId) throws InvalidObjectException, DuplicateEntryException {
         Option option = new Option(
-                this.optionRepository.getLastId(),
+                this.optionRepository.getNextId(),
                 this.candidateRepository.findById(candidateIt),
                 this.departmentRepository.findById(departmentId)
         );
