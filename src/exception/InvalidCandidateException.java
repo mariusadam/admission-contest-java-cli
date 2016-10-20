@@ -3,7 +3,7 @@ package exception;
 /**
  *
  */
-public class InvalidCandidateException extends InvalidEntityException{
+public class InvalidCandidateException extends InvalidObjectException {
     public InvalidCandidateException() {
     }
 

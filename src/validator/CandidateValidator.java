@@ -7,10 +7,10 @@ import exception.InvalidCandidateException;
 /**
  *
  */
-public class CandidateValidator implements ValidatorInterface{
+public class CandidateValidator implements ValidatorInterface<Candidate>{
 
     @Override
-    public void validate(Entity obj) throws InvalidCandidateException {
+    public void validate(Candidate obj) throws InvalidCandidateException {
         if (!(obj instanceof Candidate)) {
             throw new InvalidCandidateException("Invalid Candidate object.");
         }

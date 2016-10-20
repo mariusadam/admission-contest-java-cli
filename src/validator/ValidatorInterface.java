@@ -1,11 +1,10 @@
 package validator;
 
-import domain.Entity;
-import exception.InvalidEntityException;
+import exception.InvalidObjectException;
 
 /**
  * Created by marius on 10/14/16.
  */
-public interface ValidatorInterface {
-    public void validate(Entity obj) throws InvalidEntityException;
+public interface ValidatorInterface<T> {
+    public void validate(T obj) throws InvalidObjectException;
 }

@@ -4,18 +4,16 @@ import domain.Entity;
 import exception.DuplicateEntryException;
 import util.GenericArray;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  *
  */
 public class Repository<T extends Entity> implements RepositoryInterface<T> {
-    protected final ArrayList<T> items;
+    private final Map<Integer, T> items;
 
     public Repository() {
-        this.items = new ArrayList<>();
+        this.items = new Hashtable<>();
     }
 
     /**
@@ -26,10 +24,10 @@ public class Repository<T extends Entity> implements RepositoryInterface<T> {
      */
     @Override
     public void insert(T obj) throws DuplicateEntryException {
-        if (this.items.contains(obj)) {
+        if (this.items.containsKey(obj.getId())) {
             throw new DuplicateEntryException();
         }
-        this.items.add(obj);
+        this.items.put(obj.getId(),obj);
     }
 
     /**
@@ -41,7 +39,7 @@ public class Repository<T extends Entity> implements RepositoryInterface<T> {
     @Override
     public T delete(Integer id) {
         T deleted = this.findById(id);
-        this.items.remove(deleted);
+        this.items.remove(id);
 
         return deleted;
     }
@@ -54,13 +52,8 @@ public class Repository<T extends Entity> implements RepositoryInterface<T> {
      */
     @Override
     public void update(T entity) {
-        this.items.replaceAll(e -> {
-            if (e.getId().equals(entity.getId())) {
-                return entity;
-            }
-
-            return e;
-        });
+        T obj = this.findById(entity.getId());
+        this.items.put(obj.getId(), entity);
     }
 
     /**
@@ -73,14 +66,9 @@ public class Repository<T extends Entity> implements RepositoryInterface<T> {
     @SuppressWarnings("unchecked")
     @Override
     public T findById(Integer id) {
-        for(T e : this.items) {
-            if (e.getId() == id) {
-                try {
-                    return (T) e.clone();
-                } catch (CloneNotSupportedException e1) {
-                    e1.printStackTrace();
-                }
-            }
+        T obj = this.items.get(id);
+        if (obj != null) {
+            return obj;
         }
         throw new NoSuchElementException("Could not find the entity with id " + id);
     }
@@ -93,7 +81,7 @@ public class Repository<T extends Entity> implements RepositoryInterface<T> {
     @Override
     public Integer getLastId() {
         Integer lastId = Integer.MIN_VALUE;
-        for (Entity e : this.items) {
+        for (Entity e : this.items.values()) {
             lastId = lastId < e.getId() ? e.getId() : lastId;
         }
 
@@ -117,6 +105,6 @@ public class Repository<T extends Entity> implements RepositoryInterface<T> {
      */
     @Override
     public Collection<T> getAll() {
-        return this.items;
+        return this.items.values();
     }
 }

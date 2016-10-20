@@ -3,8 +3,7 @@ package menu.command.candidate;
 import controller.CandidateController;
 import domain.Candidate;
 import exception.DuplicateEntryException;
-import exception.InvalidCandidateException;
-import exception.InvalidEntityException;
+import exception.InvalidObjectException;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -44,7 +43,7 @@ public class AddCandidateCommand extends BaseCandidateCommand {
         try {
             Candidate cand = this.candidateController.create(name, phone, address);
             out.println("Added " + cand);
-        } catch (InvalidEntityException | DuplicateEntryException e) {
+        } catch (InvalidObjectException | DuplicateEntryException e) {
             e.printStackTrace(out);
         }
     }

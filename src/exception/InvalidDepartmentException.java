@@ -3,7 +3,7 @@ package exception;
 /**
  *
  */
-public class InvalidDepartmentException extends InvalidEntityException {
+public class InvalidDepartmentException extends InvalidObjectException {
     public InvalidDepartmentException() {
     }
 

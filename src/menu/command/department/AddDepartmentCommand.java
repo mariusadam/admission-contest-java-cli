@@ -3,8 +3,7 @@ package menu.command.department;
 import controller.DepartmentController;
 import domain.Department;
 import exception.DuplicateEntryException;
-import exception.InvalidDepartmentException;
-import exception.InvalidEntityException;
+import exception.InvalidObjectException;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -42,7 +41,7 @@ public class AddDepartmentCommand extends BaseDepartmentCommand {
         try {
             Department department = this.departmentController.create(name, numberOfSeats);
             out.println("Updated " + department);
-        } catch (InvalidEntityException | DuplicateEntryException e) {
+        } catch (InvalidObjectException | DuplicateEntryException e) {
             e.printStackTrace(out);
         }
     }

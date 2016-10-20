@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 /**
- * Created by marius on 10/13/16.
+ * @author Marius Adam
  */
 public class Menu extends MenuItem {
     private Map<String, MenuItemInterface> commandMap;

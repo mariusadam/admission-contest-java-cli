@@ -4,7 +4,7 @@ import domain.Candidate;
 import domain.Department;
 import domain.Option;
 import exception.DuplicateEntryException;
-import exception.InvalidEntityException;
+import exception.InvalidObjectException;
 import repository.RepositoryInterface;
 import validator.ValidatorInterface;
 
@@ -17,16 +17,22 @@ public class OptionController {
     private RepositoryInterface<Option>     optionRepository;
     private RepositoryInterface<Candidate>  candidateRepository;
     private RepositoryInterface<Department> departmentRepository;
-    private ValidatorInterface              validator;
+    private ValidatorInterface<Option>      validator;
 
-    public OptionController(RepositoryInterface<Option> repository, RepositoryInterface<Candidate> candidateRepository, RepositoryInterface<Department> departmentRepository, ValidatorInterface validator) {
+    public OptionController(
+            RepositoryInterface<Option>     repository,
+            RepositoryInterface<Candidate>  candidateRepository,
+            RepositoryInterface<Department> departmentRepository,
+            ValidatorInterface<Option>      validator
+    )
+    {
         this.optionRepository = repository;
         this.candidateRepository = candidateRepository;
         this.departmentRepository = departmentRepository;
         this.validator = validator;
     }
 
-    public Option create(Integer candidateIt, Integer departmentId) throws InvalidEntityException, DuplicateEntryException {
+    public Option create(Integer candidateIt, Integer departmentId) throws InvalidObjectException, DuplicateEntryException {
         Option option = new Option(
                 this.optionRepository.getLastId(),
                 this.candidateRepository.findById(candidateIt),
@@ -39,7 +45,7 @@ public class OptionController {
         return option;
     }
 
-    public Option update(Integer optionId, String newCandidateId, String newDepartmentId) throws InvalidEntityException {
+    public Option update(Integer optionId, String newCandidateId, String newDepartmentId) throws InvalidObjectException {
         Option option = this.optionRepository.findById(optionId);
 
         if (!newCandidateId.isEmpty()) {

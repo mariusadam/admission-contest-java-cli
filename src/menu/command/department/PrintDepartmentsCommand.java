@@ -2,7 +2,7 @@ package menu.command.department;
 
 import controller.DepartmentController;
 import domain.Department;
-import util.helper.PrintTableHelper;
+import helper.PrintTableHelper;
 
 import java.io.PrintStream;
 import java.util.Collection;

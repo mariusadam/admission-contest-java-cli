@@ -2,8 +2,7 @@ package menu.command.department;
 
 import controller.DepartmentController;
 import domain.Department;
-import exception.InvalidDepartmentException;
-import exception.InvalidEntityException;
+import exception.InvalidObjectException;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -43,7 +42,7 @@ public class UpdateDepartmentCommand extends BaseDepartmentCommand {
         try {
             Department department = this.departmentController.update(id, name, numberOfSeats);
             out.println("Updated " + department);
-        } catch (InvalidEntityException e) {
+        } catch (InvalidObjectException e) {
             e.printStackTrace(out);
         }
     }

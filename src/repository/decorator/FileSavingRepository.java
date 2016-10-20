@@ -3,16 +3,16 @@ package repository.decorator;
 import domain.Entity;
 import exception.DuplicateEntryException;
 import repository.RepositoryInterface;
-import util.helper.saver.SaverInterface;
+import helper.saver.FileSaverInterface;
 
 /**
- * Created by marius on 10/15/16.
+ * @author Marius Adam
  */
 public class FileSavingRepository<T extends Entity> extends RepositoryDecorator<T> {
-    protected SaverInterface<T> saver;
-    protected String            filename;
+    private FileSaverInterface saver;
+    private String             filename;
 
-    public FileSavingRepository(RepositoryInterface<T> repository, SaverInterface<T> saver, String filename) {
+    public FileSavingRepository(RepositoryInterface<T> repository, FileSaverInterface saver, String filename) {
         super(repository);
         this.saver = saver;
         this.filename = filename;

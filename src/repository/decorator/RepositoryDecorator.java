@@ -7,16 +7,16 @@ import repository.RepositoryInterface;
 import java.util.Collection;
 
 /**
- * Created by marius on 10/15/16.
+ * @author Marius Adam
  */
-public abstract class RepositoryDecorator<T extends Entity> implements RepositoryInterface<T> {
+abstract class RepositoryDecorator<T> implements RepositoryInterface<T> {
     protected final RepositoryInterface<T> repository;
 
     /**
      *
      * @param repository The repository object to be decorated
      */
-    public RepositoryDecorator(RepositoryInterface<T> repository) {
+    RepositoryDecorator(RepositoryInterface<T> repository) {
         this.repository = repository;
     }
 

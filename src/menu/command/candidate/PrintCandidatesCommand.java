@@ -2,7 +2,7 @@ package menu.command.candidate;
 
 import controller.CandidateController;
 import domain.Candidate;
-import util.helper.PrintTableHelper;
+import helper.PrintTableHelper;
 
 import java.io.PrintStream;
 import java.util.Collection;

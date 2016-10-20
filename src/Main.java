@@ -1,11 +1,9 @@
 import controller.OptionController;
-import domain.Option;
-import menu.MenuItemInterface;
+import helper.Bootstrap;
 import menu.command.candidate.AddCandidateCommand;
 import menu.command.candidate.DeleteCandidateCommand;
 import menu.command.candidate.PrintCandidatesCommand;
 import menu.command.candidate.UpdateCandidateCommand;
-import menu.command.common.ExitCommand;
 import menu.command.common.GoBackCommand;
 import menu.command.department.AddDepartmentCommand;
 import menu.command.department.DeleteDepartmentCommand;
@@ -18,24 +16,17 @@ import controller.DepartmentController;
 import domain.Candidate;
 import domain.Department;
 import menu.command.option.AddOptionCommand;
-import repository.*;
 
-import repository.decorator.FileLoadingRepository;
-import repository.decorator.FileSavingRepository;
-import util.helper.PrintTableHelper;
+import helper.PrintTableHelper;
 
-import util.helper.loader.file.CandidateCsvLoader;
-import util.helper.loader.file.DepartmentCsvLoader;
-import util.helper.loader.file.OptionCsvLoader;
-import util.helper.loader.memory.CandidateMemoryLoader;
-import util.helper.loader.memory.DepartmentMemoryLoader;
-import util.helper.loader.memory.MemoryLoaderInterface;
-import util.helper.saver.CsvFileSaver;
+import helper.loader.memory.CandidateMemoryLoader;
+import helper.loader.memory.DepartmentMemoryLoader;
+import helper.loader.memory.MemoryLoaderInterface;
 import validator.CandidateValidator;
 import validator.DepartmentValidator;
 
 import menu.Menu;
-import validator.OptionValidaor;
+import validator.OptionValidator;
 import view.decorator.IndentablePrintStream;
 
 import java.util.Scanner;
@@ -43,46 +34,16 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        String canidatesFile = "candidates.txt";
-        RepositoryInterface<Candidate> decoratedCandRepo =
-                new FileSavingRepository<>(
-                        new FileLoadingRepository<>(
-                                new Repository<>(),
-                                new CandidateCsvLoader<>(),
-                                canidatesFile
-                        ),
-                        new CsvFileSaver<>(),
-                        canidatesFile
-                );
-        CandidateController candidateController = new CandidateController(decoratedCandRepo, new CandidateValidator());
 
-        String departmentsFile = "departments.txt";
-        RepositoryInterface<Department> decoratedDepRepo =
-                new FileLoadingRepository<>(
-                        new FileSavingRepository<>(
-                                new Repository<>(),
-                                new CsvFileSaver<>(),
-                                departmentsFile
-                        ),
-                        new DepartmentCsvLoader<>(),
-                        departmentsFile
-                );
-        DepartmentController departmentController = new DepartmentController(decoratedDepRepo, new DepartmentValidator());
+        CandidateController candidateController   = new CandidateController(Bootstrap.getCandidateRepo(), new CandidateValidator());
+        DepartmentController departmentController = new DepartmentController(Bootstrap.getDepartmentRepo(), new DepartmentValidator());
+        OptionController optionController         = new OptionController(
+                Bootstrap.getOptionRepository(),
+                Bootstrap.getCandidateRepo(),
+                Bootstrap.getDepartmentRepo(),
+                new OptionValidator());
 
-        String optionsFile = "options.txt";
-        RepositoryInterface<Option> decoratedOptRepo =
-                new FileLoadingRepository<>(
-                        new FileSavingRepository<>(
-                                new Repository<>(),
-                                new CsvFileSaver<>(),
-                                optionsFile
-                        ),
-                        new OptionCsvLoader<>(decoratedCandRepo, decoratedDepRepo),
-                        optionsFile
-                );
-        OptionController optionController = new OptionController(decoratedOptRepo, decoratedCandRepo, decoratedDepRepo, new OptionValidaor());
-
-        Menu menu = new Menu("1", "Main menu");
+        Menu menu            = new Menu("1", "Main menu");
         Menu candidatesMenu  = new Menu("1", "Candidates menu");
         Menu departmentsMenu = new Menu("2", "Departments menu");
         Menu optionMenu      = new Menu("3", "Options menu");
@@ -98,11 +59,11 @@ public class Main {
         loadCandidatesCommands(candidatesMenu, candidateController, helper);
         loadDepartmentsCommands(departmentsMenu, departmentController, helper);
 
-        MemoryLoaderInterface<Department> memDepLoader = new DepartmentMemoryLoader<>();
-        MemoryLoaderInterface<Candidate> memCandLoader = new CandidateMemoryLoader<>();
+        MemoryLoaderInterface<Department> memDepLoader = new DepartmentMemoryLoader();
+        MemoryLoaderInterface<Candidate> memCandLoader = new CandidateMemoryLoader();
 
-//        memDepLoader.load(decoratedDepRepo, 10);
-//        memCandLoader.load(decoratedCandRepo, 10);
+        memDepLoader.load(Bootstrap.getDepartmentRepo(), 3);
+        memCandLoader.load(Bootstrap.getCandidateRepo(), 3);
 
         menu.execute(new Scanner(System.in), new IndentablePrintStream(System.out, 50));
     }

@@ -2,20 +2,20 @@ package repository.decorator;
 
 import domain.Entity;
 import repository.RepositoryInterface;
-import util.helper.loader.file.FileLoaderInterface;
+import helper.loader.file.FileLoaderInterface;
 
 /**
- * Created by marius on 10/15/16.
+ * @author Marius Adam
  */
 public class FileLoadingRepository<T extends Entity> extends RepositoryDecorator<T> {
-    private FileLoaderInterface<T> loader;
+    private FileLoaderInterface loader;
     private String                 filename;
     /**
      * @param repository The repository object to be decorated
      * @param loader
      * @param filename
      */
-    public FileLoadingRepository(RepositoryInterface<T> repository, FileLoaderInterface<T> loader, String filename) {
+    public FileLoadingRepository(RepositoryInterface<T> repository, FileLoaderInterface loader, String filename) {
         super(repository);
         this.loader = loader;
         this.filename = filename;

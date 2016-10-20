@@ -2,8 +2,7 @@ package menu.command.candidate;
 
 import controller.CandidateController;
 import domain.Candidate;
-import exception.InvalidCandidateException;
-import exception.InvalidEntityException;
+import exception.InvalidObjectException;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -47,7 +46,7 @@ public class UpdateCandidateCommand extends BaseCandidateCommand {
         try {
             Candidate cand = this.candidateController.update(id, name, phone, address);
             out.println("Updated " + cand);
-        } catch (InvalidEntityException e) {
+        } catch (InvalidObjectException e) {
             e.printStackTrace(out);
         }
     }

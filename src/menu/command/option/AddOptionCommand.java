@@ -2,7 +2,7 @@ package menu.command.option;
 
 import controller.OptionController;
 import exception.DuplicateEntryException;
-import exception.InvalidEntityException;
+import exception.InvalidObjectException;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -27,7 +27,7 @@ public class AddOptionCommand extends BaseOptionCommand {
 
         try {
             this.optionController.create(candidateId, departmentId);
-        } catch (InvalidEntityException | DuplicateEntryException e) {
+        } catch (InvalidObjectException | DuplicateEntryException e) {
             e.printStackTrace(out);
         }
     }

@@ -9,7 +9,7 @@ import java.util.Collection;
 /**
  *
  */
-public interface RepositoryInterface<T extends Entity> {
+public interface RepositoryInterface<T extends Object> {
     /**
      * Inserts a new entity into the repository
      *
