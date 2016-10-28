@@ -17,18 +17,18 @@ public class AddOptionCommand extends BaseOptionCommand {
 
     @Override
     public void execute(Scanner scanner, PrintStream out) {
-        Integer candidateId, departmentId;
+        String candidateId, departmentId;
 
         out.print("Enter the id of the candidate: ");
-        candidateId = scanner.nextInt();
+        candidateId = scanner.nextLine();
 
         out.print("Enter the id of the department: ");
-        departmentId = scanner.nextInt();
+        departmentId = scanner.nextLine();
 
         try {
             this.optionController.create(candidateId, departmentId);
         } catch (InvalidObjectException | DuplicateEntryException e) {
-            e.printStackTrace(out);
+            out.println(e.getMessage());
         }
     }
 }

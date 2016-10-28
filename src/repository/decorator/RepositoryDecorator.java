@@ -1,6 +1,5 @@
 package repository.decorator;
 
-import domain.Entity;
 import exception.DuplicateEntryException;
 import repository.RepositoryInterface;
 
@@ -53,5 +52,10 @@ abstract class RepositoryDecorator<T> implements RepositoryInterface<T> {
     @Override
     public Integer getNextId() {
         return this.repository.getNextId();
+    }
+
+    @Override
+    public int size() {
+        return this.repository.size();
     }
 }

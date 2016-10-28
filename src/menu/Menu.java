@@ -47,7 +47,7 @@ public class Menu extends MenuItem {
                 }
                 command.execute(scanner, out);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                out.println(ex.getMessage());
             }
         }
     }

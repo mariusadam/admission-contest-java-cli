@@ -44,7 +44,7 @@ public class UpdateDepartmentCommand extends BaseDepartmentCommand {
             department = this.departmentController.update(id, name, numberOfSeats);
             out.println("Updated " + department);
         } catch (InvalidObjectException e) {
-            e.printStackTrace();
+            out.println(e.getMessage());
         }
     }
 }

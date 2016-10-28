@@ -44,7 +44,7 @@ public class AddCandidateCommand extends BaseCandidateCommand {
             Candidate cand = this.candidateController.create(name, phone, address);
             out.println("Added " + cand);
         } catch (InvalidObjectException | DuplicateEntryException e) {
-            e.printStackTrace(out);
+            out.println(e.getMessage());
         }
     }
 }

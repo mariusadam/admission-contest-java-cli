@@ -32,7 +32,21 @@ public class OptionController {
         this.validator = validator;
     }
 
-    public Option create(Integer candidateIt, Integer departmentId) throws InvalidObjectException, DuplicateEntryException {
+    public Option create(String cid, String did) throws InvalidObjectException, DuplicateEntryException {
+        Integer candidateIt = null, departmentId = null;
+
+        try {
+            if (!cid.isEmpty()) {
+                candidateIt = Integer.parseInt(cid);
+            }
+
+            if (!did.isEmpty()) {
+                departmentId = Integer.parseInt(did);
+            }
+        }catch (NumberFormatException e) {
+            throw new InvalidObjectException("Invalid id: " + e.getMessage());
+        }
+
         Option option = new Option(
                 this.optionRepository.getNextId(),
                 this.candidateRepository.findById(candidateIt),

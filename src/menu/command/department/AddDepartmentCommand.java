@@ -42,7 +42,7 @@ public class AddDepartmentCommand extends BaseDepartmentCommand {
             Department department = this.departmentController.create(name, numberOfSeats);
             out.println("Updated " + department);
         } catch (InvalidObjectException | DuplicateEntryException e) {
-            e.printStackTrace(out);
+            out.println(e.getMessage());;
         }
     }
 }

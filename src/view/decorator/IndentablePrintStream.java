@@ -20,7 +20,17 @@ public class IndentablePrintStream extends PrintStreamDecorator {
 
     @Override
     public void println(String x) {
-        this.printStream.print(StringUtils.repeat(" ", this.indent));
+        doIndent();
         super.println(x);
+    }
+
+    @Override
+    public void println(char[] s) {
+        doIndent();
+        super.print(s);
+    }
+
+    private void doIndent() {
+        this.printStream.print(StringUtils.repeat(" ", this.indent));
     }
 }

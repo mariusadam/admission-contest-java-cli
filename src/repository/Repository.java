@@ -99,6 +99,11 @@ public class Repository<T extends Entity> implements RepositoryInterface<T> {
         return this.getLastId() == null ? 0 : this.getLastId() + 1;
     }
 
+    @Override
+    public int size() {
+        return this.items.size();
+    }
+
     /**
      *
      * @return {@link GenericArray} The object containing all the entities

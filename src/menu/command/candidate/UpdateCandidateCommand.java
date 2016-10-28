@@ -47,7 +47,7 @@ public class UpdateCandidateCommand extends BaseCandidateCommand {
             Candidate cand = this.candidateController.update(id, name, phone, address);
             out.println("Updated " + cand);
         } catch (InvalidObjectException e) {
-            e.printStackTrace(out);
+            out.println(e.getMessage());
         }
     }
 }

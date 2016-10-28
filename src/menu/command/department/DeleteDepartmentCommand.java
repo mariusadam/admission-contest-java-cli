@@ -29,7 +29,7 @@ public class DeleteDepartmentCommand extends BaseDepartmentCommand {
     public void execute(Scanner scanner, PrintStream out) {
         Integer id;
 
-        out.print("Enter the id of the department you with to modify: ");
+        out.print("Enter the id of the department you with to delete: ");
         id = scanner.nextInt();
         scanner.nextLine();
         try {
