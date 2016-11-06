@@ -11,7 +11,7 @@ public class CandidateMemoryLoader extends BaseMemoryLoader<Candidate> {
 
     @Override
     public Candidate getNewEntity() {
-        int id = Math.abs(RandomGenerator.getRandomInt());
+        int id = RandomGenerator.getRandomPositiveInt();
 
         return new Candidate(
                 id,

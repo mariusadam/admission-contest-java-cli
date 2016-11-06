@@ -3,6 +3,7 @@ package controller;
 import domain.Candidate;
 import exception.DuplicateEntryException;
 import exception.InvalidObjectException;
+import helper.generator.RandomGenerator;
 import repository.RepositoryInterface;
 import validator.ValidatorInterface;
 
@@ -35,7 +36,7 @@ public class CandidateController {
      */
     public Candidate create(String name, String phone, String address) throws InvalidObjectException, DuplicateEntryException {
         Candidate candidate = new Candidate(
-                this.candidateRepository.getNextId(),
+                RandomGenerator.getRandomPositiveInt(),
                 name,
                 phone,
                 address

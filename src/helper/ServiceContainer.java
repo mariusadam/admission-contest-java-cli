@@ -2,7 +2,6 @@ package helper;
 
 import domain.Candidate;
 import domain.Department;
-import domain.Entity;
 import domain.Option;
 
 import java.util.HashMap;
@@ -10,19 +9,13 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import helper.loader.file.FileLoaderInterface;
-import helper.loader.file.csv.CandidateLoader;
-import helper.loader.file.csv.DepartmentLoader;
-import helper.loader.file.csv.OptionLoader;
 import helper.loader.file.serialized.SerializedLoader;
-import helper.saver.CsvFileSaver;
 import helper.saver.FileSaverInterface;
 import helper.saver.SerializedSaver;
 import repository.Repository;
 import repository.RepositoryInterface;
 import repository.decorator.FileLoadingRepository;
 import repository.decorator.FileSavingRepository;
-import repository.decorator.RepositoryDecorator;
-import repository.decorator.SerializableRepository;
 import validator.CandidateValidator;
 import validator.DepartmentValidator;
 import validator.OptionValidator;

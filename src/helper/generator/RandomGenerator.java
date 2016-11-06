@@ -8,6 +8,12 @@ import java.util.Random;
 public class RandomGenerator {
 
     private static Random random = new Random();
+    public static final int DEFAULT_MAX_STRING_LENGTH = 20;
+    public static final int DEFAULT_MIN_STRING_LENGTH = 5;
+
+    public static String getRandomString() {
+        return getRandomString(DEFAULT_MIN_STRING_LENGTH + Math.abs(getRandomInt(DEFAULT_MAX_STRING_LENGTH)));
+    }
 
     public static String getRandomString(int length) {
         char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789".toUpperCase().toCharArray();
@@ -25,5 +31,9 @@ public class RandomGenerator {
 
     public static Integer getRandomInt() {
         return random.nextInt();
+    }
+
+    public static Integer getRandomPositiveInt() {
+        return Math.abs(random.nextInt());
     }
 }

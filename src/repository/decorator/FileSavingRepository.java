@@ -5,6 +5,8 @@ import exception.DuplicateEntryException;
 import repository.RepositoryInterface;
 import helper.saver.FileSaverInterface;
 
+import java.util.Collection;
+
 /**
  * @author Marius Adam
  */
@@ -35,6 +37,12 @@ public class FileSavingRepository<Id, T extends HasId<Id>> extends RepositoryDec
     @Override
     public void update(T entity) {
         super.update(entity);
+        this.saveToFile();
+    }
+
+    @Override
+    public void addCollection(Collection<T> collection) {
+        super.addCollection(collection);
         this.saveToFile();
     }
 

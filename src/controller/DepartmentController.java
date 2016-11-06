@@ -3,6 +3,7 @@ package controller;
 import domain.Department;
 import exception.DuplicateEntryException;
 import exception.InvalidObjectException;
+import helper.generator.RandomGenerator;
 import repository.RepositoryInterface;
 import validator.ValidatorInterface;
 
@@ -35,7 +36,7 @@ public class DepartmentController {
      */
     public Department create(String name, Integer numberOfSeats) throws InvalidObjectException, DuplicateEntryException {
         Department department = new Department(
-                this.departmentRepository.getNextId(),
+                RandomGenerator.getRandomString(),
                 name,
                 numberOfSeats
         );

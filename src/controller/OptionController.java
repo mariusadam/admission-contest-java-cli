@@ -5,6 +5,7 @@ import domain.Department;
 import domain.Option;
 import exception.DuplicateEntryException;
 import exception.InvalidObjectException;
+import helper.generator.RandomGenerator;
 import repository.RepositoryInterface;
 import validator.ValidatorInterface;
 
@@ -44,7 +45,7 @@ public class OptionController {
         }
 
         Option option = new Option(
-                this.optionRepository.getNextId(),
+                RandomGenerator.getRandomPositiveInt(),
                 this.candidateRepository.findById(candidateIt),
                 this.departmentRepository.findById(departmentId)
         );

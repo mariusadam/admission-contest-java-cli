@@ -45,17 +45,7 @@ public abstract class RepositoryDecorator<Id, T extends HasId<Id>> implements Re
         return this.repository.getAll();
     }
 
-    @Override
-    public Id getLastId() {
-        return this.repository.getLastId();
-    }
-
-    @Override
-    public Id getNextId() {
-        return this.repository.getNextId();
-    }
-
-    @Override
+   @Override
     public int size() {
         return this.repository.size();
     }

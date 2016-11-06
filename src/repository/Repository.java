@@ -1,6 +1,5 @@
 package repository;
 
-import domain.Entity;
 import domain.HasId;
 import exception.DuplicateEntryException;
 import exception.RepositoryException;
@@ -65,7 +64,6 @@ public class Repository<Id, T extends HasId<Id>> implements RepositoryInterface<
      * @return Entity The searched entity
      * @throws NoSuchElementException If the searched entity is not found
      */
-    @SuppressWarnings("unchecked")
     @Override
     public T findById(Id id) {
         T obj = this.items.get(id);
@@ -73,34 +71,6 @@ public class Repository<Id, T extends HasId<Id>> implements RepositoryInterface<
             return obj;
         }
         throw new NoSuchElementException("Could not find the entity with id " + id);
-    }
-
-    /**
-     * Returns the id of the last inserted entity
-     *
-     * @return Integer The last inserted id
-     */
-    @Override
-    public Id getLastId() {
-        Integer lastId = Integer.MIN_VALUE;
-        for (HasId<Id> e : this.items.values()) {
-            lastId = lastId < (Integer) e.getId() ? (Integer) e.getId() : lastId;
-        }
-
-        lastId = lastId == Integer.MIN_VALUE ? null : lastId;
-        //noinspection unchecked
-        return (Id) lastId;
-    }
-
-    /**
-     * Returns the id of the next inserted entity
-     *
-     * @return Integer The next inserted id
-     */
-    @Override
-    public Id getNextId() {
-        //noinspection unchecked
-        return this.getLastId() == null ? (Id) (new Integer(0)) : (Id) (new Integer(((Integer) this.getLastId()) + 1));
     }
 
     @Override

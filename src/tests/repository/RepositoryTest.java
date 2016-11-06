@@ -86,16 +86,6 @@ public class RepositoryTest {
     }
 
     @Test
-    public void getLastId() throws Exception {
-        assertEquals(4, (int)repo.getLastId());
-    }
-
-    @Test
-    public void getNextId() throws Exception {
-        assertEquals(5, (int)repo.getNextId());
-    }
-
-    @Test
     public void getAll() throws Exception {
         Collection<Candidate> all =repo.getAll();
 

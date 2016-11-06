@@ -49,20 +49,14 @@ public interface RepositoryInterface<Id, T extends HasId<Id>> {
     Collection<T> getAll();
 
     /**
-     * Returns the id of the last inserted entity
      *
-     * @return Integer The last inserted id
+     * @param collection A collection of objects to insert into the repository
      */
-    Id getLastId();
-
-    /**
-     * Returns the id of the next inserted entity
-     *
-     * @return Integer The next inserted id
-     */
-    Id getNextId();
-
     void addCollection(Collection<T> collection);
 
+    /**
+     *
+     * @return int
+     */
     int size();
 }

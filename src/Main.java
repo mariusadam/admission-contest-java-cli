@@ -69,8 +69,8 @@ public class Main {
 
         boolean loadFromMemory = false;
         if(loadFromMemory) {
-            container.getDepartmentRepo().addCollection(memDepLoader.load(15));
-            container.getCandidateRepo().addCollection(memCandLoader.load(15));
+            container.getDepartmentRepo().addCollection(memDepLoader.load(150));
+            container.getCandidateRepo().addCollection(memCandLoader.load(150));
         }
 
         menu.execute(new Scanner(System.in), new IndentablePrintStream(System.out, 50));
