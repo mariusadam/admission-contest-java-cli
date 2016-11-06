@@ -2,6 +2,7 @@ package helper;
 
 import domain.Candidate;
 import domain.Department;
+import domain.HasId;
 import domain.Option;
 
 import java.util.HashMap;
@@ -24,9 +25,8 @@ import validator.ValidatorInterface;
 /**
  * @author Marius Adam
  */
-@SuppressWarnings("unchecked")
 public class ServiceContainer {
-    private Map<String, Object>  config;
+    private Map<String, String>  config;
     private Map<String, Boolean> locked;
     private Map<String, Object>  services;
 
@@ -38,31 +38,47 @@ public class ServiceContainer {
         this.registerDefaultValues();
     }
 
-    private void registerDefaultValues() {
-        try {
-            setConfig("candidatesFile", "files/candidates_serializable.txt");
-            setConfig("departmentsFile", "files/departments_serializable.txt");
-            setConfig("optionsFile", "files/options_serializable.txt");
-            setConfig("separator", " | ");
-
-            services.putIfAbsent("option.validator", new OptionValidator());
-            services.putIfAbsent("candidate.validator", new CandidateValidator());
-            services.putIfAbsent("department.validator", new DepartmentValidator());
-
-            services.putIfAbsent("option.saver", new SerializedSaver<Option>());
-            services.putIfAbsent("candidate.saver", new SerializedSaver<Candidate>());
-            services.putIfAbsent("department.saver", new SerializedSaver<Department>());
-
-            services.putIfAbsent("option.loader", new SerializedLoader<Option>());
-            services.putIfAbsent("candidate.loader", new SerializedLoader<Candidate>());
-            services.putIfAbsent("department.loader", new SerializedLoader<Department>());
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+    public RepositoryInterface<Integer, Option> getOptionRepository() {
+        return this.getRepo(Integer.class, Option.class);
     }
 
-    public Object getConfig(String key) throws NoSuchElementException {
-        Object obj = config.get(key);
+    public RepositoryInterface<Integer, Candidate> getCandidateRepository() {
+        return this.getRepo(Integer.class, Candidate.class);
+    }
+
+    public RepositoryInterface<String, Department> getDepartmentRepository() {
+        return this.getRepo(String.class, Department.class);
+    }
+
+    public <T> ValidatorInterface<T> getValidator(Class<T> tClass) {
+        if (this.services.containsKey(tClass.getName() + ".validator")){
+            //noinspection unchecked
+            return (ValidatorInterface<T>) this.services.get(tClass.getName() + ".validator");
+        }
+
+        throw new RuntimeException("Could not find a validator for entity " + tClass.getName());
+    }
+
+    private <T> FileSaverInterface<T> getSaver(Class<T> tClass) {
+        if (this.services.containsKey(tClass.getName() + ".saver")){
+            //noinspection unchecked
+            return (FileSaverInterface<T>) this.services.get(tClass.getName() + ".saver");
+        }
+
+        throw new RuntimeException("Could not find a saver for entity " + tClass.getName());
+    }
+
+    private <T> FileLoaderInterface<T> getLoader(Class<T> tClass) {
+        if (this.services.containsKey(tClass.getName() + ".loader")){
+            //noinspection unchecked
+            return (FileLoaderInterface<T>) this.services.get(tClass.getName() + ".loader");
+        }
+
+        throw new RuntimeException("Could not find a loader for entity " + tClass.getName());
+    }
+
+    private String getConfig(String key) throws NoSuchElementException {
+        String obj = config.get(key);
 
         if (obj == null) {
             throw new NoSuchElementException("Could not find config value " + key +".");
@@ -72,102 +88,57 @@ public class ServiceContainer {
         return obj;
     }
 
-    public void setConfig(String key, Object value) throws IllegalAccessException {
+    private void setConfig(String key, String value) throws IllegalAccessException {
         if (locked.get(key) == null || !locked.get(key)) {
             config.put(key, value);
             return;
         }
 
-        throw new IllegalAccessException("The config value with key " + key +" is locked and cannot ne modified");
+        throw new IllegalAccessException("The config value with key " + key + " is locked and cannot ne modified");
     }
 
-    private FileSaverInterface getSaver(Class tClass) {
-        if (tClass == Candidate.class) {
-            return (FileSaverInterface) services.get("candidate.saver");
+    private <Id, T extends HasId<Id>> RepositoryInterface<Id, T> getRepo(Class<Id> idClass, Class<T> entityClass) {
+        String key = idClass.getName() + entityClass.getName() + ".repository";
+
+        if (!services.containsKey(key)) {
+            String filename = getConfig(entityClass.getName() + ".file");
+
+            RepositoryInterface<Id, T> repo = new Repository<>();
+            repo = new FileLoadingRepository<>(repo, getLoader(entityClass), filename);
+            repo = new FileSavingRepository<>(repo, getSaver(entityClass), filename);
+
+            services.put(key, repo);
         }
 
-        if (tClass == Option.class) {
-            return (FileSaverInterface) services.get("option.saver");
-        }
-
-        if (tClass == Department.class) {
-            return (FileSaverInterface) services.get("department.saver");
-        }
-
-        throw new RuntimeException("Could not find a validator for entity " + tClass.getName());
+        //noinspection unchecked
+        return (RepositoryInterface<Id, T>) services.get(key);
     }
 
-    private FileLoaderInterface getLoader(Class tClass) {
-        if (tClass == Candidate.class) {
-            return (FileLoaderInterface) services.get("candidate.loader");
+    private void registerDefaultValues() {
+        try {
+
+            String optionClass = Option.class.getName();
+            String candidateClass = Candidate.class.getName();
+            String departmentClass = Department.class.getName();
+
+            setConfig(optionClass + ".file", "files/options_serializable.txt");
+            setConfig(candidateClass + ".file", "files/candidates_serializable.txt");
+            setConfig(departmentClass + ".file", "files/departments_serializable.txt");
+            setConfig("separator", " | ");
+
+            services.putIfAbsent(optionClass + ".validator", new OptionValidator());
+            services.putIfAbsent(candidateClass + ".validator", new CandidateValidator());
+            services.putIfAbsent(departmentClass + ".validator", new DepartmentValidator());
+
+            services.putIfAbsent(optionClass + ".saver", new SerializedSaver<Option>());
+            services.putIfAbsent(candidateClass + ".saver", new SerializedSaver<Candidate>());
+            services.putIfAbsent(departmentClass + ".saver", new SerializedSaver<Department>());
+
+            services.putIfAbsent(optionClass + ".loader", new SerializedLoader<Option>());
+            services.putIfAbsent(candidateClass + ".loader", new SerializedLoader<Candidate>());
+            services.putIfAbsent(departmentClass + ".loader", new SerializedLoader<Department>());
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
-
-        if (tClass == Option.class) {
-            return (FileLoaderInterface) services.get("option.loader");
-        }
-
-        if (tClass == Department.class) {
-            return (FileLoaderInterface) services.get("department.loader");
-        }
-
-        throw new RuntimeException("Could not find a validator for entity " + tClass.getName());
-    }
-
-    public RepositoryInterface<Integer, Option> getOptionRepository() {
-        if (services.get("option.repository") == null) {
-            String optionsFile = (String) getConfig("optionsFile");
-
-            RepositoryInterface<Integer, Option> optionRepo = new Repository<>();
-            optionRepo = new FileLoadingRepository<>(optionRepo, getLoader(Option.class), optionsFile);
-            optionRepo = new FileSavingRepository<>(optionRepo, getSaver(Option.class), optionsFile);
-
-            services.put("option.repository", optionRepo);
-        }
-
-        return (RepositoryInterface<Integer, Option>) services.get("option.repository");
-    }
-
-    public RepositoryInterface<Integer, Candidate> getCandidateRepo() {
-        if (services.get("candidate.repository") == null) {
-            String candidatesFile = (String) getConfig("candidatesFile");
-
-            RepositoryInterface<Integer, Candidate> candidateRepo = new Repository<>();
-            candidateRepo = new FileSavingRepository<>(candidateRepo, getSaver(Candidate.class), candidatesFile);
-            candidateRepo = new FileLoadingRepository<>(candidateRepo, getLoader(Candidate.class), candidatesFile);
-
-            services.put("candidate.repository", candidateRepo);
-        }
-
-        return (RepositoryInterface<Integer, Candidate>) services.get("candidate.repository");
-    }
-
-    public RepositoryInterface<String, Department> getDepartmentRepo() {
-        if (services.get("department.repository") == null) {
-            String departmentsFile = (String) getConfig("departmentsFile");
-
-            RepositoryInterface<String, Department> departmentRepo = new Repository<>();
-            departmentRepo = new FileLoadingRepository<>(departmentRepo, getLoader(Department.class), departmentsFile);
-            departmentRepo = new FileSavingRepository<>(departmentRepo, getSaver(Department.class), departmentsFile);
-
-            services.put("department.repository", departmentRepo);
-        }
-
-        return (RepositoryInterface<String, Department>) services.get("department.repository");
-    }
-
-    public ValidatorInterface getValidator(Class tClass) {
-        if (tClass == Candidate.class) {
-            return (ValidatorInterface) services.get("candidate.validator");
-        }
-
-        if (tClass == Option.class) {
-            return (ValidatorInterface) services.get("option.validator");
-        }
-
-        if (tClass == Department.class) {
-            return (ValidatorInterface) services.get("department.validator");
-        }
-
-        throw new RuntimeException("Could not find a validator for entity " + tClass.getName());
     }
 }

@@ -32,19 +32,18 @@ import view.decorator.IndentablePrintStream;
 
 import java.util.Scanner;
 
-@SuppressWarnings("unchecked")
 public class Main {
 
     public static void main(String[] args) {
 
         ServiceContainer container = new ServiceContainer();
 
-        CandidateController candidateController   = new CandidateController(container.getCandidateRepo(), container.getValidator(Candidate.class));
-        DepartmentController departmentController = new DepartmentController(container.getDepartmentRepo(), container.getValidator(Department.class));
+        CandidateController candidateController   = new CandidateController(container.getCandidateRepository(), container.getValidator(Candidate.class));
+        DepartmentController departmentController = new DepartmentController(container.getDepartmentRepository(), container.getValidator(Department.class));
         OptionController optionController         = new OptionController(
                 container.getOptionRepository(),
-                container.getCandidateRepo(),
-                container.getDepartmentRepo(),
+                container.getCandidateRepository(),
+                container.getDepartmentRepository(),
                 container.getValidator(Option.class)
         );
 
@@ -69,8 +68,8 @@ public class Main {
 
         boolean loadFromMemory = false;
         if(loadFromMemory) {
-            container.getDepartmentRepo().addCollection(memDepLoader.load(150));
-            container.getCandidateRepo().addCollection(memCandLoader.load(150));
+            container.getDepartmentRepository().addCollection(memDepLoader.load(150));
+            container.getCandidateRepository().addCollection(memCandLoader.load(150));
         }
 
         menu.execute(new Scanner(System.in), new IndentablePrintStream(System.out, 50));
