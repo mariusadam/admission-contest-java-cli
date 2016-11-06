@@ -9,11 +9,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import helper.loader.file.FileLoaderInterface;
 import helper.loader.file.csv.CandidateLoader;
 import helper.loader.file.csv.DepartmentLoader;
 import helper.loader.file.csv.OptionLoader;
+import helper.loader.file.serialized.SerializedLoader;
 import helper.saver.CsvFileSaver;
 import helper.saver.FileSaverInterface;
+import helper.saver.SerializedSaver;
 import repository.Repository;
 import repository.RepositoryInterface;
 import repository.decorator.FileLoadingRepository;
@@ -29,12 +32,12 @@ import validator.ValidatorInterface;
  * @author Marius Adam
  */
 @SuppressWarnings("unchecked")
-public class Bootstrap {
+public class ServiceContainer {
     private Map<String, Object>  config;
     private Map<String, Boolean> locked;
     private Map<String, Object>  services;
 
-    public Bootstrap() {
+    public ServiceContainer() {
         this.config   = new HashMap<>();
         this.locked   = new HashMap<>();
         this.services = new HashMap<>();
@@ -44,14 +47,22 @@ public class Bootstrap {
 
     private void registerDefaultValues() {
         try {
-            setConfig("candidatesFile", "candidates_serializable.txt");
-            setConfig("departmentsFile", "departments_serializable.txt");
-            setConfig("optionsFile", "options_serializable.txt");
+            setConfig("candidatesFile", "files/candidates_serializable.txt");
+            setConfig("departmentsFile", "files/departments_serializable.txt");
+            setConfig("optionsFile", "files/options_serializable.txt");
             setConfig("separator", " | ");
 
             services.putIfAbsent("option.validator", new OptionValidator());
             services.putIfAbsent("candidate.validator", new CandidateValidator());
             services.putIfAbsent("department.validator", new DepartmentValidator());
+
+            services.putIfAbsent("option.saver", new SerializedSaver<Option>());
+            services.putIfAbsent("candidate.saver", new SerializedSaver<Candidate>());
+            services.putIfAbsent("department.saver", new SerializedSaver<Department>());
+
+            services.putIfAbsent("option.loader", new SerializedLoader<Option>());
+            services.putIfAbsent("candidate.loader", new SerializedLoader<Candidate>());
+            services.putIfAbsent("department.loader", new SerializedLoader<Department>());
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -77,25 +88,45 @@ public class Bootstrap {
         throw new IllegalAccessException("The config value with key " + key +" is locked and cannot ne modified");
     }
 
-    private FileSaverInterface getSaver() {
-        if (services.get("saver") != null) {
-            return (FileSaverInterface) services.get("saver");
+    private FileSaverInterface getSaver(Class tClass) {
+        if (tClass == Candidate.class) {
+            return (FileSaverInterface) services.get("candidate.saver");
         }
-        services.put("saver", new CsvFileSaver<Entity>((String) config.get("separator")));
 
-        return (FileSaverInterface) services.get("saver");
+        if (tClass == Option.class) {
+            return (FileSaverInterface) services.get("option.saver");
+        }
+
+        if (tClass == Department.class) {
+            return (FileSaverInterface) services.get("department.saver");
+        }
+
+        throw new RuntimeException("Could not find a validator for entity " + tClass.getName());
+    }
+
+    private FileLoaderInterface getLoader(Class tClass) {
+        if (tClass == Candidate.class) {
+            return (FileLoaderInterface) services.get("candidate.loader");
+        }
+
+        if (tClass == Option.class) {
+            return (FileLoaderInterface) services.get("option.loader");
+        }
+
+        if (tClass == Department.class) {
+            return (FileLoaderInterface) services.get("department.loader");
+        }
+
+        throw new RuntimeException("Could not find a validator for entity " + tClass.getName());
     }
 
     public RepositoryInterface<Integer, Option> getOptionRepository() {
         if (services.get("option.repository") == null) {
             String optionsFile = (String) getConfig("optionsFile");
-            OptionValidator ov = (OptionValidator) this.getValidator(Option.class);
-            OptionLoader optionLoader = new OptionLoader(ov, getCandidateRepo(), getDepartmentRepo());
-            RepositoryInterface<Integer, Option> optionRepo = new Repository<>();
-            optionRepo = new SerializableRepository<>(optionRepo, optionsFile);
 
-//            optionRepo = new FileLoadingRepository<>(optionRepo, optionLoader, optionsFile);
-//            optionRepo = new FileSavingRepository<>(optionRepo, getSaver(), optionsFile);
+            RepositoryInterface<Integer, Option> optionRepo = new Repository<>();
+            optionRepo = new FileLoadingRepository<>(optionRepo, getLoader(Option.class), optionsFile);
+            optionRepo = new FileSavingRepository<>(optionRepo, getSaver(Option.class), optionsFile);
 
             services.put("option.repository", optionRepo);
         }
@@ -106,13 +137,10 @@ public class Bootstrap {
     public RepositoryInterface<Integer, Candidate> getCandidateRepo() {
         if (services.get("candidate.repository") == null) {
             String candidatesFile = (String) getConfig("candidatesFile");
-            CandidateValidator cv = (CandidateValidator) this.getValidator(Candidate.class);
-            RepositoryInterface<Integer, Candidate> candidateRepo = new Repository<>();
-            candidateRepo = new SerializableRepository<>(candidateRepo, candidatesFile);
 
-//            FileSaverInterface<Candidate> ss = (FileSaverInterface<Candidate>) getSaver();
-//            candidateRepo = new FileSavingRepository<>(candidateRepo, ss, candidatesFile);
-//            candidateRepo = new FileLoadingRepository<>(candidateRepo, new CandidateLoader(cv), candidatesFile);
+            RepositoryInterface<Integer, Candidate> candidateRepo = new Repository<>();
+            candidateRepo = new FileSavingRepository<>(candidateRepo, getSaver(Candidate.class), candidatesFile);
+            candidateRepo = new FileLoadingRepository<>(candidateRepo, getLoader(Candidate.class), candidatesFile);
 
             services.put("candidate.repository", candidateRepo);
         }
@@ -123,11 +151,11 @@ public class Bootstrap {
     public RepositoryInterface<String, Department> getDepartmentRepo() {
         if (services.get("department.repository") == null) {
             String departmentsFile = (String) getConfig("departmentsFile");
-            DepartmentValidator dv = (DepartmentValidator) this.getValidator(Department.class);
+
             RepositoryInterface<String, Department> departmentRepo = new Repository<>();
-            departmentRepo = new SerializableRepository<>(departmentRepo, departmentsFile);
-//            departmentRepo         = new FileLoadingRepository<>(departmentRepo, new DepartmentLoader(dv), departmentsFile);
-//            departmentRepo         = new FileSavingRepository<>(departmentRepo, getSaver(), departmentsFile);
+            departmentRepo = new FileLoadingRepository<>(departmentRepo, getLoader(Department.class), departmentsFile);
+            departmentRepo = new FileSavingRepository<>(departmentRepo, getSaver(Department.class), departmentsFile);
+
             services.put("department.repository", departmentRepo);
         }
 

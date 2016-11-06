@@ -1,10 +1,8 @@
 package helper.loader.memory;
 
 import domain.Candidate;
-import helper.Generator.RandomGenerator;
+import helper.generator.RandomGenerator;
 import org.apache.commons.lang.RandomStringUtils;
-
-import java.util.Random;
 
 /**
  * Created by marius on 10/15/16.

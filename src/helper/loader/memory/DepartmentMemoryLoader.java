@@ -1,7 +1,7 @@
 package helper.loader.memory;
 
 import domain.Department;
-import helper.Generator.RandomGenerator;
+import helper.generator.RandomGenerator;
 import org.apache.commons.lang.RandomStringUtils;
 
 /**

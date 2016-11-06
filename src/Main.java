@@ -1,6 +1,6 @@
 import controller.OptionController;
 import domain.Option;
-import helper.Bootstrap;
+import helper.ServiceContainer;
 import menu.command.candidate.AddCandidateCommand;
 import menu.command.candidate.DeleteCandidateCommand;
 import menu.command.candidate.PrintCandidatesCommand;
@@ -37,15 +37,15 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Bootstrap boot = new Bootstrap();
+        ServiceContainer container = new ServiceContainer();
 
-        CandidateController candidateController   = new CandidateController(boot.getCandidateRepo(), boot.getValidator(Candidate.class));
-        DepartmentController departmentController = new DepartmentController(boot.getDepartmentRepo(), boot.getValidator(Department.class));
+        CandidateController candidateController   = new CandidateController(container.getCandidateRepo(), container.getValidator(Candidate.class));
+        DepartmentController departmentController = new DepartmentController(container.getDepartmentRepo(), container.getValidator(Department.class));
         OptionController optionController         = new OptionController(
-                boot.getOptionRepository(),
-                boot.getCandidateRepo(),
-                boot.getDepartmentRepo(),
-                boot.getValidator(Option.class)
+                container.getOptionRepository(),
+                container.getCandidateRepo(),
+                container.getDepartmentRepo(),
+                container.getValidator(Option.class)
         );
 
         Menu menu            = new Menu("1", "Main menu");
@@ -69,8 +69,8 @@ public class Main {
 
         boolean loadFromMemory = false;
         if(loadFromMemory) {
-            boot.getDepartmentRepo().addCollection(memDepLoader.load(15));
-            boot.getCandidateRepo().addCollection(memCandLoader.load(15));
+            container.getDepartmentRepo().addCollection(memDepLoader.load(15));
+            container.getCandidateRepo().addCollection(memCandLoader.load(15));
         }
 
         menu.execute(new Scanner(System.in), new IndentablePrintStream(System.out, 50));
