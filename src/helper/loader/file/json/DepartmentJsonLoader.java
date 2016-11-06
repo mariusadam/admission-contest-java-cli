@@ -15,7 +15,7 @@ public class DepartmentJsonLoader extends JsonLoader<Department> {
     @Override
     protected Department createFromJSONObject(JSONObject jsonObject) {
         return new Department(
-                jsonObject.getInt("id"),
+                jsonObject.getString("id"),
                 jsonObject.getString("name"),
                 jsonObject.getInt("numberOfSeats")
         );

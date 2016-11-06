@@ -18,6 +18,8 @@ import repository.Repository;
 import repository.RepositoryInterface;
 import repository.decorator.FileLoadingRepository;
 import repository.decorator.FileSavingRepository;
+import repository.decorator.RepositoryDecorator;
+import repository.decorator.SerializableRepository;
 import validator.CandidateValidator;
 import validator.DepartmentValidator;
 import validator.OptionValidator;
@@ -42,9 +44,9 @@ public class Bootstrap {
 
     private void registerDefaultValues() {
         try {
-            setConfig("candidatesFile", "candidates.txt");
-            setConfig("departmentsFile", "departments.txt");
-            setConfig("optionsFile", "options.txt");
+            setConfig("candidatesFile", "candidates_serializable.txt");
+            setConfig("departmentsFile", "departments_serializable.txt");
+            setConfig("optionsFile", "options_serializable.txt");
             setConfig("separator", " | ");
 
             services.putIfAbsent("option.validator", new OptionValidator());
@@ -84,45 +86,52 @@ public class Bootstrap {
         return (FileSaverInterface) services.get("saver");
     }
 
-    public RepositoryInterface<Option> getOptionRepository() {
+    public RepositoryInterface<Integer, Option> getOptionRepository() {
         if (services.get("option.repository") == null) {
             String optionsFile = (String) getConfig("optionsFile");
             OptionValidator ov = (OptionValidator) this.getValidator(Option.class);
             OptionLoader optionLoader = new OptionLoader(ov, getCandidateRepo(), getDepartmentRepo());
-            RepositoryInterface<Option> optionRepo = new Repository<>();
-            optionRepo = new FileLoadingRepository<>(optionRepo, optionLoader, optionsFile);
-            optionRepo = new FileSavingRepository<>(optionRepo, getSaver(), optionsFile);
+            RepositoryInterface<Integer, Option> optionRepo = new Repository<>();
+            optionRepo = new SerializableRepository<>(optionRepo, optionsFile);
+
+//            optionRepo = new FileLoadingRepository<>(optionRepo, optionLoader, optionsFile);
+//            optionRepo = new FileSavingRepository<>(optionRepo, getSaver(), optionsFile);
+
             services.put("option.repository", optionRepo);
         }
 
-        return (RepositoryInterface<Option>) services.get("option.repository");
+        return (RepositoryInterface<Integer, Option>) services.get("option.repository");
     }
 
-    public RepositoryInterface<Candidate> getCandidateRepo() {
+    public RepositoryInterface<Integer, Candidate> getCandidateRepo() {
         if (services.get("candidate.repository") == null) {
             String candidatesFile = (String) getConfig("candidatesFile");
             CandidateValidator cv = (CandidateValidator) this.getValidator(Candidate.class);
-            RepositoryInterface<Candidate> candidateRepo = new Repository<>();
-            FileSaverInterface<Candidate> ss = (FileSaverInterface<Candidate>) getSaver();
-            candidateRepo = new FileSavingRepository<>(candidateRepo, ss, candidatesFile);
-            candidateRepo = new FileLoadingRepository<>(candidateRepo, new CandidateLoader(cv), candidatesFile);
+            RepositoryInterface<Integer, Candidate> candidateRepo = new Repository<>();
+            candidateRepo = new SerializableRepository<>(candidateRepo, candidatesFile);
+
+//            FileSaverInterface<Candidate> ss = (FileSaverInterface<Candidate>) getSaver();
+//            candidateRepo = new FileSavingRepository<>(candidateRepo, ss, candidatesFile);
+//            candidateRepo = new FileLoadingRepository<>(candidateRepo, new CandidateLoader(cv), candidatesFile);
+
             services.put("candidate.repository", candidateRepo);
         }
 
-        return (RepositoryInterface<Candidate>) services.get("candidate.repository");
+        return (RepositoryInterface<Integer, Candidate>) services.get("candidate.repository");
     }
 
-    public RepositoryInterface<Department> getDepartmentRepo() {
+    public RepositoryInterface<String, Department> getDepartmentRepo() {
         if (services.get("department.repository") == null) {
             String departmentsFile = (String) getConfig("departmentsFile");
             DepartmentValidator dv = (DepartmentValidator) this.getValidator(Department.class);
-            RepositoryInterface<Department> departmentRepo = new Repository<>();
-            departmentRepo         = new FileLoadingRepository<>(departmentRepo, new DepartmentLoader(dv), departmentsFile);
-            departmentRepo         = new FileSavingRepository<>(departmentRepo, getSaver(), departmentsFile);
+            RepositoryInterface<String, Department> departmentRepo = new Repository<>();
+            departmentRepo = new SerializableRepository<>(departmentRepo, departmentsFile);
+//            departmentRepo         = new FileLoadingRepository<>(departmentRepo, new DepartmentLoader(dv), departmentsFile);
+//            departmentRepo         = new FileSavingRepository<>(departmentRepo, getSaver(), departmentsFile);
             services.put("department.repository", departmentRepo);
         }
 
-        return (RepositoryInterface<Department>) services.get("department.repository");
+        return (RepositoryInterface<String, Department>) services.get("department.repository");
     }
 
     public ValidatorInterface getValidator(Class tClass) {

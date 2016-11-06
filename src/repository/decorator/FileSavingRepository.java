@@ -1,6 +1,6 @@
 package repository.decorator;
 
-import domain.Entity;
+import domain.HasId;
 import exception.DuplicateEntryException;
 import repository.RepositoryInterface;
 import helper.saver.FileSaverInterface;
@@ -8,11 +8,11 @@ import helper.saver.FileSaverInterface;
 /**
  * @author Marius Adam
  */
-public class FileSavingRepository<T extends Entity> extends RepositoryDecorator<T> {
+public class FileSavingRepository<Id, T extends HasId<Id>> extends RepositoryDecorator<Id, T> {
     private FileSaverInterface<T> saver;
     private String                filename;
 
-    public FileSavingRepository(RepositoryInterface<T> repository, FileSaverInterface<T> saver, String filename) {
+    public FileSavingRepository(RepositoryInterface<Id, T> repository, FileSaverInterface<T> saver, String filename) {
         super(repository);
         this.saver = saver;
         this.filename = filename;
@@ -25,7 +25,7 @@ public class FileSavingRepository<T extends Entity> extends RepositoryDecorator<
     }
 
     @Override
-    public T delete(Integer id) {
+    public T delete(Id id) {
         T obj = super.delete(id);
         this.saveToFile();
 
@@ -39,6 +39,6 @@ public class FileSavingRepository<T extends Entity> extends RepositoryDecorator<
     }
 
     private void saveToFile() {
-        this.saver.save(this, this.filename);
+        this.saver.save(this.getAll(), this.filename);
     }
 }

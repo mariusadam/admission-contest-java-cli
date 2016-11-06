@@ -1,10 +1,9 @@
 package helper.saver;
 
-import repository.RepositoryInterface;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * @author Marius Adam
@@ -14,9 +13,9 @@ public abstract class FileSaver<T> implements FileSaverInterface<T>{
      * {@inheritDoc}
      */
     @Override
-    public void save(RepositoryInterface<T> repository, String filename) {
+    public void save(Collection<T> items, String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            for (Object entity : repository.getAll()) {
+            for (T entity : items) {
                 writer.write(this.transform(entity));
                 writer.newLine();
             }
@@ -25,5 +24,5 @@ public abstract class FileSaver<T> implements FileSaverInterface<T>{
         }
     }
 
-    protected abstract String transform(Object object);
+    protected abstract String transform(T object);
 }

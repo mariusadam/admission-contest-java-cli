@@ -1,19 +1,19 @@
 package helper.loader.memory;
 
 import domain.Department;
-import domain.Entity;
+import helper.Generator.RandomGenerator;
 import org.apache.commons.lang.RandomStringUtils;
-import repository.RepositoryInterface;
 
 /**
  * @author Marius Adam
  */
 public class DepartmentMemoryLoader extends BaseMemoryLoader<Department>{
     @Override
-    public Department getNewEntity(RepositoryInterface<Department> repository) {
+    public Department getNewEntity() {
+        String id = RandomGenerator.getRandomString(10);
         return new Department(
-                repository.getNextId(),
-                "Department" + repository.getNextId(),
+                id,
+                "Department" + id,
                 Integer.valueOf(RandomStringUtils.randomNumeric(3))
         );
     }

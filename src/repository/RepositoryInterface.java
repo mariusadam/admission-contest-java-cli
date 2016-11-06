@@ -1,5 +1,6 @@
 package repository;
 
+import domain.HasId;
 import exception.DuplicateEntryException;
 import util.GenericArray;
 
@@ -8,7 +9,7 @@ import java.util.Collection;
 /**
  *
  */
-public interface RepositoryInterface<T> {
+public interface RepositoryInterface<Id, T extends HasId<Id>> {
     /**
      * Inserts a new entity into the repository
      *
@@ -22,7 +23,7 @@ public interface RepositoryInterface<T> {
      * @param id The id of the entity to be deleted
      * @return Entity The deleted entity
      */
-    T delete(Integer id);
+    T delete(Id id);
 
     /**
      * Updates the given entity by identifying the entity from
@@ -39,7 +40,7 @@ public interface RepositoryInterface<T> {
      * @return Entity The searched entity
      * @throws java.util.NoSuchElementException If the searched entity is not found
      */
-    T findById(Integer id);
+    T findById(Id id);
 
     /**
      *
@@ -52,14 +53,16 @@ public interface RepositoryInterface<T> {
      *
      * @return Integer The last inserted id
      */
-    Integer getLastId();
+    Id getLastId();
 
     /**
      * Returns the id of the next inserted entity
      *
      * @return Integer The next inserted id
      */
-    Integer getNextId();
+    Id getNextId();
+
+    void addCollection(Collection<T> collection);
 
     int size();
 }

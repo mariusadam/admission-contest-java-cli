@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  * Created by marius on 10/28/16.
  */
 public class RepositoryTest {
-    private RepositoryInterface<Candidate> repo;
+    private RepositoryInterface<Integer, Candidate> repo;
 
     @Before
     public void setUp() throws Exception {

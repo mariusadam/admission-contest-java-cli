@@ -14,15 +14,15 @@ import java.util.Collection;
  * Created by marius on 10/16/16.
  */
 public class OptionController {
-    private RepositoryInterface<Option>     optionRepository;
-    private RepositoryInterface<Candidate>  candidateRepository;
-    private RepositoryInterface<Department> departmentRepository;
+    private RepositoryInterface<Integer, Option>     optionRepository;
+    private RepositoryInterface<Integer, Candidate>  candidateRepository;
+    private RepositoryInterface<String, Department> departmentRepository;
     private ValidatorInterface<Option>      validator;
 
     public OptionController(
-            RepositoryInterface<Option>     repository,
-            RepositoryInterface<Candidate>  candidateRepository,
-            RepositoryInterface<Department> departmentRepository,
+            RepositoryInterface<Integer, Option>     repository,
+            RepositoryInterface<Integer, Candidate>  candidateRepository,
+            RepositoryInterface<String, Department> departmentRepository,
             ValidatorInterface<Option>      validator
     )
     {
@@ -32,16 +32,12 @@ public class OptionController {
         this.validator = validator;
     }
 
-    public Option create(String cid, String did) throws InvalidObjectException, DuplicateEntryException {
-        Integer candidateIt = null, departmentId = null;
+    public Option create(String cid, String departmentId) throws InvalidObjectException, DuplicateEntryException {
+        Integer candidateIt = null;
 
         try {
             if (!cid.isEmpty()) {
                 candidateIt = Integer.parseInt(cid);
-            }
-
-            if (!did.isEmpty()) {
-                departmentId = Integer.parseInt(did);
             }
         }catch (NumberFormatException e) {
             throw new InvalidObjectException("Invalid id: " + e.getMessage());
@@ -67,7 +63,7 @@ public class OptionController {
         }
 
         if (!newDepartmentId.isEmpty()) {
-            option.setDepartment(this.departmentRepository.findById(Integer.parseInt(newDepartmentId)));
+            option.setDepartment(this.departmentRepository.findById(newDepartmentId));
         }
         this.validator.validate(option);
         this.optionRepository.update(option);

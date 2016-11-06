@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
  *
  */
 public class CandidateController {
-    private RepositoryInterface<Candidate> candidateRepository;
+    private RepositoryInterface<Integer, Candidate> candidateRepository;
     private ValidatorInterface<Candidate>  validator;
 
     /**
@@ -21,7 +21,7 @@ public class CandidateController {
      * @param candidateRepository  The optionRepository class for Candidate entities
      * @param validator            The validator for the Candidate entity
      */
-    public CandidateController(RepositoryInterface<Candidate> candidateRepository, ValidatorInterface<Candidate> validator) {
+    public CandidateController(RepositoryInterface<Integer, Candidate> candidateRepository, ValidatorInterface<Candidate> validator) {
         this.candidateRepository = candidateRepository;
         this.validator = validator;
     }

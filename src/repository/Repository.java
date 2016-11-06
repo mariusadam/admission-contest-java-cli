@@ -1,7 +1,9 @@
 package repository;
 
 import domain.Entity;
+import domain.HasId;
 import exception.DuplicateEntryException;
+import exception.RepositoryException;
 import util.GenericArray;
 
 import java.util.*;
@@ -9,8 +11,8 @@ import java.util.*;
 /**
  *
  */
-public class Repository<T extends Entity> implements RepositoryInterface<T> {
-    private final Map<Integer, T> items;
+public class Repository<Id, T extends HasId<Id>> implements RepositoryInterface<Id, T> {
+    private Map<Id, T> items;
 
     public Repository() {
         this.items = new Hashtable<>();
@@ -37,7 +39,7 @@ public class Repository<T extends Entity> implements RepositoryInterface<T> {
      * @return Entity The deleted entity
      */
     @Override
-    public T delete(Integer id) {
+    public T delete(Id id) {
         T deleted = this.findById(id);
         this.items.remove(id);
 
@@ -65,7 +67,7 @@ public class Repository<T extends Entity> implements RepositoryInterface<T> {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public T findById(Integer id) {
+    public T findById(Id id) {
         T obj = this.items.get(id);
         if (obj != null) {
             return obj;
@@ -79,14 +81,15 @@ public class Repository<T extends Entity> implements RepositoryInterface<T> {
      * @return Integer The last inserted id
      */
     @Override
-    public Integer getLastId() {
+    public Id getLastId() {
         Integer lastId = Integer.MIN_VALUE;
-        for (Entity e : this.items.values()) {
-            lastId = lastId < e.getId() ? e.getId() : lastId;
+        for (HasId<Id> e : this.items.values()) {
+            lastId = lastId < (Integer) e.getId() ? (Integer) e.getId() : lastId;
         }
 
         lastId = lastId == Integer.MIN_VALUE ? null : lastId;
-        return lastId;
+        //noinspection unchecked
+        return (Id) lastId;
     }
 
     /**
@@ -95,8 +98,20 @@ public class Repository<T extends Entity> implements RepositoryInterface<T> {
      * @return Integer The next inserted id
      */
     @Override
-    public Integer getNextId() {
-        return this.getLastId() == null ? 0 : this.getLastId() + 1;
+    public Id getNextId() {
+        //noinspection unchecked
+        return this.getLastId() == null ? (Id) (new Integer(0)) : (Id) (new Integer(((Integer) this.getLastId()) + 1));
+    }
+
+    @Override
+    public void addCollection(Collection<T> collection) {
+        for (T obj : collection) {
+            try {
+                this.insert(obj);
+            } catch (DuplicateEntryException e) {
+                throw new RepositoryException(e);
+            }
+        }
     }
 
     @Override

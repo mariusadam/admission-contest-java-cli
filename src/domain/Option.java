@@ -3,7 +3,7 @@ package domain;
 /**
  * Created by marius on 10/13/16.
  */
-public class Option extends Entity {
+public class Option extends Entity<Integer> {
     private Candidate candidate;
     private Department department;
 
@@ -45,14 +45,5 @@ public class Option extends Entity {
                 separator,
                 department.getId().toString()
         );
-    }
-
-    @Override
-    public Option clone() throws CloneNotSupportedException {
-        Option cloned     = (Option) super.clone();
-        cloned.candidate  = this.candidate;
-        cloned.department = this.department;
-
-        return cloned;
     }
 }

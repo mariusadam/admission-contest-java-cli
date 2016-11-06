@@ -26,11 +26,8 @@ import helper.loader.memory.MemoryLoaderInterface;
 import menu.command.option.DeleteOptionCommand;
 import menu.command.option.PrintOptionsCommand;
 import menu.command.option.UpdateOptionCommand;
-import validator.CandidateValidator;
-import validator.DepartmentValidator;
 
 import menu.Menu;
-import validator.OptionValidator;
 import view.decorator.IndentablePrintStream;
 
 import java.util.Scanner;
@@ -72,8 +69,8 @@ public class Main {
 
         boolean loadFromMemory = false;
         if(loadFromMemory) {
-            memDepLoader.load(boot.getDepartmentRepo(), 10);
-            memCandLoader.load(boot.getCandidateRepo(), 10);
+            boot.getDepartmentRepo().addCollection(memDepLoader.load(15));
+            boot.getCandidateRepo().addCollection(memCandLoader.load(15));
         }
 
         menu.execute(new Scanner(System.in), new IndentablePrintStream(System.out, 50));

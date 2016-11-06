@@ -2,13 +2,14 @@ package helper.loader.file;
 
 import exception.DuplicateEntryException;
 import exception.InvalidObjectException;
-import repository.RepositoryInterface;
+import exception.LoaderException;
 import validator.ValidatorInterface;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * @author Marius Adam
@@ -24,16 +25,20 @@ public abstract class BaseFileLoader<T> implements FileLoaderInterface<T> {
      * {@inheritDoc}
      */
     @Override
-    public void load(RepositoryInterface<T> repository, String filename) {
+    public Collection<T> load(String filename) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))){
+            Collection<T> result = new ArrayList<>();
+
             String line;
             while ((line = reader.readLine()) != null) {
                 T obj = this.createFromFormat(line);
                 this.validator.validate(obj);
-                repository.insert(obj);
+                result.add(obj);
             }
-        } catch (IOException | DuplicateEntryException | InvalidObjectException e) {
-            e.printStackTrace();
+
+            return result;
+        } catch (IOException e) {
+            throw new LoaderException(e);
         }
     }
 

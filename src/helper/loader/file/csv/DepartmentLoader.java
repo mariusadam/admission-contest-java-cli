@@ -29,7 +29,7 @@ public class DepartmentLoader extends BaseCsvLoader<Department> {
         if(parts.length != 3) {
             throw new InvalidDepartmentException(String.format("Cannot create a Candidate object with csv string %s", Arrays.toString(parts)));
         } else {
-            return new Department(Integer.parseInt(parts[0]), parts[1], Integer.parseInt(parts[2]));
+            return new Department(parts[0], parts[1], Integer.parseInt(parts[2]));
         }
     }
 }

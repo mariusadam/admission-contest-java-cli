@@ -1,9 +1,11 @@
 package domain;
 
+import java.io.Serializable;
+
 /**
  * Created by marius on 10/8/16.
  */
-public class Candidate extends Entity {
+public class Candidate extends Entity<Integer>{
     private String name;
     private String phone;
     private String address;
@@ -87,15 +89,5 @@ public class Candidate extends Entity {
                 separator,
                 address
         );
-    }
-
-    @Override
-    public Candidate clone() throws CloneNotSupportedException {
-        Candidate cloned = (Candidate) super.clone();
-        cloned.name      = this.name;
-        cloned.phone     = this.phone;
-        cloned.address   = this.address;
-
-        return cloned;
     }
 }

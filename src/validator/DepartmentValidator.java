@@ -18,7 +18,7 @@ public class DepartmentValidator implements ValidatorInterface<Department> {
 
         StringBuilder sb = new StringBuilder();
 
-        if (obj.getId() < 0) {
+        if (obj.getId().isEmpty()) {
             sb.append("     Invalid id: ").append(obj.getId()).append('\n');
         }
 

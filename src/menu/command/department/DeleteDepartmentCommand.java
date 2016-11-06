@@ -27,10 +27,10 @@ public class DeleteDepartmentCommand extends BaseDepartmentCommand {
      */
     @Override
     public void execute(Scanner scanner, PrintStream out) {
-        Integer id;
+        String id;
 
         out.print("Enter the id of the department you with to delete: ");
-        id = scanner.nextInt();
+        id = scanner.nextLine();
         scanner.nextLine();
         try {
             Department department = this.departmentController.delete(id);

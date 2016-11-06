@@ -27,12 +27,12 @@ public class UpdateDepartmentCommand extends BaseDepartmentCommand {
      */
     @Override
     public void execute(Scanner scanner, PrintStream out) {
-        Integer id;
+        String id;
         String name;
         Integer numberOfSeats;
 
         out.print("Enter the id of the department you with to modify: ");
-        id = scanner.nextInt();
+        id = scanner.nextLine();
         scanner.nextLine();
         out.print("Enter the new phone of the department or leave id blank to not change it: ");
         name = scanner.nextLine();

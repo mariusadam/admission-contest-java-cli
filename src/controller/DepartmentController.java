@@ -13,15 +13,15 @@ import java.util.NoSuchElementException;
  *
  */
 public class DepartmentController {
-    private RepositoryInterface<Department> departmentRepository;
-    private ValidatorInterface<Department>  validator;
+    private RepositoryInterface<String, Department> departmentRepository;
+    private ValidatorInterface<Department>          validator;
 
     /**
      *
      * @param departmentRepository The optionRepository class for Department entities
      * @param departmentValidator  The validator for Department entity
      */
-    public DepartmentController(RepositoryInterface<Department> departmentRepository, ValidatorInterface<Department> departmentValidator) {
+    public DepartmentController(RepositoryInterface<String, Department> departmentRepository, ValidatorInterface<Department> departmentValidator) {
         this.departmentRepository = departmentRepository;
         this.validator = departmentValidator;
     }
@@ -53,7 +53,7 @@ public class DepartmentController {
      * @param newNumberOfSeats    The new numberOfSeats of the department
      * @return {@link Department} The updated department
      */
-    public Department update(Integer id, String newName, Integer newNumberOfSeats) throws InvalidObjectException {
+    public Department update(String id, String newName, Integer newNumberOfSeats) throws InvalidObjectException {
         Department department = this.departmentRepository.findById(id);
 
         department.setName(newName);
@@ -70,7 +70,7 @@ public class DepartmentController {
      * @return {@link Department}     The deleted entity
      * @throws NoSuchElementException If the department with given id is not found
      */
-    public Department delete(Integer id) {
+    public Department delete(String id) {
         return this.departmentRepository.delete(id);
     }
 

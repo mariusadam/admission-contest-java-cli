@@ -1,6 +1,6 @@
 package helper.loader.memory;
 
-import repository.RepositoryInterface;
+import java.util.Collection;
 
 /**
  * @author Marius Adam
@@ -9,8 +9,7 @@ public interface MemoryLoaderInterface<T> {
     /**
      * Loads the specifies number of objects in repository from memory
      *
-     * @param repository A repository object
      * @param howMany    The number of entities to create/loadFromMemory
      */
-    public void load(RepositoryInterface<T> repository, int howMany);
+    Collection<T> load(int howMany);
 }

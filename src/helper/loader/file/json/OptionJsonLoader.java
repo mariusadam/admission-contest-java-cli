@@ -11,10 +11,10 @@ import validator.ValidatorInterface;
  * @author Marius Adam
  */
 public class OptionJsonLoader extends JsonLoader<Option> {
-    private RepositoryInterface<Candidate>  cr;
-    private RepositoryInterface<Department> dr;
+    private RepositoryInterface<Integer, Candidate>  cr;
+    private RepositoryInterface<String, Department> dr;
 
-    public OptionJsonLoader(ValidatorInterface<Option> validator, RepositoryInterface<Candidate> cr, RepositoryInterface<Department> dr) {
+    public OptionJsonLoader(ValidatorInterface<Option> validator, RepositoryInterface<Integer, Candidate> cr, RepositoryInterface<String, Department> dr) {
         super(validator);
         this.cr = cr;
         this.dr = dr;
@@ -25,7 +25,7 @@ public class OptionJsonLoader extends JsonLoader<Option> {
         return new Option(
                 jsonObject.getInt("id"),
                 this.cr.findById(jsonObject.getInt("candidate")),
-                this.dr.findById(jsonObject.getInt("department"))
+                this.dr.findById(jsonObject.getString("department"))
         );
     }
 }

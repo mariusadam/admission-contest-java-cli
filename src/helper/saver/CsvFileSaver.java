@@ -5,7 +5,7 @@ import domain.Entity;
 /**
  * @author Marius Adam.
  */
-public class CsvFileSaver<T extends Entity> extends FileSaver<T> {
+public class CsvFileSaver<T> extends FileSaver<T> {
     private String separator;
     public final static String DEFAULT_SEPARATOR = " | ";
 

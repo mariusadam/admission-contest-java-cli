@@ -3,7 +3,7 @@ package exception;
 /**
  * Created by marius on 10/16/16.
  */
-public class InvalidObjectException extends Exception {
+public class InvalidObjectException extends RuntimeException {
     public InvalidObjectException() {
     }
 

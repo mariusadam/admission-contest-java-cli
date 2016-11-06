@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  */
 public abstract class BaseCsvLoader<T> extends BaseFileLoader<T> {
     private String separator;
-    public final static String DEFAULT_SEPARATOR = " | ";
+    private final static String DEFAULT_SEPARATOR = " | ";
 
     public BaseCsvLoader(ValidatorInterface<T> validator) {
         this(validator, DEFAULT_SEPARATOR);

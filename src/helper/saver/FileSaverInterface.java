@@ -1,15 +1,14 @@
 package helper.saver;
 
-import repository.RepositoryInterface;
+import java.util.Collection;
 
 /**
  * @author Marius Adam
  */
 public interface FileSaverInterface<T> {
     /**
-     *
-     * @param repository A repository object
+     * @param items A repository object
      * @param filename   The filename to save the objects from repository
      */
-    public void save(RepositoryInterface<T> repository, String filename);
+    void save(Collection<T> items, String filename);
 }
