@@ -1,5 +1,6 @@
 package helper.saver;
 
+import domain.HasId;
 import org.apache.commons.lang.ArrayUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +18,12 @@ public class JsonSaver<T> extends FileSaver<T> {
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
-                jsonObject.put(field.getName(), field.get(object));
+                Object fieldValue = field.get(object);
+                if (fieldValue instanceof HasId) {
+                    jsonObject.put(field.getName(), ((HasId)fieldValue).getId());
+                } else {
+                    jsonObject.put(field.getName(), fieldValue);
+                }
             } catch (JSONException | IllegalAccessException e) {
                 e.printStackTrace();
             }

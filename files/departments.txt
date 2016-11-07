@@ -1,0 +1,10 @@
+9 | Department9 | 472
+8 | Department8 | 532
+7 | Department7 | 473
+6 | Department6 | 161
+5 | Department5 | 427
+4 | Department4 | 421
+3 | Department3 | 321
+2 | Department2 | 892
+1 | Department1 | 308
+0 | Department0 | 17

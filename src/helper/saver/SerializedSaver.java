@@ -17,9 +17,9 @@ public class SerializedSaver<T> implements FileSaverInterface<T> {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
 
             ArrayList<T> list = new ArrayList<>(items);
+
             oos.writeObject(list);
             oos.close();
-
         } catch (IOException e) {
             throw new SaverException(e);
         }

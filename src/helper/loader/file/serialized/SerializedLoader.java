@@ -1,6 +1,6 @@
 package helper.loader.file.serialized;
 
-import exception.RepositoryException;
+import exception.LoaderException;
 import helper.loader.file.FileLoaderInterface;
 
 import java.io.FileInputStream;
@@ -21,10 +21,10 @@ public class SerializedLoader<T> implements FileLoaderInterface<T> {
             Collection<T> result = (ArrayList<T>) ois.readObject();
 
             ois.close();
-
+            
             return result;
         } catch (IOException | ClassNotFoundException e) {
-            throw new RepositoryException(e);
+            throw new LoaderException(e);
         }
     }
 }
