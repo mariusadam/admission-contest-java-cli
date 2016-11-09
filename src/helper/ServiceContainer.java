@@ -125,22 +125,22 @@ public class ServiceContainer {
             String candidateClass = Candidate.class.getName();
             String departmentClass = Department.class.getName();
 
-            setConfig(optionClass + ".file", "files/options_json.txt");
-            setConfig(candidateClass + ".file", "files/candidates_json.txt");
-            setConfig(departmentClass + ".file", "files/departments_json.txt");
+            setConfig(optionClass + ".file", "files/options_serializable.txt");
+            setConfig(candidateClass + ".file", "files/candidates_serializable.txt");
+            setConfig(departmentClass + ".file", "files/departments_serializable.txt");
             setConfig("separator", " | ");
 
             services.putIfAbsent(optionClass + ".validator", new OptionValidator());
             services.putIfAbsent(candidateClass + ".validator", new CandidateValidator());
             services.putIfAbsent(departmentClass + ".validator", new DepartmentValidator());
 
-            services.putIfAbsent(optionClass + ".saver", new JsonSaver<Option>());
-            services.putIfAbsent(candidateClass + ".saver", new JsonSaver<Candidate>());
-            services.putIfAbsent(departmentClass + ".saver", new JsonSaver<Department>());
+            services.putIfAbsent(optionClass + ".saver", new SerializedSaver<Option>());
+            services.putIfAbsent(candidateClass + ".saver", new SerializedSaver<Candidate>());
+            services.putIfAbsent(departmentClass + ".saver", new SerializedSaver<Department>());
 
-            services.putIfAbsent(candidateClass + ".loader", new CandidateJsonLoader(getValidator(Candidate.class)));
-            services.putIfAbsent(departmentClass + ".loader", new DepartmentJsonLoader(getValidator(Department.class)));
-            services.putIfAbsent(optionClass + ".loader", new OptionJsonLoader(getValidator(Option.class), getCandidateRepository(), getDepartmentRepository()));
+            services.putIfAbsent(candidateClass + ".loader", new SerializedLoader<Candidate>());
+            services.putIfAbsent(departmentClass + ".loader", new SerializedLoader<Department>());
+            services.putIfAbsent(optionClass + ".loader", new SerializedLoader<Option>());
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
