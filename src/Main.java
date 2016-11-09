@@ -1,55 +1,116 @@
+import controller.OptionController;
+import domain.Option;
+import helper.ServiceContainer;
+import menu.command.candidate.AddCandidateCommand;
+import menu.command.candidate.DeleteCandidateCommand;
+import menu.command.candidate.PrintCandidatesCommand;
+import menu.command.candidate.UpdateCandidateCommand;
+import menu.command.common.GoBackCommand;
+import menu.command.department.AddDepartmentCommand;
+import menu.command.department.DeleteDepartmentCommand;
+import menu.command.department.PrintDepartmentsCommand;
+import menu.command.department.UpdateDepartmentCommand;
+
 import controller.CandidateController;
 import controller.DepartmentController;
+
 import domain.Candidate;
 import domain.Department;
-import org.apache.commons.lang.RandomStringUtils;
-import repository.CandidateRepository;
-import repository.DepartmentRepository;
-import repository.Repository;
-import repository.RepositoryInterface;
-import util.UbbArray;
-import validator.CandidateValidator;
-import validator.DepartmentValidator;
-import view.Console;
+import menu.command.option.AddOptionCommand;
+
+import helper.PrintTableHelper;
+
+import helper.loader.memory.CandidateMemoryLoader;
+import helper.loader.memory.DepartmentMemoryLoader;
+import helper.loader.memory.MemoryLoaderInterface;
+import menu.command.option.DeleteOptionCommand;
+import menu.command.option.PrintOptionsCommand;
+import menu.command.option.UpdateOptionCommand;
+
+import menu.Menu;
+import view.decorator.IndentablePrintStream;
+
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-        CandidateRepository candidateRepository = new CandidateRepository();
-        CandidateValidator candidateValidator = new CandidateValidator();
-        CandidateController candidateController = new CandidateController(candidateRepository, candidateValidator);
 
-        DepartmentRepository departmentRepository = new DepartmentRepository();
-        DepartmentValidator departmentValidator = new DepartmentValidator();
-        DepartmentController departmentController = new DepartmentController(departmentRepository, departmentValidator);
+        ServiceContainer container = new ServiceContainer();
 
-        Console console = new Console(candidateController, departmentController);
+        CandidateController candidateController   = new CandidateController(container.getCandidateRepository(), container.getValidator(Candidate.class));
+        DepartmentController departmentController = new DepartmentController(container.getDepartmentRepository(), container.getValidator(Department.class));
+        OptionController optionController         = new OptionController(
+                container.getOptionRepository(),
+                container.getCandidateRepository(),
+                container.getDepartmentRepository(),
+                container.getValidator(Option.class)
+        );
 
-        loadCandidates(candidateRepository, 5);
-        loadDepartments(departmentRepository, 5);
-        console.run();
+        Menu menu            = new Menu("1", "Main menu");
+        Menu candidatesMenu  = new Menu("1", "Candidates menu");
+        Menu departmentsMenu = new Menu("2", "Departments menu");
+        Menu optionMenu      = new Menu("3", "Options menu");
+
+        menu.addItem(new GoBackCommand("0", "Exit the program...."));
+        menu.addItem(candidatesMenu);
+        menu.addItem(departmentsMenu);
+        menu.addItem(optionMenu);
+
+        PrintTableHelper helper = new PrintTableHelper(40, System.out);
+
+        loadOptionsCommands(optionMenu, optionController, helper);
+        loadCandidatesCommands(candidatesMenu, candidateController, helper);
+        loadDepartmentsCommands(departmentsMenu, departmentController, helper);
+
+        MemoryLoaderInterface<Department> memDepLoader = new DepartmentMemoryLoader();
+        MemoryLoaderInterface<Candidate> memCandLoader = new CandidateMemoryLoader();
+
+        boolean loadFromMemory = false;
+        if(loadFromMemory) {
+            container.getDepartmentRepository().addCollection(memDepLoader.load(150));
+            container.getCandidateRepository().addCollection(memCandLoader.load(150));
+        }
+
+        menu.execute(new Scanner(System.in), new IndentablePrintStream(System.out, 50));
     }
 
-    private static void loadCandidates(RepositoryInterface repository, Integer howMany) {
-        for(int i = 0; i < howMany; i++) {
-            repository.insert(new Candidate(
-                    repository.getNextId(),
-                    "Candidate" + i,
-                    RandomStringUtils.randomNumeric(10),
-                    "Street " + RandomStringUtils.randomAlphabetic(10) +
-                            ", nr " + RandomStringUtils.randomNumeric(3) +
-                            ", City " + RandomStringUtils.randomAlphabetic(6)
-            ));
-        }
+    private static void loadCandidatesCommands(Menu menu, CandidateController controller, PrintTableHelper helper) {
+        Menu crudMenu = new Menu("1", "Crud");
+        menu.addItem(crudMenu);
+
+        crudMenu.addItem(new AddCandidateCommand("1", "Add a new candidate", controller));
+        crudMenu.addItem(new UpdateCandidateCommand("2", "Update a candidate", controller));
+        crudMenu.addItem(new DeleteCandidateCommand("3", "Delete a candidate", controller));
+        crudMenu.addItem(new GoBackCommand("0", "Go Back"));
+
+        menu.addItem(new PrintCandidatesCommand("2", "Show all candidates", controller, helper));
+        menu.addItem(new GoBackCommand("0", "Go Back"));
     }
 
-    private static void loadDepartments(RepositoryInterface repository, Integer howMany) {
-        for(int i = 0; i < howMany; i++) {
-            repository.insert(new Department(
-                    repository.getNextId(),
-                    "Department" + i,
-                    Integer.valueOf(RandomStringUtils.randomNumeric(3))
-            ));
-        }
+    private static void loadDepartmentsCommands(Menu menu, DepartmentController controller, PrintTableHelper helper) {
+        Menu crudMenu = new Menu("1", "Crud");
+        menu.addItem(crudMenu);
+
+        crudMenu.addItem(new AddDepartmentCommand("1", "Add a new department", controller));
+        crudMenu.addItem(new UpdateDepartmentCommand("2", "Update a department", controller));
+        crudMenu.addItem(new DeleteDepartmentCommand("3", "Delete a department", controller));
+        crudMenu.addItem(new GoBackCommand("0", "Go Back"));
+
+        menu.addItem(new PrintDepartmentsCommand("2", "Show all departments", controller, helper));
+        menu.addItem(new GoBackCommand("0", "Go Back"));
+    }
+
+    private static void loadOptionsCommands(Menu menu, OptionController controller, PrintTableHelper helper) {
+        Menu crudMenu = new Menu("1", "Crud");
+        menu.addItem(crudMenu);
+
+        crudMenu.addItem(new AddOptionCommand("1", "Place a option for a candidate", controller));
+        crudMenu.addItem(new UpdateOptionCommand("2", "Update an option", controller));
+        crudMenu.addItem(new DeleteOptionCommand("3", "Delete an option", controller));
+        crudMenu.addItem(new GoBackCommand("0", "Enemy spotted, fallback..."));
+
+        menu.addItem(new PrintOptionsCommand("2", "Show all options", controller, helper));
+        menu.addItem(new GoBackCommand("0", "Return"));
     }
 }

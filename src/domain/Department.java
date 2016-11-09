@@ -1,9 +1,11 @@
 package domain;
 
+import java.io.Serializable;
+
 /**
  *
  */
-public class Department extends Entity{
+public class Department extends Entity<String>{
     private String name;
     private Integer numberOfSeats;
 
@@ -12,24 +14,10 @@ public class Department extends Entity{
      * @param name          {@link String}
      * @param numberOfSeats {@link Integer}
      */
-    public Department(Integer id, String name, Integer numberOfSeats) {
+    public Department(String id, String name, Integer numberOfSeats) {
         super(id);
         this.name = name;
         this.numberOfSeats = numberOfSeats;
-    }
-
-    /**
-     * @return {@link Integer}
-     */
-    public Integer getId() {
-        return this.id;
-    }
-
-    /**
-     * @param id {@link Integer}
-     */
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     /**
@@ -66,5 +54,17 @@ public class Department extends Entity{
     @Override
     public String toString() {
         return "Department " + this.name + " with id " + this.id;
+    }
+
+    @Override
+    public String toCsvFormat(String separator) {
+        return String.format(
+                "%s%s%s%s%s",
+                id,
+                separator,
+                name,
+                separator,
+                numberOfSeats.toString()
+        );
     }
 }

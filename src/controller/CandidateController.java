@@ -1,25 +1,28 @@
 package controller;
 
 import domain.Candidate;
-import domain.Entity;
-import repository.CandidateRepository;
-import util.UbbArray;
-import validator.CandidateValidator;
+import exception.DuplicateEntryException;
+import exception.InvalidObjectException;
+import helper.generator.RandomGenerator;
+import repository.RepositoryInterface;
+import validator.ValidatorInterface;
+
+import java.util.Collection;
 import java.util.NoSuchElementException;
 
 /**
  *
  */
 public class CandidateController {
-    private CandidateRepository candidateRepository;
-    private CandidateValidator validator;
+    private RepositoryInterface<Integer, Candidate> candidateRepository;
+    private ValidatorInterface<Candidate>  validator;
 
     /**
      *
-     * @param candidateRepository  The repository class for Candidate entities
+     * @param candidateRepository  The optionRepository class for Candidate entities
      * @param validator            The validator for the Candidate entity
      */
-    public CandidateController(CandidateRepository candidateRepository, CandidateValidator validator) {
+    public CandidateController(RepositoryInterface<Integer, Candidate> candidateRepository, ValidatorInterface<Candidate> validator) {
         this.candidateRepository = candidateRepository;
         this.validator = validator;
     }
@@ -31,9 +34,9 @@ public class CandidateController {
      * @param address The address of the candidate
      * @return The newly created Candidate object
      */
-    public Candidate create(String name, String phone, String address) {
+    public Candidate create(String name, String phone, String address) throws InvalidObjectException, DuplicateEntryException {
         Candidate candidate = new Candidate(
-                this.candidateRepository.getNextId(),
+                RandomGenerator.getRandomPositiveInt(),
                 name,
                 phone,
                 address
@@ -53,7 +56,7 @@ public class CandidateController {
      * @param newAddress The new address of the candidate
      * @return The newly update Candidate object
      */
-    public Candidate update(Integer id, String newName, String newPhone, String newAddress) {
+    public Candidate update(Integer id, String newName, String newPhone, String newAddress) throws InvalidObjectException {
         Candidate candidate = this.candidateRepository.findById(id);
 
         if (!newName.isEmpty()) {
@@ -81,8 +84,7 @@ public class CandidateController {
         return this.candidateRepository.delete(id);
     }
 
-    @SuppressWarnings("unchecked")
-    public UbbArray<Entity> getAll() {
-        return this.candidateRepository.getItems();
+    public Collection<Candidate> getAll() {
+        return this.candidateRepository.getAll();
     }
 }

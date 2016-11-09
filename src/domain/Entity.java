@@ -1,30 +1,30 @@
 package domain;
 
+import java.io.Serializable;
+
 /**
  *
  */
-public class Entity {
-    protected Integer id;
+public abstract class Entity<Id> implements HasId<Id>, Serializable{
+    protected Id id;
 
     /**
      *
      * @param id The unique id identifying an entity
      */
-    public Entity(Integer id) {
+    public Entity(Id id) {
         this.id = id;
     }
 
     /**
-     * @return {@link Integer}
+     * @return Id
      */
-    public Integer getId() {
+    public Id getId() {
         return id;
     }
 
-    /**
-     * @param id {@link Integer}
-     */
-    public void setId(Integer id) {
+    @Override
+    public void setId(Id id) {
         this.id = id;
     }
 
@@ -32,4 +32,6 @@ public class Entity {
     public boolean equals(Object obj) {
         return obj instanceof Entity && this.id.equals(((Entity) obj).id);
     }
+
+    public abstract String toCsvFormat(String separator);
 }

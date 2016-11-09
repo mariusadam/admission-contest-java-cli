@@ -1,27 +1,29 @@
 package repository;
 
-import domain.Entity;
-import exception.DuplicateIdException;
-import util.UbbArray;
+import domain.HasId;
+import exception.DuplicateEntryException;
+import util.GenericArray;
+
+import java.util.Collection;
 
 /**
  *
  */
-public interface RepositoryInterface {
+public interface RepositoryInterface<Id, T extends HasId<Id>> {
     /**
      * Inserts a new entity into the repository
      *
      * @param obj The object to be inserted
-     * @throws DuplicateIdException If there is already an entity with the same id
+     * @throws DuplicateEntryException If there is already an entity with the same id
      */
-    public void insert(Entity obj);
+    void insert(T obj) throws DuplicateEntryException;
     /**
      * Removes the entity from the repository
      *
      * @param id The id of the entity to be deleted
      * @return Entity The deleted entity
      */
-    public Entity delete(Integer id);
+    T delete(Id id);
 
     /**
      * Updates the given entity by identifying the entity from
@@ -29,7 +31,7 @@ public interface RepositoryInterface {
      *
      * @param entity The entity to be updated
      */
-    public void update(Entity entity);
+    void update(T entity);
 
     /**
      * Searches for an entity with a given id
@@ -38,25 +40,23 @@ public interface RepositoryInterface {
      * @return Entity The searched entity
      * @throws java.util.NoSuchElementException If the searched entity is not found
      */
-    public Entity findById(Integer id);
+    T findById(Id id);
 
     /**
      *
-     * @return {@link UbbArray} The object containing all the entities
+     * @return {@link GenericArray} The object containing all the entities
      */
-    public UbbArray getItems();
+    Collection<T> getAll();
 
     /**
-     * Returns the id of the last inserted entity
      *
-     * @return Integer The last inserted id
+     * @param collection A collection of objects to insert into the repository
      */
-    public Integer getLastId();
+    void addCollection(Collection<T> collection);
 
     /**
-     * Returns the id of the next inserted entity
      *
-     * @return Integer The next inserted id
+     * @return int
      */
-    public Integer getNextId();
+    int size();
 }

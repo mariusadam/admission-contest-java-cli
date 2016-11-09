@@ -1,12 +1,11 @@
 package domain;
 
-import javafx.scene.effect.Reflection;
+import java.io.Serializable;
 
 /**
  * Created by marius on 10/8/16.
  */
-
-public class Candidate extends Entity{
+public class Candidate extends Entity<Integer>{
     private String name;
     private String phone;
     private String address;
@@ -22,6 +21,13 @@ public class Candidate extends Entity{
         this.name = name;
         this.phone = phone;
         this.address = address;
+    }
+
+    protected Candidate(Candidate other) {
+        super(other.getId());
+        this.name = other.getName();
+        this.phone = other.getPhone();
+        this.address = other.getAddress();
     }
 
     /**
@@ -69,5 +75,19 @@ public class Candidate extends Entity{
     @Override
     public String toString() {
         return "Candidate " + this.name + " with id " + this.id;
+    }
+
+    @Override
+    public String toCsvFormat(String separator) {
+        return String.format(
+                "%s%s%s%s%s%s%s",
+                id.toString(),
+                separator,
+                name,
+                separator,
+                phone,
+                separator,
+                address
+        );
     }
 }
