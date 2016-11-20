@@ -1,9 +1,7 @@
-package tests.util;
+package util;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import util.GenericArray;
 
 import static org.junit.Assert.*;
 

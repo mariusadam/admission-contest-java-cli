@@ -1,11 +1,9 @@
-package tests.repository;
+package repository;
 
 import domain.Candidate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import repository.Repository;
-import repository.RepositoryInterface;
 
 import java.util.Collection;
 
