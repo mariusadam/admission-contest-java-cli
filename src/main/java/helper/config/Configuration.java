@@ -12,21 +12,18 @@ import org.yaml.snakeyaml.Yaml;
 
 /**
  * Configuration values are stored, loaded, and saved here.
- *
- * @author Kramer Campbell
  */
 public class Configuration {
-
-    /**
-     * The logger.
-     */
-    private static final Logger logger = Logger.getLogger(Configuration.class
-            .getName());
 
     /**
      * The file where the configuration is stored.
      */
     private final String configFile;
+
+    /**
+     * Yaml parser
+     */
+    private Yaml yaml;
 
     /**
      * The {@code Map} that holds the configuration values.
@@ -35,20 +32,19 @@ public class Configuration {
 
     public Configuration(String configFile) {
         this.configFile = configFile;
+        this.yaml = new Yaml();
         this.load();
     }
 
     /**
      * Loads the configuration.
      */
-    public void load() {
-        Yaml yaml = new Yaml();
-
+    private void load() {
         try {
             config = (Map<?, ?>) yaml
                     .load(new FileReader(new File(configFile)));
         } catch (FileNotFoundException e) {
-            logger.log(Level.SEVERE, "Unable to load configuration.", e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -56,12 +52,10 @@ public class Configuration {
      * Saves the configuration.
      */
     public void save() {
-        Yaml yaml = new Yaml();
-
         try {
             yaml.dump(config, new PrintWriter(new File(configFile)));
         } catch (FileNotFoundException e) {
-            logger.log(Level.SEVERE, "Unable to save configuration.", e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -95,4 +89,15 @@ public class Configuration {
         }
     }
 
+    public Map<String, Map<String, String>> getDomain() {
+        return (Map<String, Map<String, String>>) this.config.get("domain");
+    }
+
+    public Map<String, String> getDomainFor(String entity) {
+        return this.getDomain().get(entity);
+    }
+
+    public Map<String, String> getDatabase() {
+        return (Map<String, String>) this.config.get("database");
+    }
 }

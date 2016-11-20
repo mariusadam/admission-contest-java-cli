@@ -14,14 +14,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by marius on 11/20/16.
  */
 public class DbRepository<Id, T extends HasId<Id>> implements RepositoryInterface<Id, T> {
-    Connection connection;
-    MapperInterface<Id, T> mapper;
-    String tableName;
+    private Connection connection;
+    private MapperInterface<Id, T> mapper;
+    private String tableName;
 
     public DbRepository(Connection connection, MapperInterface<Id, T> mapper, String tableName) {
         this.connection = connection;
@@ -33,11 +34,7 @@ public class DbRepository<Id, T extends HasId<Id>> implements RepositoryInterfac
     public void insert(T obj) throws DuplicateEntryException {
         Map<String, String> props = this.mapper.toMap(obj);
         Set<String> keys = props.keySet();
-        ArrayList<String> values = new ArrayList<>();
-
-        for(String key : keys) {
-            values.add(props.get(key));
-        }
+        ArrayList<String> values = keys.stream().map(props::get).collect(Collectors.toCollection(ArrayList::new));
 
         String cols = String.join(", ", props.keySet());
         String vals = (new String(new char[props.size() - 1]).replace("\0", "?, ")) + "?";
@@ -45,7 +42,6 @@ public class DbRepository<Id, T extends HasId<Id>> implements RepositoryInterfac
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
-
             for(int i = 0; i < values.size(); i++) {
                 stmt.setString(i + 1, values.get(i));
             }
@@ -64,7 +60,6 @@ public class DbRepository<Id, T extends HasId<Id>> implements RepositoryInterfac
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
-
             stmt.setString(1, id.toString());
             stmt.execute();
 
@@ -152,9 +147,7 @@ public class DbRepository<Id, T extends HasId<Id>> implements RepositoryInterfac
 
     @Override
     public void addCollection(Collection<T> collection) {
-        for (T obj : collection) {
-            this.insert(obj);
-        }
+        collection.forEach(this::insert);
     }
 
     @Override

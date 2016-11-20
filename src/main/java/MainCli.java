@@ -28,13 +28,8 @@ import menu.command.option.PrintOptionsCommand;
 import menu.command.option.UpdateOptionCommand;
 
 import menu.Menu;
-import repository.RepositoryInterface;
 import view.decorator.IndentablePrintStream;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Collection;
 import java.util.Scanner;
 
 public class MainCli {
@@ -43,14 +38,9 @@ public class MainCli {
 
         ServiceContainer container = new ServiceContainer("src/main/resources/config/config.yml");
 
-        CandidateController candidateController   = new CandidateController(container.getCandidateRepository(), container.getValidator(Candidate.class));
-        DepartmentController departmentController = new DepartmentController(container.getDepartmentRepository(), container.getValidator(Department.class));
-        OptionController optionController         = new OptionController(
-                container.getOptionRepository(),
-                container.getCandidateRepository(),
-                container.getDepartmentRepository(),
-                container.getValidator(Option.class)
-        );
+        CandidateController candidateController   = container.getCandidateConttroller();
+        DepartmentController departmentController = container.getDepartmentController();
+        OptionController optionController         = container.getOptionController();
 
         Menu menu            = new Menu("1", "Main menu");
         Menu candidatesMenu  = new Menu("1", "Candidates menu");

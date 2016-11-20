@@ -7,6 +7,7 @@ import repository.RepositoryInterface;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Hashtable;
 import java.util.Map;
 
 /**
@@ -33,6 +34,13 @@ public class OptionMapper implements MapperInterface<Integer, Option>{
 
     @Override
     public Map<String, String> toMap(Option object) {
-        return null;
+        Map<String, String> properties = new Hashtable<>();
+        if (object.getId() != null) {
+            properties.put("id", object.getId().toString());
+        }
+        properties.put("candidate_id", object.getCandidate().getId().toString());
+        properties.put("department_id", object.getDepartment().getId());
+
+        return properties;
     }
 }

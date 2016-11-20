@@ -1,5 +1,8 @@
 package helper;
 
+import controller.CandidateController;
+import controller.DepartmentController;
+import controller.OptionController;
 import domain.Candidate;
 import domain.Department;
 import domain.HasId;
@@ -64,6 +67,33 @@ public class ServiceContainer {
         throw new RuntimeException("Could not find a validator for entity " + tClass.getName());
     }
 
+    public CandidateController getCandidateConttroller() {
+        String key = CandidateController.class.getName();
+        if (!this.services.containsKey(key)) {
+            this.services.put(key, new CandidateController(getCandidateRepository(), getValidator(Candidate.class)));
+        }
+
+        return (CandidateController) this.services.get(key);
+    }
+
+    public DepartmentController getDepartmentController() {
+        String key = DepartmentController.class.getName();
+        if (!this.services.containsKey(key)) {
+            this.services.put(key, new DepartmentController(getDepartmentRepository(), getValidator(Department.class)));
+        }
+
+        return (DepartmentController) this.services.get(key);
+    }
+
+    public OptionController getOptionController() {
+        String key = OptionController.class.getName();
+        if(!this.services.containsKey(key)) {
+            this.services.put(key, new OptionController(getOptionRepository(), getCandidateRepository(), getDepartmentRepository(), getValidator(Option.class)));
+        }
+
+        return (OptionController) this.services.get(key);
+    }
+
     private <T> FileSaverInterface<T> getSaver(Class<T> tClass) {
         if (this.services.containsKey(tClass.getName() + ".saver")){
             //noinspection unchecked
@@ -94,13 +124,11 @@ public class ServiceContainer {
     }
 
     private String getDatabaseConfig(String key) {
-        //noinspection unchecked
-        return ((Map<String, String>) this.config.get("database")).get(key);
+        return this.config.getDatabase().get(key);
     }
 
     private String getDomainConfig(String className, String key) {
-        //noinspection unchecked
-        return ((Map<String, Map<String, String>>) this.config.get("domain")).get(className).get(key);
+        return this.config.getDomainFor(className).get(key);
     }
 
     private <Id, T extends HasId<Id>> RepositoryInterface<Id, T> getFileRepo(Class<Id> idClass, Class<T> entityClass) {

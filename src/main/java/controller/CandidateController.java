@@ -9,6 +9,8 @@ import validator.ValidatorInterface;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -66,7 +68,7 @@ public class CandidateController {
             candidate.setPhone(newPhone);
         }
         if (!newAddress.isEmpty()) {
-            candidate.setName(newAddress);
+            candidate.setAddress(newAddress);
         }
         this.validator.validate(candidate);
         this.candidateRepository.update(candidate);
@@ -86,5 +88,9 @@ public class CandidateController {
 
     public Collection<Candidate> getAll() {
         return this.candidateRepository.getAll();
+    }
+
+    public Collection<Candidate> filterByName(String name) {
+        return this.getAll().stream().filter(candidate -> candidate.getName().toLowerCase().contains(name.toLowerCase())).collect(Collectors.toList());
     }
 }
