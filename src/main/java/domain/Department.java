@@ -9,6 +9,14 @@ public class Department extends Entity<String>{
     private String name;
     private Integer numberOfSeats;
 
+    public Department() {
+    }
+
+    public Department(String name, Integer numberOfSeats) {
+        this.name = name;
+        this.numberOfSeats = numberOfSeats;
+    }
+
     /**
      * @param id            {@link Integer}
      * @param name          {@link String}

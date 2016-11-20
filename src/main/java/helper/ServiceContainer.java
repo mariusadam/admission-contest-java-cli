@@ -5,20 +5,22 @@ import domain.Department;
 import domain.HasId;
 import domain.Option;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
+import helper.config.Configuration;
 import helper.loader.file.FileLoaderInterface;
-import helper.loader.file.json.CandidateJsonLoader;
-import helper.loader.file.json.DepartmentJsonLoader;
-import helper.loader.file.json.OptionJsonLoader;
-import helper.loader.file.serialized.SerializedLoader;
+import helper.mapper.CandidateMapper;
+import helper.mapper.DepartmentMapper;
+import helper.mapper.MapperInterface;
+import helper.mapper.OptionMapper;
 import helper.saver.FileSaverInterface;
-import helper.saver.JsonSaver;
-import helper.saver.SerializedSaver;
 import repository.Repository;
 import repository.RepositoryInterface;
+import repository.db.DbRepository;
 import repository.decorator.FileLoadingRepository;
 import repository.decorator.FileSavingRepository;
 import validator.CandidateValidator;
@@ -30,28 +32,27 @@ import validator.ValidatorInterface;
  * @author Marius Adam
  */
 public class ServiceContainer {
-    private Map<String, String>  config;
-    private Map<String, Boolean> locked;
+    private Configuration config;
     private Map<String, Object>  services;
 
-    public ServiceContainer() {
-        this.config   = new HashMap<>();
-        this.locked   = new HashMap<>();
+    public ServiceContainer(String configPath) {
+
+        this.config   = new Configuration(configPath);
         this.services = new HashMap<>();
 
         this.registerDefaultValues();
     }
 
     public RepositoryInterface<Integer, Option> getOptionRepository() {
-        return this.getRepo(Integer.class, Option.class);
+        return this.getDbRepo(Integer.class, Option.class);
     }
 
     public RepositoryInterface<Integer, Candidate> getCandidateRepository() {
-        return this.getRepo(Integer.class, Candidate.class);
+        return this.getDbRepo(Integer.class, Candidate.class);
     }
 
     public RepositoryInterface<String, Department> getDepartmentRepository() {
-        return this.getRepo(String.class, Department.class);
+        return this.getDbRepo(String.class, Department.class);
     }
 
     public <T> ValidatorInterface<T> getValidator(Class<T> tClass) {
@@ -81,31 +82,32 @@ public class ServiceContainer {
         throw new RuntimeException("Could not find a loader for entity " + tClass.getName());
     }
 
-    private String getConfig(String key) throws NoSuchElementException {
-        String obj = config.get(key);
+    private <Id, T extends HasId<Id>> MapperInterface<Id, T> getMapper(Class<Id> idClass, Class<T> entityClass) {
+        String key = idClass.getName() + entityClass.getName() + ".mapper";
 
-        if (obj == null) {
-            throw new NoSuchElementException("Could not find config value " + key +".");
+        if (this.services.containsKey(key)){
+            //noinspection unchecked
+            return (MapperInterface<Id, T>) this.services.get(key);
         }
 
-        locked.put(key, true);
-        return obj;
+        throw new RuntimeException("Could not find a loader for entity " + entityClass.getName());
     }
 
-    private void setConfig(String key, String value) throws IllegalAccessException {
-        if (locked.get(key) == null || !locked.get(key)) {
-            config.put(key, value);
-            return;
-        }
-
-        throw new IllegalAccessException("The config value with key " + key + " is locked and cannot ne modified");
+    private String getDatabaseConfig(String key) {
+        //noinspection unchecked
+        return ((Map<String, String>) this.config.get("database")).get(key);
     }
 
-    private <Id, T extends HasId<Id>> RepositoryInterface<Id, T> getRepo(Class<Id> idClass, Class<T> entityClass) {
+    private String getDomainConfig(String className, String key) {
+        //noinspection unchecked
+        return ((Map<String, Map<String, String>>) this.config.get("domain")).get(className).get(key);
+    }
+
+    private <Id, T extends HasId<Id>> RepositoryInterface<Id, T> getFileRepo(Class<Id> idClass, Class<T> entityClass) {
         String key = idClass.getName() + entityClass.getName() + ".repository";
 
         if (!services.containsKey(key)) {
-            String filename = getConfig(entityClass.getName() + ".file");
+            String filename = getDomainConfig(entityClass.getSimpleName(), "file");
 
             RepositoryInterface<Id, T> repo = new Repository<>();
             repo = new FileLoadingRepository<>(repo, getLoader(entityClass), filename);
@@ -118,31 +120,59 @@ public class ServiceContainer {
         return (RepositoryInterface<Id, T>) services.get(key);
     }
 
-    private void registerDefaultValues() {
-        try {
+    private Connection getConnection() {
+        String key = "db.connection";
 
-            String optionClass = Option.class.getName();
-            String candidateClass = Candidate.class.getName();
-            String departmentClass = Department.class.getName();
+        if (!services.containsKey(key)) {
+            try {
+                Connection connection = DriverManager.getConnection(getDatabaseConfig("url"), getDatabaseConfig("user"), getDatabaseConfig("pass"));
 
-            setConfig(optionClass + ".file", "files/options_serializable.txt");
-            setConfig(candidateClass + ".file", "files/candidates_serializable.txt");
-            setConfig(departmentClass + ".file", "files/departments_serializable.txt");
-            setConfig("separator", " | ");
-
-            services.putIfAbsent(optionClass + ".validator", new OptionValidator());
-            services.putIfAbsent(candidateClass + ".validator", new CandidateValidator());
-            services.putIfAbsent(departmentClass + ".validator", new DepartmentValidator());
-
-            services.putIfAbsent(optionClass + ".saver", new SerializedSaver<Option>());
-            services.putIfAbsent(candidateClass + ".saver", new SerializedSaver<Candidate>());
-            services.putIfAbsent(departmentClass + ".saver", new SerializedSaver<Department>());
-
-            services.putIfAbsent(candidateClass + ".loader", new SerializedLoader<Candidate>());
-            services.putIfAbsent(departmentClass + ".loader", new SerializedLoader<Department>());
-            services.putIfAbsent(optionClass + ".loader", new SerializedLoader<Option>());
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+                services.put(key, connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
+
+        return (Connection) services.get(key);
+    }
+
+    private <Id, T extends HasId<Id>> RepositoryInterface<Id, T> getDbRepo(Class<Id> idClass, Class<T> entityClass) {
+        String key = idClass.getName() + entityClass.getName() + ".repository";
+
+        if (!services.containsKey(key)) {
+            String table = getDomainConfig(entityClass.getSimpleName(), "table");
+            RepositoryInterface<Id, T> repo = new DbRepository<>(getConnection(), getMapper(idClass, entityClass), table);
+
+            services.put(key, repo);
+        }
+
+        //noinspection unchecked
+        return (RepositoryInterface<Id, T>) services.get(key);
+    }
+
+    private void registerDefaultValues() {
+
+        String optionClass = Option.class.getName();
+        String candidateClass = Candidate.class.getName();
+        String departmentClass = Department.class.getName();
+
+        services.putIfAbsent(optionClass + ".validator", new OptionValidator());
+        services.putIfAbsent(candidateClass + ".validator", new CandidateValidator());
+        services.putIfAbsent(departmentClass + ".validator", new DepartmentValidator());
+
+        services.putIfAbsent(Integer.class.getName() + candidateClass + ".mapper", new CandidateMapper());
+        services.putIfAbsent(String.class.getName() + departmentClass + ".mapper", new DepartmentMapper());
+        services.putIfAbsent(Integer.class.getName() + optionClass + ".mapper", new OptionMapper(
+                getCandidateRepository(),
+                getDepartmentRepository()
+        ));
+
+//            services.putIfAbsent(optionClass + ".saver", new SerializedSaver<Option>());
+//            services.putIfAbsent(candidateClass + ".saver", new SerializedSaver<Candidate>());
+//            services.putIfAbsent(departmentClass + ".saver", new SerializedSaver<Department>());
+//
+//            services.putIfAbsent(candidateClass + ".loader", new SerializedLoader<Candidate>());
+//            services.putIfAbsent(departmentClass + ".loader", new SerializedLoader<Department>());
+//            services.putIfAbsent(optionClass + ".loader", new SerializedLoader<Option>());
     }
 }

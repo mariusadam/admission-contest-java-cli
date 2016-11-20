@@ -8,6 +8,9 @@ import java.io.Serializable;
 public abstract class Entity<Id> implements HasId<Id>, Serializable{
     protected Id id;
 
+    public Entity() {
+    }
+
     /**
      *
      * @param id The unique id identifying an entity

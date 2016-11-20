@@ -28,15 +28,20 @@ import menu.command.option.PrintOptionsCommand;
 import menu.command.option.UpdateOptionCommand;
 
 import menu.Menu;
+import repository.RepositoryInterface;
 import view.decorator.IndentablePrintStream;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Scanner;
 
-public class Main {
+public class MainCli {
 
     public static void main(String[] args) {
 
-        ServiceContainer container = new ServiceContainer();
+        ServiceContainer container = new ServiceContainer("src/main/resources/config/config.yml");
 
         CandidateController candidateController   = new CandidateController(container.getCandidateRepository(), container.getValidator(Candidate.class));
         DepartmentController departmentController = new DepartmentController(container.getDepartmentRepository(), container.getValidator(Department.class));

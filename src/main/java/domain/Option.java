@@ -7,6 +7,14 @@ public class Option extends Entity<Integer> {
     private Candidate candidate;
     private Department department;
 
+    public Option() {
+    }
+
+    public Option(Candidate candidate, Department department) {
+        this.candidate = candidate;
+        this.department = department;
+    }
+
     /**
      *
      * @param id         The unique id identifying an entity

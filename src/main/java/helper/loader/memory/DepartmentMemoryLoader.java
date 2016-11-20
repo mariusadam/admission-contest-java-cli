@@ -10,7 +10,7 @@ import org.apache.commons.lang.RandomStringUtils;
 public class DepartmentMemoryLoader extends BaseMemoryLoader<Department>{
     @Override
     public Department getNewEntity() {
-        String id = RandomGenerator.getRandomString();
+        String id = RandomGenerator.getRandomString(15);
         return new Department(
                 id,
                 "Department" + id,

@@ -7,6 +7,16 @@ import java.io.Serializable;
  */
 public class Candidate extends Entity<Integer>{
     private String name;
+
+    public Candidate() {
+    }
+
+    public Candidate(String name, String phone, String address) {
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+    }
+
     private String phone;
     private String address;
 
