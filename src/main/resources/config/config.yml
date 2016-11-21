@@ -1,5 +1,5 @@
 database:
-    url: jdbc:mysql://172.25.0.2:3306/admission_contest_database?autoReconnect=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/admission_contest_database?autoReconnect=true&useSSL=false
     port: 3306
     user: java_user
     pass: abcd1234
