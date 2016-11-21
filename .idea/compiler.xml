@@ -23,10 +23,12 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="admission-contest" />
+        <module name="admission-contest-java-cli" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="admission-contest" target="1.8" />
+      <module name="admission-contest-java-cli" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

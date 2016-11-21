@@ -25,8 +25,6 @@ public class AlertBox {
         Label messageLabel = new Label();
         messageLabel.setPadding(new Insets(10,10,10,10));
         messageLabel.setText(message);
-        messageLabel.setFont(new Font("Arial",22));
-
 
         VBox layout = new VBox(10);
         layout.getChildren().addAll(messageLabel);

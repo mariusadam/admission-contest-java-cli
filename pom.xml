@@ -36,6 +36,8 @@
             <groupId>dnl.utils</groupId>
             <artifactId>j-text-utils</artifactId>
             <version>0.3</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/j-text-utils-0.3.jar</systemPath>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
@@ -66,7 +68,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>4.0.3</version>
                 <configuration>
-                    <url>jdbc:mysql://172.25.0.2:3306/admission_contest_database</url>
+                    <url>jdbc:mysql://192.168.99.100:3306/admission_contest_database</url>
                     <user>java_user</user>
                     <password>abcd1234</password>
                 </configuration>
