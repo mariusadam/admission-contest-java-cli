@@ -12,12 +12,17 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 public class OrmRepository<Id, T extends HasId<Id>> implements RepositoryInterface<Id, T> {
-    private Dao<T, Id>       dao;
-    private Class<T>         tClass;
+    protected Dao<T, Id>       dao;
+    protected Class<T>         tClass;
 
-    public OrmRepository(ConnectionSource connection, Class<T> tClass) throws SQLException {
+    public OrmRepository(ConnectionSource connection, Class<T> tClass) {
         this.tClass = tClass;
-        this.dao    = DaoManager.createDao(connection, tClass);
+
+        try {
+            this.dao    = DaoManager.createDao(connection, tClass);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

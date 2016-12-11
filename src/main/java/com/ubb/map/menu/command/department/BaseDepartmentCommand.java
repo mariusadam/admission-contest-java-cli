@@ -1,7 +1,7 @@
 package com.ubb.map.menu.command.department;
 
 import com.ubb.map.menu.MenuItem;
-import com.ubb.map.controller.DepartmentController;
+import com.ubb.map.services.DepartmentCrudService;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -10,17 +10,17 @@ import java.util.Scanner;
  * Created by marius on 10/13/16.
  */
 abstract class BaseDepartmentCommand extends MenuItem {
-    DepartmentController departmentController;
+    DepartmentCrudService departmentCrudService;
 
     /**
      *
      * @param key                  The key which identifies the com.ubb.map.menu.command
      * @param text                 Short description for the com.ubb.map.menu.command
-     * @param departmentController The com.ubb.map.controller which handles departments
+     * @param departmentCrudService The com.ubb.map.services which handles departments
      */
-    BaseDepartmentCommand(String key, String text, DepartmentController departmentController) {
+    BaseDepartmentCommand(String key, String text, DepartmentCrudService departmentCrudService) {
         super(key, text);
-        this.departmentController = departmentController;
+        this.departmentCrudService = departmentCrudService;
     }
 
     /**

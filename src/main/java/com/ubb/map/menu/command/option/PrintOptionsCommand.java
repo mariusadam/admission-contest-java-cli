@@ -1,7 +1,6 @@
 package com.ubb.map.menu.command.option;
 
-import com.ubb.map.controller.OptionController;
-import com.ubb.map.domain.Department;
+import com.ubb.map.services.OptionCrudService;
 import com.ubb.map.domain.Option;
 import com.ubb.map.helper.PrintTableHelper;
 
@@ -15,7 +14,7 @@ import java.util.Scanner;
 public class PrintOptionsCommand extends BaseOptionCommand {
     private PrintTableHelper tableHelper;
 
-    public PrintOptionsCommand(String key, String description, OptionController controller, PrintTableHelper helper) {
+    public PrintOptionsCommand(String key, String description, OptionCrudService controller, PrintTableHelper helper) {
         super(key, description, controller);
         this.tableHelper = helper;
     }
@@ -23,7 +22,7 @@ public class PrintOptionsCommand extends BaseOptionCommand {
     @Override
     public void execute(Scanner scanner, PrintStream out) {
         String[] columns = {"id", "candidate name", "department name"};
-        Collection<Option> departments = this.optionController.getAll();
+        Collection<Option> departments = this.optionCrudService.getAll();
         Object[][] data = new Object[departments.size()][];
 
         int poz = 0;

@@ -1,7 +1,6 @@
 package com.ubb.map;
 
-import com.ubb.map.controller.OptionController;
-import com.ubb.map.domain.Option;
+import com.ubb.map.services.OptionCrudService;
 import com.ubb.map.helper.ServiceContainer;
 import com.ubb.map.menu.command.candidate.AddCandidateCommand;
 import com.ubb.map.menu.command.candidate.DeleteCandidateCommand;
@@ -13,8 +12,8 @@ import com.ubb.map.menu.command.department.DeleteDepartmentCommand;
 import com.ubb.map.menu.command.department.PrintDepartmentsCommand;
 import com.ubb.map.menu.command.department.UpdateDepartmentCommand;
 
-import com.ubb.map.controller.CandidateController;
-import com.ubb.map.controller.DepartmentController;
+import com.ubb.map.services.CandidateCrudService;
+import com.ubb.map.services.DepartmentCrudService;
 
 import com.ubb.map.domain.Candidate;
 import com.ubb.map.domain.Department;
@@ -41,9 +40,9 @@ public class MainCli {
 
         ServiceContainer container = new ServiceContainer("src/main/resources/config/config.yml");
 
-        CandidateController candidateController   = container.getCandidateConttroller();
-        DepartmentController departmentController = container.getDepartmentController();
-        OptionController optionController         = container.getOptionController();
+        CandidateCrudService candidateCrudService = container.getCandidateConttroller();
+        DepartmentCrudService departmentCrudService = container.getDepartmentController();
+        OptionCrudService optionCrudService = container.getOptionController();
 
         Menu menu            = new Menu("1", "Main com.ubb.map.menu");
         Menu candidatesMenu  = new Menu("1", "Candidates com.ubb.map.menu");
@@ -57,9 +56,9 @@ public class MainCli {
 
         PrintTableHelper helper = new PrintTableHelper(40, System.out);
 
-        loadOptionsCommands(optionMenu, optionController, helper);
-        loadCandidatesCommands(candidatesMenu, candidateController, helper);
-        loadDepartmentsCommands(departmentsMenu, departmentController, helper);
+        loadOptionsCommands(optionMenu, optionCrudService, helper);
+        loadCandidatesCommands(candidatesMenu, candidateCrudService, helper);
+        loadDepartmentsCommands(departmentsMenu, departmentCrudService, helper);
 
         MemoryLoaderInterface<Department> memDepLoader = new DepartmentMemoryLoader();
         MemoryLoaderInterface<Candidate> memCandLoader = new CandidateMemoryLoader();
@@ -73,7 +72,7 @@ public class MainCli {
         menu.execute(new Scanner(System.in), new IndentablePrintStream(System.out, 50));
     }
 
-    private static void loadCandidatesCommands(Menu menu, CandidateController controller, PrintTableHelper helper) {
+    private static void loadCandidatesCommands(Menu menu, CandidateCrudService controller, PrintTableHelper helper) {
         Menu crudMenu = new Menu("1", "Crud");
         menu.addItem(crudMenu);
 
@@ -86,7 +85,7 @@ public class MainCli {
         menu.addItem(new GoBackCommand("0", "Go Back"));
     }
 
-    private static void loadDepartmentsCommands(Menu menu, DepartmentController controller, PrintTableHelper helper) {
+    private static void loadDepartmentsCommands(Menu menu, DepartmentCrudService controller, PrintTableHelper helper) {
         Menu crudMenu = new Menu("1", "Crud");
         menu.addItem(crudMenu);
 
@@ -99,7 +98,7 @@ public class MainCli {
         menu.addItem(new GoBackCommand("0", "Go Back"));
     }
 
-    private static void loadOptionsCommands(Menu menu, OptionController controller, PrintTableHelper helper) {
+    private static void loadOptionsCommands(Menu menu, OptionCrudService controller, PrintTableHelper helper) {
         Menu crudMenu = new Menu("1", "Crud");
         menu.addItem(crudMenu);
 

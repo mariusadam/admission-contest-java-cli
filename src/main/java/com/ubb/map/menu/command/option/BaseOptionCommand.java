@@ -1,16 +1,16 @@
 package com.ubb.map.menu.command.option;
 
-import com.ubb.map.controller.OptionController;
+import com.ubb.map.services.OptionCrudService;
 import com.ubb.map.menu.MenuItem;
 
 /**
  * Created by marius on 10/16/16.
  */
 abstract class BaseOptionCommand extends MenuItem{
-    OptionController optionController;
+    OptionCrudService optionCrudService;
 
-    BaseOptionCommand(String key, String description, OptionController controller) {
+    BaseOptionCommand(String key, String description, OptionCrudService controller) {
         super(key, description);
-        this.optionController = controller;
+        this.optionCrudService = controller;
     }
 }

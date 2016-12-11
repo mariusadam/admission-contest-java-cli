@@ -1,6 +1,6 @@
 package com.ubb.map.menu.command.candidate;
 
-import com.ubb.map.controller.CandidateController;
+import com.ubb.map.services.CandidateCrudService;
 import com.ubb.map.domain.Candidate;
 
 import java.io.PrintStream;
@@ -15,10 +15,10 @@ public class DeleteCandidateCommand extends BaseCandidateCommand {
     /**
      * @param key                 The key which identifies the com.ubb.map.menu.command
      * @param text                Short description for the com.ubb.map.menu.command
-     * @param candidateController The com.ubb.map.controller which handles candidates
+     * @param candidateCrudService The com.ubb.map.services which handles candidates
      */
-    public DeleteCandidateCommand(String key, String text, CandidateController candidateController) {
-        super(key, text, candidateController);
+    public DeleteCandidateCommand(String key, String text, CandidateCrudService candidateCrudService) {
+        super(key, text, candidateCrudService);
     }
 
     /**
@@ -34,7 +34,7 @@ public class DeleteCandidateCommand extends BaseCandidateCommand {
         scanner.nextLine();
 
         try {
-            Candidate candidate = this.candidateController.delete(id);
+            Candidate candidate = this.candidateCrudService.delete(id);
             out.println("Deleted: " + candidate);
         } catch (NoSuchElementException ex) {
             out.println("Could not find the candidate with id " + id);

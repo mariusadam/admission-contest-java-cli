@@ -1,4 +1,4 @@
-package com.ubb.map.controller;
+package com.ubb.map.services;
 
 import com.ubb.map.domain.Candidate;
 import com.ubb.map.domain.Department;
@@ -14,13 +14,13 @@ import java.util.Collection;
 /**
  * Created by marius on 10/16/16.
  */
-public class OptionController {
+public class OptionCrudService {
     private RepositoryInterface<Integer, Option>     optionRepository;
     private RepositoryInterface<Integer, Candidate>  candidateRepository;
     private RepositoryInterface<Integer, Department> departmentRepository;
     private ValidatorInterface<Option>      validator;
 
-    public OptionController(
+    public OptionCrudService(
             RepositoryInterface<Integer, Option>     repository,
             RepositoryInterface<Integer, Candidate>  candidateRepository,
             RepositoryInterface<Integer, Department> departmentRepository,

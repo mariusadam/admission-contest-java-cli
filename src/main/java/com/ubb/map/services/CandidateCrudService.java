@@ -1,4 +1,4 @@
-package com.ubb.map.controller;
+package com.ubb.map.services;
 
 import com.ubb.map.domain.Candidate;
 import com.ubb.map.exception.DuplicateEntryException;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  *
  */
-public class CandidateController {
+public class CandidateCrudService {
     private RepositoryInterface<Integer, Candidate> candidateRepository;
     private ValidatorInterface<Candidate>  validator;
 
@@ -23,7 +23,7 @@ public class CandidateController {
      * @param candidateRepository  The optionRepository class for Candidate entities
      * @param validator            The com.ubb.map.validator for the Candidate entity
      */
-    public CandidateController(RepositoryInterface<Integer, Candidate> candidateRepository, ValidatorInterface<Candidate> validator) {
+    public CandidateCrudService(RepositoryInterface<Integer, Candidate> candidateRepository, ValidatorInterface<Candidate> validator) {
         this.candidateRepository = candidateRepository;
         this.validator = validator;
     }

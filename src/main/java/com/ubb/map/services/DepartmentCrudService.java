@@ -1,4 +1,4 @@
-package com.ubb.map.controller;
+package com.ubb.map.services;
 
 import com.ubb.map.domain.Department;
 import com.ubb.map.exception.DuplicateEntryException;
@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 /**
  *
  */
-public class DepartmentController {
+public class DepartmentCrudService {
     private RepositoryInterface<Integer, Department> departmentRepository;
     private ValidatorInterface<Department>          validator;
 
@@ -22,7 +22,7 @@ public class DepartmentController {
      * @param departmentRepository The optionRepository class for Department entities
      * @param departmentValidator  The com.ubb.map.validator for Department entity
      */
-    public DepartmentController(RepositoryInterface<Integer, Department> departmentRepository, ValidatorInterface<Department> departmentValidator) {
+    public DepartmentCrudService(RepositoryInterface<Integer, Department> departmentRepository, ValidatorInterface<Department> departmentValidator) {
         this.departmentRepository = departmentRepository;
         this.validator = departmentValidator;
     }

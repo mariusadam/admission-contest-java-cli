@@ -2,17 +2,13 @@ package com.ubb.map.helper;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
-import com.ubb.map.controller.CandidateController;
-import com.ubb.map.controller.DepartmentController;
-import com.ubb.map.controller.OptionController;
-import com.ubb.map.domain.Candidate;
-import com.ubb.map.domain.Department;
-import com.ubb.map.domain.HasId;
-import com.ubb.map.domain.Option;
+import com.ubb.map.domain.*;
+import com.ubb.map.repository.db.UserRoleRepository;
+import com.ubb.map.services.AclService;
+import com.ubb.map.services.CandidateCrudService;
+import com.ubb.map.services.DepartmentCrudService;
+import com.ubb.map.services.OptionCrudService;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +22,6 @@ import com.ubb.map.helper.mapper.OptionMapper;
 import com.ubb.map.helper.saver.FileSaverInterface;
 import com.ubb.map.repository.Repository;
 import com.ubb.map.repository.RepositoryInterface;
-import com.ubb.map.repository.db.DbRepository;
 import com.ubb.map.repository.db.OrmRepository;
 import com.ubb.map.repository.decorator.FileLoadingRepository;
 import com.ubb.map.repository.decorator.FileSavingRepository;
@@ -48,6 +43,25 @@ public class ServiceContainer {
         this.services = new HashMap<>();
 
         this.registerDefaultValues();
+    }
+
+    public AclService getAclService() {
+        String key = AclService.class.getName();
+
+        if (!this.services.containsKey(key)) {
+            this.services.put(key, new AclService(this.getUserRoleRepo()));
+        }
+
+        return (AclService) this.services.get(key);
+    }
+
+    public UserRoleRepository getUserRoleRepo() {
+        String key = UserRole.class.getName();
+        if (!this.services.containsKey(key)) {
+            this.services.put(key, new UserRoleRepository(getConnection()));
+        }
+
+        return (UserRoleRepository) this.services.get(key);
     }
 
     public RepositoryInterface<Integer, Option> getOptionRepository() {
@@ -83,31 +97,31 @@ public class ServiceContainer {
         throw new RuntimeException("Could not find a com.ubb.map.validator for entity " + tClass.getName());
     }
 
-    public CandidateController getCandidateConttroller() {
-        String key = CandidateController.class.getName();
+    public CandidateCrudService getCandidateConttroller() {
+        String key = CandidateCrudService.class.getName();
         if (!this.services.containsKey(key)) {
-            this.services.put(key, new CandidateController(getCandidateRepository(), getValidator(Candidate.class)));
+            this.services.put(key, new CandidateCrudService(getCandidateRepository(), getValidator(Candidate.class)));
         }
 
-        return (CandidateController) this.services.get(key);
+        return (CandidateCrudService) this.services.get(key);
     }
 
-    public DepartmentController getDepartmentController() {
-        String key = DepartmentController.class.getName();
+    public DepartmentCrudService getDepartmentController() {
+        String key = DepartmentCrudService.class.getName();
         if (!this.services.containsKey(key)) {
-            this.services.put(key, new DepartmentController(getDepartmentRepository(), getValidator(Department.class)));
+            this.services.put(key, new DepartmentCrudService(getDepartmentRepository(), getValidator(Department.class)));
         }
 
-        return (DepartmentController) this.services.get(key);
+        return (DepartmentCrudService) this.services.get(key);
     }
 
-    public OptionController getOptionController() {
-        String key = OptionController.class.getName();
+    public OptionCrudService getOptionController() {
+        String key = OptionCrudService.class.getName();
         if(!this.services.containsKey(key)) {
-            this.services.put(key, new OptionController(getOptionRepository(), getCandidateRepository(), getDepartmentRepository(), getValidator(Option.class)));
+            this.services.put(key, new OptionCrudService(getOptionRepository(), getCandidateRepository(), getDepartmentRepository(), getValidator(Option.class)));
         }
 
-        return (OptionController) this.services.get(key);
+        return (OptionCrudService) this.services.get(key);
     }
 
     private <T> FileSaverInterface<T> getSaver(Class<T> tClass) {
@@ -182,8 +196,6 @@ public class ServiceContainer {
             try {
                 connection = getConnection();
                 repo = new OrmRepository<>(connection, entityClass);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
             } finally {
                 if (connection != null) {
                     connection.close();

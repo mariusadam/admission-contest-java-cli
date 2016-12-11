@@ -1,9 +1,11 @@
 package com.ubb.map.domain;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by marius on 11.12.2016.
@@ -18,8 +20,8 @@ public class Role extends Entity{
     @DatabaseField
     private Resource              resource;
 
-    @DatabaseField
-    private Collection<Operation> allowedOperations;
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    private ArrayList<Operation> allowedOperations;
 
     public Role() {
         this.allowedOperations = new ArrayList<>();
@@ -67,7 +69,7 @@ public class Role extends Entity{
         return allowedOperations;
     }
 
-    public Role setAllowedOperations(Collection<Operation> allowedOperations) {
+    public Role setAllowedOperations(ArrayList<Operation> allowedOperations) {
         this.allowedOperations = allowedOperations;
         return this;
     }

@@ -1,6 +1,6 @@
 package com.ubb.map.view.gui.candidate;
 
-import com.ubb.map.controller.CandidateController;
+import com.ubb.map.services.CandidateCrudService;
 import com.ubb.map.domain.Candidate;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -25,7 +25,7 @@ import java.util.List;
  * Created by marius on 11/20/16.
  */
 public class CandidatesView {
-    private CandidateController controller;
+    private CandidateCrudService controller;
     private TableView<Candidate> candidateTableView;
     private ObservableList<Candidate> candidateObservableList;
     private VBox layout;
@@ -46,7 +46,7 @@ public class CandidatesView {
     private Button updateButton;
     private Button clearButton;
 
-    public CandidatesView(CandidateController controller) {
+    public CandidatesView(CandidateCrudService controller) {
         this.controller = controller;
         this.initComponents();
     }
@@ -171,7 +171,7 @@ public class CandidatesView {
                 this.controller.delete(candidate.getId());
             }
             this.updateList();
-//            this.com.ubb.map.controller.delete(Integer.parseInt(idInput.getText()));
+//            this.com.ubb.map.services.delete(Integer.parseInt(idInput.getText()));
         } catch (Exception ex) {
             AlertBox.error(ex.getMessage());
         }

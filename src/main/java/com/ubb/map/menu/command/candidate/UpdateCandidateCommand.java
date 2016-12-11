@@ -1,6 +1,6 @@
 package com.ubb.map.menu.command.candidate;
 
-import com.ubb.map.controller.CandidateController;
+import com.ubb.map.services.CandidateCrudService;
 import com.ubb.map.domain.Candidate;
 import com.ubb.map.exception.InvalidObjectException;
 
@@ -15,10 +15,10 @@ public class UpdateCandidateCommand extends BaseCandidateCommand {
     /**
      * @param key                 The key which identifies the com.ubb.map.menu.command
      * @param text                Short description for the com.ubb.map.menu.command
-     * @param candidateController The com.ubb.map.controller which handles candidates
+     * @param candidateCrudService The com.ubb.map.services which handles candidates
      */
-    public UpdateCandidateCommand(String key, String text, CandidateController candidateController) {
-        super(key, text, candidateController);
+    public UpdateCandidateCommand(String key, String text, CandidateCrudService candidateCrudService) {
+        super(key, text, candidateCrudService);
     }
 
     /**
@@ -44,7 +44,7 @@ public class UpdateCandidateCommand extends BaseCandidateCommand {
         address = scanner.nextLine();
 
         try {
-            Candidate cand = this.candidateController.update(id, name, phone, address);
+            Candidate cand = this.candidateCrudService.update(id, name, phone, address);
             out.println("Updated " + cand);
         } catch (InvalidObjectException e) {
             out.println(e.getMessage());

@@ -1,6 +1,6 @@
 package com.ubb.map.menu.command.candidate;
 
-import com.ubb.map.controller.CandidateController;
+import com.ubb.map.services.CandidateCrudService;
 import com.ubb.map.domain.Candidate;
 import com.ubb.map.helper.PrintTableHelper;
 
@@ -17,10 +17,10 @@ public class PrintCandidatesCommand extends BaseCandidateCommand {
     /**
      * @param key                 The key which identifies the com.ubb.map.menu.command
      * @param text                Short description for the com.ubb.map.menu.command
-     * @param candidateController The com.ubb.map.controller which handles candidates
+     * @param candidateCrudService The com.ubb.map.services which handles candidates
      */
-    public PrintCandidatesCommand(String key, String text, CandidateController candidateController, PrintTableHelper tableHelper) {
-        super(key, text, candidateController);
+    public PrintCandidatesCommand(String key, String text, CandidateCrudService candidateCrudService, PrintTableHelper tableHelper) {
+        super(key, text, candidateCrudService);
         this.tableHelper = tableHelper;
     }
 
@@ -32,7 +32,7 @@ public class PrintCandidatesCommand extends BaseCandidateCommand {
     @Override
     public void execute(Scanner scanner, PrintStream out) {
         String[] columns = {"id", "name", "phone", "address"};
-        Collection<Candidate> candidates = this.candidateController.getAll();
+        Collection<Candidate> candidates = this.candidateCrudService.getAll();
         Object[][] data = new Object[candidates.size()][];
 
         int poz = 0;

@@ -1,6 +1,6 @@
 package com.ubb.map.menu.command.department;
 
-import com.ubb.map.controller.DepartmentController;
+import com.ubb.map.services.DepartmentCrudService;
 import com.ubb.map.domain.Department;
 
 import java.io.PrintStream;
@@ -14,10 +14,10 @@ public class DeleteDepartmentCommand extends BaseDepartmentCommand {
     /**
      * @param key                  The key which identifies the com.ubb.map.menu.command
      * @param text                 Short description for the com.ubb.map.menu.command
-     * @param departmentController The com.ubb.map.controller which handles departments
+     * @param departmentCrudService The com.ubb.map.services which handles departments
      */
-    public DeleteDepartmentCommand(String key, String text, DepartmentController departmentController) {
-        super(key, text, departmentController);
+    public DeleteDepartmentCommand(String key, String text, DepartmentCrudService departmentCrudService) {
+        super(key, text, departmentCrudService);
     }
 
     /**
@@ -33,7 +33,7 @@ public class DeleteDepartmentCommand extends BaseDepartmentCommand {
         id = scanner.nextLine();
         scanner.nextLine();
         try {
-            Department department = this.departmentController.delete(id);
+            Department department = this.departmentCrudService.delete(id);
             out.println("Deleted: " + department);
         } catch (NoSuchElementException ex) {
             out.println("Could not find the department with id " + id);

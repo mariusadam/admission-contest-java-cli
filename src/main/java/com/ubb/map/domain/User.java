@@ -1,6 +1,8 @@
 package com.ubb.map.domain;
 
+import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,35 +11,25 @@ import java.util.Date;
 /**
  * Created by marius on 11.12.2016.
  */
+@DatabaseTable(tableName = "users")
 public class User extends Entity {
-    @ForeignCollectionField
-    private Collection<Role> roles;
+    @DatabaseField(columnName = "last_name")
     private String           lastName;
+    @DatabaseField(columnName = "first_name")
     private String           firstName;
+    @DatabaseField(columnName = "is_active")
     private Boolean          isActive;
+    @DatabaseField(columnName = "logged_id")
     private Boolean          loggedIn;
+    @DatabaseField(columnName = "last_login")
     private Date             lastLogin;
+    @DatabaseField
     private String           email;
+    @DatabaseField
     private String           password;
 
     public User() {
-        this.roles = new ArrayList<>();
-    }
 
-    public User(Integer integer, Collection<Role> role, String firstName, String lastName) {
-        super(integer);
-        this.roles = role;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public User setRoles(Collection<Role> roles) {
-        this.roles = roles;
-        return this;
     }
 
     public String getFirstName() {
@@ -56,26 +48,6 @@ public class User extends Entity {
     public User setLastName(String lastName) {
         this.lastName = lastName;
         return this;
-    }
-
-    public Boolean isAllowed(Resource resource, Operation operation) {
-        for (Role role : this.getRoles()) {
-            if (role.getResource().equals(resource) && role.getAllowedOperations().contains(operation)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public Boolean isAllowed(Resource resource) {
-        for (Operation operation : Operation.values()) {
-            if (!this.isAllowed(resource, operation)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public Boolean getIsActive() {

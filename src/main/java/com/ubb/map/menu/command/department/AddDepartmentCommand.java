@@ -1,6 +1,6 @@
 package com.ubb.map.menu.command.department;
 
-import com.ubb.map.controller.DepartmentController;
+import com.ubb.map.services.DepartmentCrudService;
 import com.ubb.map.domain.Department;
 import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
@@ -16,10 +16,10 @@ public class AddDepartmentCommand extends BaseDepartmentCommand {
     /**
      * @param key                  The key which identifies the com.ubb.map.menu.command
      * @param text                 Short description for the com.ubb.map.menu.command
-     * @param departmentController The com.ubb.map.controller which handles departments
+     * @param departmentCrudService The com.ubb.map.services which handles departments
      */
-    public AddDepartmentCommand(String key, String text, DepartmentController departmentController) {
-        super(key, text, departmentController);
+    public AddDepartmentCommand(String key, String text, DepartmentCrudService departmentCrudService) {
+        super(key, text, departmentCrudService);
     }
 
     /**
@@ -39,7 +39,7 @@ public class AddDepartmentCommand extends BaseDepartmentCommand {
         scanner.nextLine();
 
         try {
-            Department department = this.departmentController.create(name, numberOfSeats);
+            Department department = this.departmentCrudService.create(name, numberOfSeats);
             out.println("Updated " + department);
         } catch (InvalidObjectException | DuplicateEntryException e) {
             out.println(e.getMessage());;

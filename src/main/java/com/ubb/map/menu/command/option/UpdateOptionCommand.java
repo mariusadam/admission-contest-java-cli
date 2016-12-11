@@ -1,7 +1,6 @@
 package com.ubb.map.menu.command.option;
 
-import com.ubb.map.controller.OptionController;
-import com.ubb.map.domain.Department;
+import com.ubb.map.services.OptionCrudService;
 import com.ubb.map.domain.Option;
 import com.ubb.map.exception.InvalidObjectException;
 
@@ -12,7 +11,7 @@ import java.util.Scanner;
  * Created by marius on 10/28/16.
  */
 public class UpdateOptionCommand extends BaseOptionCommand {
-    public UpdateOptionCommand(String key, String description, OptionController controller) {
+    public UpdateOptionCommand(String key, String description, OptionCrudService controller) {
         super(key, description, controller);
     }
 
@@ -31,7 +30,7 @@ public class UpdateOptionCommand extends BaseOptionCommand {
         idDep = scanner.nextLine();
 
         try {
-            Option option = this.optionController.update(id, idCand, idDep);
+            Option option = this.optionCrudService.update(id, idCand, idDep);
             out.println("Updated " + option);
         } catch (InvalidObjectException e) {
             out.println(e.getMessage());

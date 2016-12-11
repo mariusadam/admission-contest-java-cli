@@ -1,22 +1,22 @@
 package com.ubb.map.menu.command.candidate;
 
 import com.ubb.map.menu.MenuItem;
-import com.ubb.map.controller.CandidateController;
+import com.ubb.map.services.CandidateCrudService;
 
 /**
  * Created by marius on 10/13/16.
  */
 abstract class BaseCandidateCommand extends MenuItem {
-    CandidateController candidateController;
+    CandidateCrudService candidateCrudService;
 
     /**
      *
      * @param key                 The key which identifies the com.ubb.map.menu.command
      * @param text                Short description for the com.ubb.map.menu.command
-     * @param candidateController The com.ubb.map.controller wich handles candidates
+     * @param candidateCrudService The com.ubb.map.services wich handles candidates
      */
-    BaseCandidateCommand(String key, String text, CandidateController candidateController) {
+    BaseCandidateCommand(String key, String text, CandidateCrudService candidateCrudService) {
         super(key, text);
-        this.candidateController = candidateController;
+        this.candidateCrudService = candidateCrudService;
     }
 }

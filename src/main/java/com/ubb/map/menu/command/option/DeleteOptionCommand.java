@@ -1,7 +1,6 @@
 package com.ubb.map.menu.command.option;
 
-import com.ubb.map.controller.OptionController;
-import com.ubb.map.domain.Department;
+import com.ubb.map.services.OptionCrudService;
 import com.ubb.map.domain.Option;
 
 import java.io.PrintStream;
@@ -12,7 +11,7 @@ import java.util.Scanner;
  * Created by marius on 10/28/16.
  */
 public class DeleteOptionCommand extends BaseOptionCommand {
-    public DeleteOptionCommand(String key, String description, OptionController controller) {
+    public DeleteOptionCommand(String key, String description, OptionCrudService controller) {
         super(key, description, controller);
     }
 
@@ -24,7 +23,7 @@ public class DeleteOptionCommand extends BaseOptionCommand {
         id = scanner.nextInt();
         scanner.nextLine();
         try {
-            Option option = this.optionController.delete(id);
+            Option option = this.optionCrudService.delete(id);
             out.println("Deleted: " + option);
         } catch (NoSuchElementException ex) {
             out.println("Could not find the option with id " + id);

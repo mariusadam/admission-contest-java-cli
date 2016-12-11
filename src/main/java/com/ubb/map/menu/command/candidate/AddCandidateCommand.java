@@ -1,6 +1,6 @@
 package com.ubb.map.menu.command.candidate;
 
-import com.ubb.map.controller.CandidateController;
+import com.ubb.map.services.CandidateCrudService;
 import com.ubb.map.domain.Candidate;
 import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
@@ -16,10 +16,10 @@ public class AddCandidateCommand extends BaseCandidateCommand {
     /**
      * @param key                 The key which identifies the com.ubb.map.menu.command
      * @param text                Short description for the com.ubb.map.menu.command
-     * @param candidateController The com.ubb.map.controller which handles candidates
+     * @param candidateCrudService The com.ubb.map.services which handles candidates
      */
-    public AddCandidateCommand(String key, String text, CandidateController candidateController) {
-        super(key, text, candidateController);
+    public AddCandidateCommand(String key, String text, CandidateCrudService candidateCrudService) {
+        super(key, text, candidateCrudService);
     }
 
     /**
@@ -41,7 +41,7 @@ public class AddCandidateCommand extends BaseCandidateCommand {
         address = scanner.nextLine();
 
         try {
-            Candidate cand = this.candidateController.create(name, phone, address);
+            Candidate cand = this.candidateCrudService.create(name, phone, address);
             out.println("Added " + cand);
         } catch (InvalidObjectException | DuplicateEntryException e) {
             out.println(e.getMessage());

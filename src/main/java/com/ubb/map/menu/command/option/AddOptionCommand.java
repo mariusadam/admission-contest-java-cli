@@ -1,6 +1,6 @@
 package com.ubb.map.menu.command.option;
 
-import com.ubb.map.controller.OptionController;
+import com.ubb.map.services.OptionCrudService;
 import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
 
@@ -11,7 +11,7 @@ import java.util.Scanner;
  * Created by marius on 10/16/16.
  */
 public class AddOptionCommand extends BaseOptionCommand {
-    public AddOptionCommand(String key, String description, OptionController controller) {
+    public AddOptionCommand(String key, String description, OptionCrudService controller) {
         super(key, description, controller);
     }
 
@@ -26,7 +26,7 @@ public class AddOptionCommand extends BaseOptionCommand {
         departmentId = scanner.nextLine();
 
         try {
-            this.optionController.create(candidateId, departmentId);
+            this.optionCrudService.create(candidateId, departmentId);
         } catch (InvalidObjectException | DuplicateEntryException e) {
             out.println(e.getMessage());
         }

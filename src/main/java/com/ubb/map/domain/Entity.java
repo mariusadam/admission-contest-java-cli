@@ -40,5 +40,7 @@ public abstract class Entity extends TimestampableImpl implements HasId<Integer>
         return obj instanceof Entity && this.id.equals(((Entity) obj).id);
     }
 
-    public abstract String toCsvFormat(String separator);
+    public String toCsvFormat(String separator) {
+        return null;
+    }
 }
