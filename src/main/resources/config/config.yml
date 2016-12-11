@@ -4,7 +4,7 @@ database:
     user: java_user
     pass: abcd1234
 
-domain:
+com.ubb.map.domain:
     Candidate:
         file: ./../resources/files_cnadidates_file.txt
         table: candidate
