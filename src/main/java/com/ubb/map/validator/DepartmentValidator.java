@@ -6,9 +6,12 @@ import com.ubb.map.exception.InvalidCandidateException;
 import com.ubb.map.exception.InvalidDepartmentException;
 import com.ubb.map.exception.InvalidObjectException;
 
+import javax.inject.Singleton;
+
 /**
  *
  */
+@Singleton
 public class DepartmentValidator implements ValidatorInterface<Department> {
     @Override
     public void validate(Department obj) throws InvalidDepartmentException {

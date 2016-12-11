@@ -1,4 +1,4 @@
-package com.ubb.map.helper;
+package com.ubb.map.di.producers;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
@@ -10,43 +10,44 @@ import java.sql.SQLException;
 import com.ubb.map.helper.config.Configuration;
 import com.ubb.map.repository.RepositoryInterface;
 import com.ubb.map.repository.qualifiers.*;
+import com.ubb.map.services.CandidateCrudService;
+import com.ubb.map.services.DepartmentCrudService;
+import com.ubb.map.services.OptionCrudService;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
+import javax.inject.Singleton;
 
-/**
- * @author Marius Adam
- */
-public class ServiceContainer {
+@Singleton
+public class RepositoryProducer {
     private final static String DEFAULT_CONFIG_PATH = "src/main/resources/config/config.yml";
     private Configuration config;
 
-    public ServiceContainer() {
+    public RepositoryProducer() {
         this(DEFAULT_CONFIG_PATH);
     }
 
-    public ServiceContainer(String configPath) {
+    public RepositoryProducer(String configPath) {
         this.config   = new Configuration(configPath);
 
         this.registerDefaultValues();
     }
 
-    @Produces @ApplicationScoped @UserRoleRepo
+    @Produces @Singleton
     public UserRoleRepository getUserRoleRepo() {
         return new UserRoleRepository(getConnection());
     }
 
-    @Produces @ApplicationScoped @OptionRepo
+    @Produces @OptionRepo
     public RepositoryInterface<Integer, Option> getOptionRepository() {
         return this.getDbRepo(Integer.class, Option.class);
     }
 
-    @Produces @ApplicationScoped @CandidateRepo
+    @Produces @CandidateRepo
     public RepositoryInterface<Integer, Candidate> getCandidateRepository() {
         return this.getDbRepo(Integer.class, Candidate.class);
     }
 
-    @Produces @ApplicationScoped @DepartmentRepo
+    @Produces @DepartmentRepo
     public RepositoryInterface<Integer, Department> getDepartmentRepository() {
         return this.getDbRepo(Integer.class, Department.class);
     }
@@ -69,5 +70,17 @@ public class ServiceContainer {
 
     private void registerDefaultValues() {
 
+    }
+
+    public CandidateCrudService getCandidateConttroller() {
+        return null;
+    }
+
+    public DepartmentCrudService getDepartmentController() {
+        return null;
+    }
+
+    public OptionCrudService getOptionController() {
+        return null;
     }
 }

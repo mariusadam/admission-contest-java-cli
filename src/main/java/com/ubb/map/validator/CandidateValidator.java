@@ -4,9 +4,12 @@ import com.ubb.map.domain.Candidate;
 import com.ubb.map.domain.Entity;
 import com.ubb.map.exception.InvalidCandidateException;
 
+import javax.inject.Singleton;
+
 /**
  *
  */
+@Singleton
 public class CandidateValidator implements ValidatorInterface<Candidate>{
 
     @Override

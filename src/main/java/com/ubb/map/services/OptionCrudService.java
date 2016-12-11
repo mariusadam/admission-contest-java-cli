@@ -8,16 +8,19 @@ import com.ubb.map.exception.InvalidObjectException;
 import com.ubb.map.helper.generator.RandomGenerator;
 import com.ubb.map.repository.RepositoryInterface;
 import com.ubb.map.repository.qualifiers.CandidateRepo;
+import com.ubb.map.repository.qualifiers.DepartmentRepo;
 import com.ubb.map.repository.qualifiers.OptionRepo;
 import com.ubb.map.validator.OptionValidator;
 import com.ubb.map.validator.ValidatorInterface;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Collection;
 
 /**
  * Created by marius on 10/16/16.
  */
+@Singleton
 public class OptionCrudService {
     private RepositoryInterface<Integer, Option>     optionRepository;
     private RepositoryInterface<Integer, Candidate>  candidateRepository;
@@ -26,10 +29,10 @@ public class OptionCrudService {
 
     @Inject
     public OptionCrudService(
-            @OptionRepo    RepositoryInterface<Integer, Option>        repository,
-            @CandidateRepo RepositoryInterface<Integer, Candidate>  candidateRepository,
-            @CandidateRepo RepositoryInterface<Integer, Department> departmentRepository,
-            OptionValidator                                         validator
+            @OptionRepo     RepositoryInterface<Integer, Option>     repository,
+            @CandidateRepo  RepositoryInterface<Integer, Candidate>  candidateRepository,
+            @DepartmentRepo RepositoryInterface<Integer, Department> departmentRepository,
+            OptionValidator                                          validator
     )
     {
         this.optionRepository = repository;

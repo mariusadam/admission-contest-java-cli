@@ -10,12 +10,14 @@ import com.ubb.map.validator.DepartmentValidator;
 import com.ubb.map.validator.ValidatorInterface;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
 /**
  *
  */
+@Singleton
 public class DepartmentCrudService {
     private RepositoryInterface<Integer, Department> departmentRepository;
     private ValidatorInterface<Department>          validator;

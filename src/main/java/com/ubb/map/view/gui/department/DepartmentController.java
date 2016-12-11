@@ -2,11 +2,18 @@ package com.ubb.map.view.gui.department;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.ubb.map.services.DepartmentCrudService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
+import javax.inject.Inject;
+
 public class DepartmentController implements Initializable{
+
+    @Inject
+    private DepartmentCrudService departmentCrudService;
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;

@@ -5,9 +5,12 @@ import com.ubb.map.domain.Option;
 import com.ubb.map.exception.InvalidDepartmentException;
 import com.ubb.map.exception.InvalidObjectException;
 
+import javax.inject.Singleton;
+
 /**
  * Created by marius on 10/16/16.
  */
+@Singleton
 public class OptionValidator implements ValidatorInterface<Option> {
     @Override
     public void validate(Option obj) throws InvalidObjectException {

@@ -1,7 +1,7 @@
 package com.ubb.map;
 
 import com.ubb.map.services.OptionCrudService;
-import com.ubb.map.helper.ServiceContainer;
+import com.ubb.map.di.producers.RepositoryProducer;
 import com.ubb.map.menu.command.candidate.AddCandidateCommand;
 import com.ubb.map.menu.command.candidate.DeleteCandidateCommand;
 import com.ubb.map.menu.command.candidate.PrintCandidatesCommand;
@@ -35,10 +35,9 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MainCli {
-
     public static void main(String[] args) throws SQLException {
 
-        ServiceContainer container = new ServiceContainer("src/main/resources/config/config.yml");
+        RepositoryProducer container = new RepositoryProducer("src/main/resources/config/config.yml");
 
         CandidateCrudService candidateCrudService = container.getCandidateConttroller();
         DepartmentCrudService departmentCrudService = container.getDepartmentController();

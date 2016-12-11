@@ -10,6 +10,7 @@ import com.ubb.map.validator.CandidateValidator;
 import com.ubb.map.validator.ValidatorInterface;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 /**
  *
  */
+@Singleton
 public class CandidateCrudService {
     private RepositoryInterface<Integer, Candidate> candidateRepository;
     private ValidatorInterface<Candidate>  validator;

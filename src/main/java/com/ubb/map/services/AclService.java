@@ -2,12 +2,15 @@ package com.ubb.map.services;
 
 import com.ubb.map.domain.*;
 import com.ubb.map.repository.db.UserRoleRepository;
+import com.ubb.map.repository.qualifiers.UserRoleRepo;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by marius on 11.12.2016.
  */
+@Singleton
 public class AclService {
     private UserRoleRepository userRoleRepo;
 
@@ -33,7 +36,7 @@ public class AclService {
                 return true;
             case ROLE:
             case USER:
-                return true;
+                return false;
         }
         for (Role role : this.userRoleRepo.getRoles(user)) {
             if (role.getResource().equals(resource) && role.getAllowedOperations().contains(operation)) {
