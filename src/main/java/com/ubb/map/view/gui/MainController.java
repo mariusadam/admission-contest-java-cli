@@ -2,8 +2,6 @@ package com.ubb.map.view.gui;
 
 import com.ubb.map.domain.Resource;
 import com.ubb.map.domain.User;
-import com.ubb.map.helper.ContainerFactory;
-import com.ubb.map.helper.ServiceContainer;
 import com.ubb.map.services.AclService;
 import com.ubb.map.view.gui.candidate.CandidatesView;
 import javafx.fxml.FXML;
@@ -13,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -22,10 +21,13 @@ import java.util.ResourceBundle;
  * Created by marius on 08.12.2016.
  */
 public class MainController implements Initializable {
-
+    @Inject
     private AclService acl;
+
     private User       currentUser;
-    private ServiceContainer container;
+
+    @Inject
+    private CandidatesView candidatesView;
 
     @FXML
     private TabPane tabPane;
@@ -35,8 +37,6 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.container = ContainerFactory.getInstance().getServiceContainer();
-        this.acl = this.container.getAclService();
         this.currentUser = new User();
         this.currentUser.setEmail("user@mail.com");
         this.currentUser.setId(123);
@@ -64,7 +64,6 @@ public class MainController implements Initializable {
     }
 
     private Tab getCandidatesTab() {
-        CandidatesView candidatesView = new CandidatesView(container.getCandidateConttroller());
         return new Tab("Candidates", candidatesView.getPane());
     }
 

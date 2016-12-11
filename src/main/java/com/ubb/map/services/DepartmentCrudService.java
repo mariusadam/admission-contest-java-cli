@@ -5,8 +5,11 @@ import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
 import com.ubb.map.helper.generator.RandomGenerator;
 import com.ubb.map.repository.RepositoryInterface;
+import com.ubb.map.repository.qualifiers.DepartmentRepo;
+import com.ubb.map.validator.DepartmentValidator;
 import com.ubb.map.validator.ValidatorInterface;
 
+import javax.inject.Inject;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
@@ -22,7 +25,11 @@ public class DepartmentCrudService {
      * @param departmentRepository The optionRepository class for Department entities
      * @param departmentValidator  The com.ubb.map.validator for Department entity
      */
-    public DepartmentCrudService(RepositoryInterface<Integer, Department> departmentRepository, ValidatorInterface<Department> departmentValidator) {
+    @Inject
+    public DepartmentCrudService(
+            @DepartmentRepo RepositoryInterface<Integer, Department> departmentRepository,
+            DepartmentValidator departmentValidator
+    ) {
         this.departmentRepository = departmentRepository;
         this.validator = departmentValidator;
     }

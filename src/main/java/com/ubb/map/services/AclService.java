@@ -1,8 +1,9 @@
 package com.ubb.map.services;
 
 import com.ubb.map.domain.*;
-import com.ubb.map.repository.RepositoryInterface;
 import com.ubb.map.repository.db.UserRoleRepository;
+
+import javax.inject.Inject;
 
 /**
  * Created by marius on 11.12.2016.
@@ -10,8 +11,18 @@ import com.ubb.map.repository.db.UserRoleRepository;
 public class AclService {
     private UserRoleRepository userRoleRepo;
 
+    @Inject
     public AclService(UserRoleRepository userRoleRepo) {
         this.userRoleRepo = userRoleRepo;
+    }
+
+    public AclService setUserRoleRepo(UserRoleRepository userRoleRepo) {
+        this.userRoleRepo = userRoleRepo;
+        return this;
+    }
+
+    public UserRoleRepository getUserRoleRepo() {
+        return userRoleRepo;
     }
 
     public Boolean isAllowed(User user, Resource resource, Operation operation) {

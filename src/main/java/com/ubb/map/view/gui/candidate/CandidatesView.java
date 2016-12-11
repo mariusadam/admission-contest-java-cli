@@ -18,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import com.ubb.map.view.gui.AlertBox;
 
+import javax.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class CandidatesView {
     private Button updateButton;
     private Button clearButton;
 
+    @Inject
     public CandidatesView(CandidateCrudService controller) {
         this.controller = controller;
         this.initComponents();

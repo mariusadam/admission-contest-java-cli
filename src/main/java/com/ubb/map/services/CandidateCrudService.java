@@ -5,8 +5,11 @@ import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
 import com.ubb.map.helper.generator.RandomGenerator;
 import com.ubb.map.repository.RepositoryInterface;
+import com.ubb.map.repository.qualifiers.CandidateRepo;
+import com.ubb.map.validator.CandidateValidator;
 import com.ubb.map.validator.ValidatorInterface;
 
+import javax.inject.Inject;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -23,7 +26,11 @@ public class CandidateCrudService {
      * @param candidateRepository  The optionRepository class for Candidate entities
      * @param validator            The com.ubb.map.validator for the Candidate entity
      */
-    public CandidateCrudService(RepositoryInterface<Integer, Candidate> candidateRepository, ValidatorInterface<Candidate> validator) {
+    @Inject
+    public CandidateCrudService(
+            @CandidateRepo RepositoryInterface<Integer, Candidate> candidateRepository,
+            CandidateValidator validator
+    ) {
         this.candidateRepository = candidateRepository;
         this.validator = validator;
     }

@@ -6,6 +6,8 @@ import com.ubb.map.domain.Role;
 import com.ubb.map.domain.User;
 import com.ubb.map.domain.UserRole;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +16,9 @@ import java.util.List;
 /**
  * Created by marius on 11.12.2016.
  */
+@Named
 public class UserRoleRepository extends OrmRepository<Integer, UserRole> {
+    @Inject
     public UserRoleRepository(ConnectionSource connection) {
         super(connection, UserRole.class);
     }

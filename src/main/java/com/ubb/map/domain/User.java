@@ -23,6 +23,7 @@ public class User extends Entity {
     private Boolean          loggedIn;
     @DatabaseField(columnName = "last_login")
     private Date             lastLogin;
+
     @DatabaseField
     private String           email;
     @DatabaseField
