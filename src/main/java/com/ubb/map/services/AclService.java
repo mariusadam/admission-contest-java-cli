@@ -2,13 +2,13 @@ package com.ubb.map.services;
 
 import com.ubb.map.domain.*;
 import com.ubb.map.repository.db.UserRoleRepository;
-import com.ubb.map.repository.qualifiers.UserRoleRepo;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Created by marius on 11.12.2016.
+ * Service class handling operations regarding users access to
+ * different resources
  */
 @Singleton
 public class AclService {
@@ -17,11 +17,6 @@ public class AclService {
     @Inject
     public AclService(UserRoleRepository userRoleRepo) {
         this.userRoleRepo = userRoleRepo;
-    }
-
-    public AclService setUserRoleRepo(UserRoleRepository userRoleRepo) {
-        this.userRoleRepo = userRoleRepo;
-        return this;
     }
 
     public UserRoleRepository getUserRoleRepo() {

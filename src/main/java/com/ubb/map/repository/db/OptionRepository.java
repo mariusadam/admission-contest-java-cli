@@ -3,12 +3,17 @@ package com.ubb.map.repository.db;
 import com.j256.ormlite.support.ConnectionSource;
 import com.ubb.map.domain.HasId;
 import com.ubb.map.domain.Option;
+import com.ubb.map.repository.qualifiers.ConnectionSingleton;
+
+import javax.inject.Inject;
 
 /**
  * Created by marius on 11.12.2016.
  */
 public class OptionRepository extends OrmRepository<Integer, Option> {
-    public OptionRepository(ConnectionSource connection, Class<Option> optionClass) {
-        super(connection, optionClass);
+
+    @Inject
+    public OptionRepository(@ConnectionSingleton ConnectionSource connection) {
+        super(connection, Option.class);
     }
 }

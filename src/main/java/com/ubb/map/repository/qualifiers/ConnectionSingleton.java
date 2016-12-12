@@ -9,4 +9,4 @@ import java.lang.annotation.*;
 @Documented
 @Qualifier
 @Singleton
-public @interface DepartmentRepo {}
+public @interface ConnectionSingleton {}

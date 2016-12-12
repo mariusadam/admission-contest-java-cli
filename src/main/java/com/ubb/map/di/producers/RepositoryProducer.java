@@ -21,6 +21,7 @@ import javax.inject.Singleton;
 public class RepositoryProducer {
     private final static String DEFAULT_CONFIG_PATH = "src/main/resources/config/config.yml";
     private Configuration config;
+    private ConnectionSource connection;
 
     public RepositoryProducer() {
         this(DEFAULT_CONFIG_PATH);
@@ -28,48 +29,27 @@ public class RepositoryProducer {
 
     public RepositoryProducer(String configPath) {
         this.config   = new Configuration(configPath);
-
-        this.registerDefaultValues();
     }
 
-    @Produces @Singleton
-    public UserRoleRepository getUserRoleRepo() {
-        return new UserRoleRepository(getConnection());
-    }
+    @Produces @ConnectionSingleton
+    public ConnectionSource getConnection() {
+        if (this.connection == null) {
+            try {
+                this.connection = new JdbcConnectionSource(getDatabaseConfig("url"), getDatabaseConfig("user"), getDatabaseConfig("pass"));
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
-    @Produces @OptionRepo
-    public RepositoryInterface<Integer, Option> getOptionRepository() {
-        return this.getDbRepo(Integer.class, Option.class);
-    }
-
-    @Produces @CandidateRepo
-    public RepositoryInterface<Integer, Candidate> getCandidateRepository() {
-        return this.getDbRepo(Integer.class, Candidate.class);
-    }
-
-    @Produces @DepartmentRepo
-    public RepositoryInterface<Integer, Department> getDepartmentRepository() {
-        return this.getDbRepo(Integer.class, Department.class);
+        return this.connection;
     }
 
     private String getDatabaseConfig(String key) {
         return this.config.getDatabase().get(key);
     }
 
-    private ConnectionSource getConnection() {
-        try {
-            return new JdbcConnectionSource(getDatabaseConfig("url"), getDatabaseConfig("user"), getDatabaseConfig("pass"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private <Id, T extends HasId<Id>> RepositoryInterface<Id, T> getDbRepo(Class<Id> idClass, Class<T> entityClass) {
         return new OrmRepository<>(getConnection(), entityClass);
-    }
-
-    private void registerDefaultValues() {
-
     }
 
     public CandidateCrudService getCandidateConttroller() {

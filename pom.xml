@@ -112,7 +112,7 @@
                 <configuration>
                     <url>jdbc:mysql://localhost:3306/admission_contest_database</url>
                     <user>java_user</user>
-                    <password>abcd1234</password>
+                    <plainPassword>abcd1234</plainPassword>
                 </configuration>
             </plugin>
         </plugins>

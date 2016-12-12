@@ -5,7 +5,7 @@ import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
 import com.ubb.map.helper.generator.RandomGenerator;
 import com.ubb.map.repository.RepositoryInterface;
-import com.ubb.map.repository.qualifiers.CandidateRepo;
+import com.ubb.map.repository.db.CandidateRepository;
 import com.ubb.map.validator.CandidateValidator;
 import com.ubb.map.validator.ValidatorInterface;
 
@@ -30,7 +30,7 @@ public class CandidateCrudService {
      */
     @Inject
     public CandidateCrudService(
-            @CandidateRepo RepositoryInterface<Integer, Candidate> candidateRepository,
+            CandidateRepository candidateRepository,
             CandidateValidator validator
     ) {
         this.candidateRepository = candidateRepository;

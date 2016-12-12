@@ -1,11 +1,8 @@
 package com.ubb.map.domain;
 
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -23,11 +20,14 @@ public class User extends Entity {
     private Boolean          loggedIn;
     @DatabaseField(columnName = "last_login")
     private Date             lastLogin;
-
     @DatabaseField
     private String           email;
     @DatabaseField
     private String           password;
+    @DatabaseField
+    private String           salt;
+
+    private String           plainPassword;
 
     public User() {
 
@@ -87,12 +87,39 @@ public class User extends Entity {
         return this;
     }
 
+    public String getPlainPassword() {
+        return plainPassword;
+    }
+
+    public User setPlainPassword(String plainPassword) {
+        this.plainPassword = plainPassword;
+        return this;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public User setActive(Boolean active) {
+        isActive = active;
+        return this;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public User setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public User setSalt(String salt) {
+        this.salt = salt;
         return this;
     }
 

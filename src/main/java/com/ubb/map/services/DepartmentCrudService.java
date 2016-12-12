@@ -5,7 +5,7 @@ import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
 import com.ubb.map.helper.generator.RandomGenerator;
 import com.ubb.map.repository.RepositoryInterface;
-import com.ubb.map.repository.qualifiers.DepartmentRepo;
+import com.ubb.map.repository.db.DepartmentRepository;
 import com.ubb.map.validator.DepartmentValidator;
 import com.ubb.map.validator.ValidatorInterface;
 
@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 
 /**
- *
+ * Service class handling crud operations on Department entity
  */
 @Singleton
 public class DepartmentCrudService {
@@ -29,7 +29,7 @@ public class DepartmentCrudService {
      */
     @Inject
     public DepartmentCrudService(
-            @DepartmentRepo RepositoryInterface<Integer, Department> departmentRepository,
+            DepartmentRepository departmentRepository,
             DepartmentValidator departmentValidator
     ) {
         this.departmentRepository = departmentRepository;

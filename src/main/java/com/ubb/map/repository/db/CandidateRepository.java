@@ -3,12 +3,16 @@ package com.ubb.map.repository.db;
 import com.j256.ormlite.support.ConnectionSource;
 import com.ubb.map.domain.Candidate;
 import com.ubb.map.domain.HasId;
+import com.ubb.map.repository.qualifiers.ConnectionSingleton;
 
-/**
- * Created by marius on 11.12.2016.
- */
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class CandidateRepository extends OrmRepository<Integer, Candidate> {
-    public CandidateRepository(ConnectionSource connection, Class<Candidate> candidateClass) {
-        super(connection, candidateClass);
+
+    @Inject
+    public CandidateRepository(@ConnectionSingleton ConnectionSource connection) {
+        super(connection, Candidate.class);
     }
 }

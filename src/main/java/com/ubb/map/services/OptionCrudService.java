@@ -7,9 +7,9 @@ import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
 import com.ubb.map.helper.generator.RandomGenerator;
 import com.ubb.map.repository.RepositoryInterface;
-import com.ubb.map.repository.qualifiers.CandidateRepo;
-import com.ubb.map.repository.qualifiers.DepartmentRepo;
-import com.ubb.map.repository.qualifiers.OptionRepo;
+import com.ubb.map.repository.db.CandidateRepository;
+import com.ubb.map.repository.db.DepartmentRepository;
+import com.ubb.map.repository.db.OptionRepository;
 import com.ubb.map.validator.OptionValidator;
 import com.ubb.map.validator.ValidatorInterface;
 
@@ -29,13 +29,13 @@ public class OptionCrudService {
 
     @Inject
     public OptionCrudService(
-            @OptionRepo     RepositoryInterface<Integer, Option>     repository,
-            @CandidateRepo  RepositoryInterface<Integer, Candidate>  candidateRepository,
-            @DepartmentRepo RepositoryInterface<Integer, Department> departmentRepository,
-            OptionValidator                                          validator
+            OptionRepository     optionRepository,
+            CandidateRepository  candidateRepository,
+            DepartmentRepository departmentRepository,
+            OptionValidator      validator
     )
     {
-        this.optionRepository = repository;
+        this.optionRepository = optionRepository;
         this.candidateRepository = candidateRepository;
         this.departmentRepository = departmentRepository;
         this.validator = validator;
