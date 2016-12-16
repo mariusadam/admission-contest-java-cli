@@ -14,8 +14,7 @@ public class FxMain
 
     public void start( Stage stage, Parameters parameters ) throws Exception
     {
-        File file = new File("src/main/java/com/ubb/map/view/gui/MainView.fxml");
-        InputStream fxml = new BufferedInputStream(new FileInputStream(file));
+        InputStream fxml = new BufferedInputStream(getClass().getResourceAsStream("/view/gui/fxml/MainView.fxml"));
         Parent root = fxmlLoader.load(fxml);
 
         stage.setTitle("Hello World");

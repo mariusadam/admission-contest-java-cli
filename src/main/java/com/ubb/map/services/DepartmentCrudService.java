@@ -6,6 +6,7 @@ import com.ubb.map.exception.InvalidObjectException;
 import com.ubb.map.helper.generator.RandomGenerator;
 import com.ubb.map.repository.RepositoryInterface;
 import com.ubb.map.repository.db.DepartmentRepository;
+import com.ubb.map.services.filters.types.PropertyFilter;
 import com.ubb.map.validator.DepartmentValidator;
 import com.ubb.map.validator.ValidatorInterface;
 
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.Observable;
 
 /**
  * Service class handling crud operations on Department entity
@@ -86,5 +88,9 @@ public class DepartmentCrudService {
 
     public Collection<Department> getAll() {
         return this.departmentRepository.getAll();
+    }
+
+    public Collection<Department> getFiltered(Collection<PropertyFilter> filters) {
+        return  this.departmentRepository.getFiltered(filters);
     }
 }

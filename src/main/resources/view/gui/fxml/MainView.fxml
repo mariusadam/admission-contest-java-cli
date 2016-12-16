@@ -27,9 +27,9 @@
                   </Menu>
                   <Menu mnemonicParsing="false" text="Admission">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Manage Options" />
-                        <MenuItem mnemonicParsing="false" text="Manage Candidates" />
-                        <MenuItem mnemonicParsing="false" text="Manage Departments" />
+                        <MenuItem mnemonicParsing="false" onAction="#onManageOptionsMenuItem_clicked" text="Manage Options" />
+                        <MenuItem mnemonicParsing="false" onAction="#onManageCandidatesMenuItem_clicked" text="Manage Candidates" />
+                        <MenuItem mnemonicParsing="false" onAction="#onManageDepartmentsMenuItem_clicked" text="Manage Departments" />
                      </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Administration">
@@ -42,7 +42,7 @@
             </MenuBar>
          </top>
       </BorderPane>
-      <VBox fx:id="loginPane" prefHeight="200.0" prefWidth="100.0" StackPane.alignment="TOP_LEFT">
+      <VBox fx:id="loginPane" prefHeight="200.0" prefWidth="100.0" visible="false" StackPane.alignment="TOP_LEFT">
          <children>
             <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
             <HBox prefHeight="100.0" prefWidth="200.0">

@@ -2,6 +2,7 @@ package com.ubb.map.repository;
 
 import com.ubb.map.domain.HasId;
 import com.ubb.map.exception.DuplicateEntryException;
+import com.ubb.map.services.filters.types.PropertyFilter;
 import com.ubb.map.util.GenericArray;
 
 import java.sql.SQLException;
@@ -60,4 +61,8 @@ public interface RepositoryInterface<Id, T extends HasId<Id>> {
      * @return int
      */
     long size();
+
+    default Collection<T> getFiltered(Collection<PropertyFilter> filters) {
+        return null;
+    }
 }
