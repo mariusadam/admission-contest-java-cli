@@ -32,14 +32,6 @@
             <version>20160810</version>
         </dependency>
 
-        <dependency>
-            <groupId>dnl.utils</groupId>
-            <artifactId>j-text-utils</artifactId>
-            <version>0.3</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/j-text-utils-0.3.jar</systemPath>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
