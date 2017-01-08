@@ -1,6 +1,7 @@
 package com.ubb.map.services.filters.types.simple;
 
 import com.j256.ormlite.stmt.Where;
+import com.ubb.map.services.filters.types.ValueProvider;
 
 import java.sql.SQLException;
 

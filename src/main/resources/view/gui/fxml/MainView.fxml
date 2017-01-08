@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ubb.map.view.gui.MainController">
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ubb.map.view.gui.MainController">
    <children>
       <BorderPane fx:id="borderPane">
          <center>
@@ -17,32 +17,32 @@
             </StackPane>
          </center>
          <top>
-            <MenuBar BorderPane.alignment="CENTER">
+            <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
                <menus>
                   <Menu mnemonicParsing="false" text="Session">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Login as other user" />
-                        <MenuItem mnemonicParsing="false" text="Logout and exit" />
+                        <MenuItem mnemonicParsing="false" onAction="#onLoginAsOtherUserMenuItem_clicked" text="Login as other user" />
+                        <MenuItem mnemonicParsing="false" onAction="#onLogoutAndExitMenuItem_clicked" text="Logout and exit" />
                      </items>
                   </Menu>
-                  <Menu mnemonicParsing="false" text="Admission">
+                  <Menu fx:id="admissionMenu" mnemonicParsing="false" text="Admission">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#onManageOptionsMenuItem_clicked" text="Manage Options" />
-                        <MenuItem mnemonicParsing="false" onAction="#onManageCandidatesMenuItem_clicked" text="Manage Candidates" />
-                        <MenuItem mnemonicParsing="false" onAction="#onManageDepartmentsMenuItem_clicked" text="Manage Departments" />
+                        <MenuItem fx:id="optionsMenuItem" mnemonicParsing="false" onAction="#onManageOptionsMenuItem_clicked" text="Manage Options" />
+                        <MenuItem fx:id="candidatesMenuItem" mnemonicParsing="false" onAction="#onManageCandidatesMenuItem_clicked" text="Manage Candidates" />
+                        <MenuItem fx:id="departmentsMenuItem" mnemonicParsing="false" onAction="#onManageDepartmentsMenuItem_clicked" text="Manage Departments" />
                      </items>
                   </Menu>
-                  <Menu mnemonicParsing="false" text="Administration">
+                  <Menu fx:id="administrationMenu" mnemonicParsing="false" text="Administration">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Manage Users" />
-                        <MenuItem mnemonicParsing="false" text="Manage Roles" />
+                        <MenuItem fx:id="usersMenuItem" mnemonicParsing="false" text="Manage Users" />
+                        <MenuItem fx:id="rolesMenuItem" mnemonicParsing="false" text="Manage Roles" />
                      </items>
                   </Menu>
                </menus>
             </MenuBar>
          </top>
       </BorderPane>
-      <VBox fx:id="loginPane" prefHeight="200.0" prefWidth="100.0" visible="false" StackPane.alignment="TOP_LEFT">
+      <VBox fx:id="loginPane" prefHeight="200.0" prefWidth="100.0" StackPane.alignment="TOP_LEFT">
          <children>
             <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
             <HBox prefHeight="100.0" prefWidth="200.0">
@@ -74,8 +74,8 @@
                         </GridPane>
                         <GridPane>
                            <children>
-                              <TextField fx:id="passwordTextField" prefHeight="25.0" prefWidth="125.0" GridPane.columnIndex="1" />
                               <Label text="Password:" />
+                              <PasswordField fx:id="passwordTextField" GridPane.columnIndex="1" />
                            </children>
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="90.0" />

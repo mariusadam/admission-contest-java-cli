@@ -7,10 +7,13 @@ import javafx.stage.Stage;
 import javax.inject.Inject;
 import java.io.*;
 
-public class FxMain
-{
+public class FxMain {
+    private final FXMLLoader fxmlLoader;
+
     @Inject
-    private FXMLLoader fxmlLoader;
+    public FxMain(FXMLLoader fxmlLoader) {
+        this.fxmlLoader = fxmlLoader;
+    }
 
     public void start( Stage stage, Parameters parameters ) throws Exception
     {
@@ -18,7 +21,8 @@ public class FxMain
         Parent root = fxmlLoader.load(fxml);
 
         stage.setTitle("Hello World");
-        stage.setScene(new Scene(root, 800, 600));
+        stage.setScene(new Scene(root, 1480, 800));
+        stage.setResizable(false);
         stage.show();
     }
 }

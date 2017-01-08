@@ -24,17 +24,8 @@ public class AclService {
     }
 
     public Boolean isAllowed(User user, Resource resource, Operation operation) {
-        switch (resource) {
-            case CANDIDATE:
-            case DEPARTMENT:
-            case OPTION:
-                return true;
-            case ROLE:
-            case USER:
-                return false;
-        }
         for (Role role : this.userRoleRepo.getRoles(user)) {
-            if (role.getResource().equals(resource) && role.getAllowedOperations().contains(operation)) {
+            if (role.getResources().contains(resource) && role.getAllowedOperations().contains(operation)) {
                 return true;
             }
         }
@@ -42,7 +33,7 @@ public class AclService {
         return false;
     }
 
-    public Boolean isAllowed(User user, Resource resource) {
+    public Boolean isAllowedAllOperations(User user, Resource resource) {
         for (Operation operation : Operation.values()) {
             if (!this.isAllowed(user, resource, operation)) {
                 return false;
@@ -50,5 +41,15 @@ public class AclService {
         }
 
         return true;
+    }
+
+    public Boolean isAllowed(User user, Resource resource) {
+        for (Operation operation : Operation.values()) {
+            if (this.isAllowed(user, resource, operation)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

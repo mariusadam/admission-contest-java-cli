@@ -29,7 +29,7 @@ public class UserRepository extends OrmRepository<Integer, User> {
     }
 
     public User findByEmail(String email) throws SQLException {
-        return true ? null : this.dao.queryForFirst(
+        return this.dao.queryForFirst(
                 this
                         .dao
                         .queryBuilder()

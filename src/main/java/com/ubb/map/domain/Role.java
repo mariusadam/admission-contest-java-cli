@@ -2,14 +2,16 @@ package com.ubb.map.domain;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+import com.sun.org.apache.regexp.internal.RE;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by marius on 11.12.2016.
  */
+@DatabaseTable(tableName = "role")
 public class Role extends Entity{
     @DatabaseField
     private String                name;
@@ -17,20 +19,15 @@ public class Role extends Entity{
     @DatabaseField
     private Integer               importance;
 
-    @DatabaseField
-    private Resource              resource;
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    private ArrayList<Resource> resources;
 
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     private ArrayList<Operation> allowedOperations;
 
     public Role() {
         this.allowedOperations = new ArrayList<>();
-    }
-
-    public Role(Integer id, String name, Integer importance) {
-        super(id);
-        this.name = name;
-        this.importance = importance;
+        this.resources = new ArrayList<>();
     }
 
     public String getName() {
@@ -56,12 +53,13 @@ public class Role extends Entity{
         return null;
     }
 
-    public Resource getResource() {
-        return resource;
+    public ArrayList<Resource> getResources() {
+        return resources;
     }
 
-    public Role setResource(Resource resource) {
-        this.resource = resource;
+    public Role setResources(Collection<Resource> resources) {
+        this.resources.clear();
+        this.resources.addAll(resources);
         return this;
     }
 
@@ -69,8 +67,9 @@ public class Role extends Entity{
         return allowedOperations;
     }
 
-    public Role setAllowedOperations(ArrayList<Operation> allowedOperations) {
-        this.allowedOperations = allowedOperations;
+    public Role setAllowedOperations(Collection<Operation> allowedOperations) {
+        this.allowedOperations.clear();
+        this.allowedOperations.addAll(allowedOperations);
         return this;
     }
 

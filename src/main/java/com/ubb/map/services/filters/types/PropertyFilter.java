@@ -9,5 +9,4 @@ import java.sql.SQLException;
  */
 public interface PropertyFilter {
     void apply(Where<?, ?> where) throws SQLException;
-    boolean isSingleValued();
 }

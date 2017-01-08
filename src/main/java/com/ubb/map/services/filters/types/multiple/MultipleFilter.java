@@ -2,7 +2,7 @@ package com.ubb.map.services.filters.types.multiple;
 
 import com.ubb.map.services.filters.types.NamedFilter;
 import com.ubb.map.services.filters.types.PropertyFilter;
-import com.ubb.map.services.filters.types.simple.ValueProvider;
+import com.ubb.map.services.filters.types.ValueProvider;
 
 /**
  * Created by marius on 16.12.2016.
@@ -15,10 +15,5 @@ public abstract class MultipleFilter extends NamedFilter implements PropertyFilt
         super(propertyName, filterName);
         this.firstProvider = firstProvider;
         this.secondProvider = secondProvider;
-    }
-
-    @Override
-    public boolean isSingleValued() {
-        return false;
     }
 }

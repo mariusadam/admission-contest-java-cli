@@ -1,7 +1,7 @@
 package com.ubb.map.services.filters.types.multiple;
 
 import com.j256.ormlite.stmt.Where;
-import com.ubb.map.services.filters.types.simple.ValueProvider;
+import com.ubb.map.services.filters.types.ValueProvider;
 
 import java.sql.SQLException;
 
@@ -15,17 +15,17 @@ public class BetweenFilter extends MultipleFilter {
 
     @Override
     public void apply(Where<?, ?> where) throws SQLException {
-        Object first = firstProvider.provideValue();
-        Object second = secondProvider.provideValue();
+        Object first = firstProvider.provideValue().toString();
+        Object second = secondProvider.provideValue().toString();
 
-        if(first == null && second == null) {
-            return;
-        } else if (first == null) {
-            where.and().le(getPropertyName(), second);
-        } else if (second == null) {
-            where.and().ge(getPropertyName(), first);
+        if (!first.equals("") || !second.equals("")) {
+            if (first.equals("")) {
+                where.le(getPropertyName(), second);
+            } else if (second.equals("")) {
+                where.ge(getPropertyName(), first);
+            } else {
+                where.between(getPropertyName(), first, second);
+            }
         }
-
-        where.and().between(getPropertyName(), first, second);
     }
 }

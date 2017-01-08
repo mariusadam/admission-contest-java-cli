@@ -6,6 +6,9 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+
+        <flyway.user>java_user</flyway.user>
+        <flyway.password>abcd1234</flyway.password>
     </properties>
 
     <groupId>com.ubb</groupId>
@@ -103,8 +106,6 @@
                 <version>4.0.3</version>
                 <configuration>
                     <url>jdbc:mysql://localhost:3306/admission_contest_database</url>
-                    <user>java_user</user>
-                    <plainPassword>abcd1234</plainPassword>
                 </configuration>
             </plugin>
         </plugins>

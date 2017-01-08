@@ -1,4 +1,4 @@
-package com.ubb.map.services.filters.types.simple;
+package com.ubb.map.services.filters.types;
 
 @FunctionalInterface
 public interface ValueProvider {

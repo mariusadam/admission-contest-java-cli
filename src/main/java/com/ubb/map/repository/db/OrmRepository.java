@@ -12,15 +12,16 @@ import com.ubb.map.repository.RepositoryInterface;
 import com.ubb.map.services.filters.types.PropertyFilter;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class OrmRepository<Id, T extends HasId<Id>> implements RepositoryInterface<Id, T> {
-    protected Dao<T, Id>       dao;
-    protected Class<T>         tClass;
+    public static final Integer PAGE_SIZE = 10;
+
+    Dao<T, Id>       dao;
 
     public OrmRepository(ConnectionSource connection, Class<T> tClass) {
-        this.tClass = tClass;
-
         try {
             this.dao    = DaoManager.createDao(connection, tClass);
         } catch (SQLException e) {
@@ -47,6 +48,18 @@ public class OrmRepository<Id, T extends HasId<Id>> implements RepositoryInterfa
         }
 
         return obj;
+    }
+
+    @Override
+    public Collection<T> getAll(int page) {
+        return getAll(page, PAGE_SIZE);
+    }
+
+    @Override
+    public Collection<T> getAll(int page, int perPage) {
+        QueryBuilder<T, Id> qb = dao.queryBuilder();
+        qb.setWhere(null);
+        return getPaginated(qb, page, perPage);
     }
 
     @Override
@@ -103,16 +116,38 @@ public class OrmRepository<Id, T extends HasId<Id>> implements RepositoryInterfa
     }
 
     @Override
-    public Collection<T> getFiltered(Collection<PropertyFilter> filters) {
+    public Collection<T> getFiltered(List<PropertyFilter> filters, int page, int perPage) {
         QueryBuilder<T, Id> queryBuilder = this.dao.queryBuilder();
         try {
 
-            Where<T, Id> where = queryBuilder.where();
-            for (PropertyFilter filter : filters) {
-                filter.apply(where);
+            Where where = queryBuilder.where();
+            int len = filters.size();
+            for (int i = 0; i < len; i++) {
+                filters.get(i).apply(where);
+                if (i != len - 1) {
+                    where.and();
+                }
             }
-            queryBuilder.setWhere(where);
-            return this.dao.query(queryBuilder.prepare());
+            if (len == 0) {
+                queryBuilder.setWhere(null);
+            }
+            return getPaginated(queryBuilder, page, perPage);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Collection<T> getFiltered(List<PropertyFilter> filters, int page) {
+        return getFiltered(filters, page, PAGE_SIZE);
+    }
+
+    public Collection<T> getPaginated(QueryBuilder<T, Id> queryBuilder, int page, int perPage) {
+        long offset = (page - 1) * perPage;
+        try {
+            queryBuilder.offset(offset).limit((long) perPage);
+
+            return dao.query(queryBuilder.prepare());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

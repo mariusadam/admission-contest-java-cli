@@ -16,7 +16,7 @@ public class User extends Entity {
     private String           firstName;
     @DatabaseField(columnName = "is_active")
     private Boolean          isActive;
-    @DatabaseField(columnName = "logged_id")
+    @DatabaseField(columnName = "logged_in")
     private Boolean          loggedIn;
     @DatabaseField(columnName = "last_login")
     private Date             lastLogin;
@@ -120,6 +120,12 @@ public class User extends Entity {
 
     public User setSalt(String salt) {
         this.salt = salt;
+        return this;
+    }
+
+    public User eraseCredentials() {
+        this.plainPassword = null;
+
         return this;
     }
 

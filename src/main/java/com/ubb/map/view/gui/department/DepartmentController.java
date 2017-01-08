@@ -1,22 +1,18 @@
 package com.ubb.map.view.gui.department;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.ResourceBundle;
-import java.util.function.Predicate;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.ubb.map.domain.Department;
 import com.ubb.map.services.DepartmentCrudService;
 import com.ubb.map.services.filters.types.PropertyFilter;
+import com.ubb.map.services.filters.types.ValueProvider;
 import com.ubb.map.services.filters.types.multiple.BetweenFilter;
 import com.ubb.map.services.filters.types.multiple.NotBetweenFilter;
 import com.ubb.map.services.filters.types.simple.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import com.ubb.map.view.gui.AlertBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,6 +31,7 @@ public class DepartmentController implements Initializable {
     @Inject private DepartmentCrudService departmentCrudService;
 
     @FXML private Button searchButton;
+    @FXML private TextField idTextField;
     @FXML private TextField codeTextField;
     @FXML private TextField nameTextField;
     @FXML private TextField noOfSeatsTextField;
@@ -76,7 +73,7 @@ public class DepartmentController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ValueProvider idProvider = () -> idMatchTextField.getText();
         ValueProvider firstIdProvider = () -> idMinTextField.getText();
-        ValueProvider secondIdProvider = () -> idMatchTextField.getText();
+        ValueProvider secondIdProvider = () -> idMaxTextField.getText();
         idFilterComboBox.getItems().addAll(
                 new EqualsFilter("id", idProvider),
                 new NotEqualsFilter("id", idProvider),
@@ -130,6 +127,7 @@ public class DepartmentController implements Initializable {
                 new NotBetweenFilter("updated_at", updatedAtFirstProvider, updatedAtSecondProvider)
         );
 
+        idTextField.setDisable(true);
         idFilterHbox.setVisible(false);
         noOfSeatsFilterHbox.setVisible(false);
         createdAtFilterHbox.setVisible(false);
@@ -139,7 +137,6 @@ public class DepartmentController implements Initializable {
         createdAtMatchDatePicker.setVisible(true);
         updatedAtMatchDatePicker.setVisible(true);
 
-//        idColumn = new TableColumn<>("#Id");
         idColumn.setText("#Id");
         idColumn.setMinWidth(50);
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -165,24 +162,33 @@ public class DepartmentController implements Initializable {
         updatedAtColumn.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
         this.departmentsObservableList = FXCollections.observableArrayList();
-        departmentsObservableList.addAll(departmentCrudService.getAll());
+        departmentsObservableList.addAll(departmentCrudService.getAll(1));
         departmentsTableView.setItems(departmentsObservableList);
         departmentsTableView
                 .getSelectionModel()
                 .selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> {
-                    this.loadDepartments(newValue);
-                });
+                .addListener((observable, oldValue, newValue) -> this.loadDepartment(newValue));
     }
 
-    private void loadDepartments(Department department) {
+    private void loadDepartment(Department department) {
+        if (department == null) {
+            return;
+        }
+        idTextField.setText(department.getId().toString());
         codeTextField.setText(department.getCode());
         nameTextField.setText(department.getName());
         noOfSeatsTextField.setText(department.getNumberOfSeats().toString());
     }
 
+    private void clearDetails() {
+        idTextField.setText("");
+        codeTextField.setText("");
+        nameTextField.setText("");
+        noOfSeatsTextField.setText("");
+    }
+
     private void ensureCorrectFieldsAreVisible(PropertyFilter filter, HBox hBoxContainer, Control textField) {
-        if (filter.isSingleValued()) {
+        if (filter instanceof SimpleFilter) {
             hBoxContainer.setVisible(false);
             textField.setVisible(true);
         } else {
@@ -218,7 +224,44 @@ public class DepartmentController implements Initializable {
         this.departmentsObservableList.addAll(this.departmentCrudService.getFiltered(getFilters()));
     }
 
-    Collection<PropertyFilter> getFilters() {
+    @FXML
+    private void onAddButton_clicked(ActionEvent event) {
+        try {
+            departmentCrudService.create(codeTextField.getText(), nameTextField.getText(), noOfSeatsTextField.getText());
+            clearDetails();
+            this.departmentsObservableList.clear();
+            this.departmentsObservableList.addAll(this.departmentCrudService.getFiltered(getFilters()));
+        } catch (Exception ex) {
+            AlertBox.error(ex.getMessage());
+        }
+    }
+
+    @FXML
+    private void onUpdateButton_clicked(ActionEvent event) {
+        try {
+            departmentCrudService.update(idTextField.getText(), codeTextField.getText(), nameTextField.getText(), noOfSeatsTextField.getText());
+            this.departmentsObservableList.clear();
+            this.departmentsObservableList.addAll(this.departmentCrudService.getFiltered(getFilters()));
+        } catch (Exception ex) {
+            AlertBox.error(ex.getMessage());
+        }
+    }
+
+    @FXML
+    private void onDeleteButton_clicked(ActionEvent event) {
+        try {
+            for (Department dep : departmentsTableView.getSelectionModel().getSelectedItems()) {
+                departmentCrudService.delete(dep.getId().toString());
+                clearDetails();
+                this.departmentsObservableList.clear();
+                this.departmentsObservableList.addAll(this.departmentCrudService.getFiltered(getFilters()));
+            }
+        } catch (Exception ex) {
+            AlertBox.error(ex.getMessage());
+        }
+    }
+
+    List<PropertyFilter> getFilters() {
         return Stream.of(
                 idFilterComboBox.getSelectionModel().getSelectedItem(),
                 codeFilterComboBox.getSelectionModel().getSelectedItem(),
@@ -226,6 +269,6 @@ public class DepartmentController implements Initializable {
                 noOfSeatsFilterComboBox.getSelectionModel().getSelectedItem(),
                 createdAtFilterComboBox.getSelectionModel().getSelectedItem(),
                 updatedAtFilterComboBox.getSelectionModel().getSelectedItem()
-        ).filter(propertyFilter -> propertyFilter != null).collect(Collectors.toList());
+        ).filter(Objects::nonNull).collect(Collectors.toList());
     }
 }

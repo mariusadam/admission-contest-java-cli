@@ -5,8 +5,8 @@ import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.services.filters.types.PropertyFilter;
 import com.ubb.map.util.GenericArray;
 
-import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -19,6 +19,7 @@ public interface RepositoryInterface<Id, T extends HasId<Id>> {
      * @throws DuplicateEntryException If there is already an entity with the same id
      */
     void insert(T obj) throws DuplicateEntryException;
+
     /**
      * Removes the entity from the com.ubb.map.repository
      *
@@ -45,24 +46,33 @@ public interface RepositoryInterface<Id, T extends HasId<Id>> {
     T findById(Id id);
 
     /**
-     *
      * @return {@link GenericArray} The object containing all the entities
      */
     Collection<T> getAll();
 
+    default Collection<T> getAll(int page) {
+        return null;
+    }
+
+    default Collection<T> getAll(int page, int perPage) {
+        return null;
+    }
+
     /**
-     *
      * @param collection A collection of objects to insert into the com.ubb.map.repository
      */
     void addCollection(Collection<T> collection);
 
     /**
-     *
      * @return int
      */
     long size();
 
-    default Collection<T> getFiltered(Collection<PropertyFilter> filters) {
+    default Collection<T> getFiltered(List<PropertyFilter> filters, int page, int perPage) {
+        return null;
+    }
+
+    default Collection<T> getFiltered(List<PropertyFilter> filters, int page) {
         return null;
     }
 }

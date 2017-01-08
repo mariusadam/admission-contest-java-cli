@@ -3,7 +3,6 @@ package com.ubb.map.services;
 import com.ubb.map.domain.Department;
 import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
-import com.ubb.map.helper.generator.RandomGenerator;
 import com.ubb.map.repository.RepositoryInterface;
 import com.ubb.map.repository.db.DepartmentRepository;
 import com.ubb.map.services.filters.types.PropertyFilter;
@@ -13,8 +12,8 @@ import com.ubb.map.validator.ValidatorInterface;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Collection;
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Observable;
 
 /**
  * Service class handling crud operations on Department entity
@@ -45,12 +44,13 @@ public class DepartmentCrudService {
      * @param numberOfSeats The numberOfSeats of the department
      * @return Department   The newly created Department entity
      */
-    public Department create(String name, Integer numberOfSeats) throws InvalidObjectException, DuplicateEntryException {
-        Department department = new Department(
-                RandomGenerator.getRandomInt(),
-                name,
-                numberOfSeats
-        );
+    public Department create(String code, String name, String numberOfSeats) throws InvalidObjectException, DuplicateEntryException {
+        Integer noOFSeats = Integer.parseInt(numberOfSeats);
+
+        Department department = new Department();
+        department.setCode(code);
+        department.setName(name);
+        department.setNumberOfSeats(noOFSeats);
 
         this.validator.validate(department);
         this.departmentRepository.insert(department);
@@ -65,11 +65,12 @@ public class DepartmentCrudService {
      * @param newNumberOfSeats    The new numberOfSeats of the department
      * @return {@link Department} The updated department
      */
-    public Department update(String id, String newName, Integer newNumberOfSeats) throws InvalidObjectException {
+    public Department update(String id, String newCode, String newName, String newNumberOfSeats) throws InvalidObjectException {
         Department department = this.departmentRepository.findById(Integer.valueOf(id));
 
         department.setName(newName);
-        department.setNumberOfSeats(newNumberOfSeats);
+        department.setCode(newCode);
+        department.setNumberOfSeats(Integer.parseInt(newNumberOfSeats));
         this.validator.validate(department);
         this.departmentRepository.update(department);
 
@@ -90,7 +91,15 @@ public class DepartmentCrudService {
         return this.departmentRepository.getAll();
     }
 
-    public Collection<Department> getFiltered(Collection<PropertyFilter> filters) {
-        return  this.departmentRepository.getFiltered(filters);
+    public Collection<Department> getAll(int page) {
+        return departmentRepository.getAll(page);
+    }
+
+    public Collection<Department> getFiltered(List<PropertyFilter> filters) {
+        return this.departmentRepository.getFiltered(filters, 1);
+    }
+
+    public Collection<Department> getFiltered(List<PropertyFilter> filters, int page) {
+        return this.departmentRepository.getFiltered(filters, page);
     }
 }

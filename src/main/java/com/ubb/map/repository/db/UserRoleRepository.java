@@ -1,6 +1,7 @@
 package com.ubb.map.repository.db;
 
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.support.ConnectionSource;
 import com.ubb.map.domain.Role;
 import com.ubb.map.domain.User;
@@ -14,6 +15,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Manager for UserRole entity
@@ -22,22 +25,27 @@ import java.util.List;
 public class UserRoleRepository extends OrmRepository<Integer, UserRole> {
 
     @Inject
+    private RoleRepository roleRepository;
+
+    @Inject
     public UserRoleRepository(@ConnectionSingleton ConnectionSource connection) {
         super(connection, UserRole.class);
     }
 
     public Collection<Role> getRoles(User user) {
-        QueryBuilder<UserRole, Integer> builder = this.dao.queryBuilder();
         try {
-            builder.where().eq(UserRole.USER_ID_FIELD_NAME, user);
+            //create the inner query
+            QueryBuilder<UserRole, Integer> userRoleQb = dao.queryBuilder();
+            // this time selecting for the user-id field
+            userRoleQb.selectColumns(UserRole.ROLE_ID_FIELD_NAME);
+            userRoleQb.where().eq(UserRole.USER_ID_FIELD_NAME, user);
 
-            List<UserRole> userRoles = this.dao.query(builder.prepare());
-            ArrayList<Role> result = new ArrayList<>();
-            for (UserRole userRole : userRoles) {
-                result.add(userRole.getRole());
-            }
+            // build our outer query
+            QueryBuilder<Role, Integer> roleQb = roleRepository.dao.queryBuilder();
+            // where the user-id matches the inner query's user-id field
+            roleQb.where().in("id", userRoleQb);
 
-            return result;
+            return roleRepository.dao.query(roleQb.prepare());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
