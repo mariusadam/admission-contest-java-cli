@@ -75,4 +75,8 @@ public interface RepositoryInterface<Id, T extends HasId<Id>> {
     default Collection<T> getFiltered(List<PropertyFilter> filters, int page) {
         return null;
     }
+
+    default int countMatches(List<PropertyFilter> filters) {
+        return 0;
+    }
 }

@@ -1,7 +1,6 @@
 package com.ubb.map.repository.db;
 
 import com.j256.ormlite.support.ConnectionSource;
-import com.ubb.map.domain.HasId;
 import com.ubb.map.domain.Option;
 import com.ubb.map.repository.qualifiers.ConnectionSingleton;
 

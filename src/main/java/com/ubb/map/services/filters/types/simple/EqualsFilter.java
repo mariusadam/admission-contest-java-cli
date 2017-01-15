@@ -14,9 +14,13 @@ public class EqualsFilter extends SimpleFilter {
     }
 
     @Override
-    public void apply(Where<?, ?> where) throws SQLException {
-        if (valueProvider.provideValue() != null) {
-            where.eq(getPropertyName(), valueProvider.provideValue());
+    public Boolean apply(Where<?, ?> where) throws SQLException {
+        Object obj = transformValue(valueProvider.provideValue());
+        if (obj != null) {
+            where.eq(getPropertyName(), transformValue(obj));
+            return true;
         }
+
+        return false;
     }
 }

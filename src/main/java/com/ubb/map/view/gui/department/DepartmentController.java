@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.ubb.map.domain.Department;
+import com.ubb.map.repository.db.OrmRepository;
 import com.ubb.map.services.DepartmentCrudService;
 import com.ubb.map.services.filters.types.PropertyFilter;
 import com.ubb.map.services.filters.types.ValueProvider;
@@ -18,9 +19,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.util.Callback;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -43,6 +48,7 @@ public class DepartmentController implements Initializable {
     @FXML private TextField idMatchTextField;
     @FXML private TextField nameMatchTextField;
     @FXML private TextField noOfSeatsMatchTextField;
+    @FXML private TextField perPageTextField;
     @FXML private ComboBox<PropertyFilter> codeFilterComboBox;
     @FXML private ComboBox<PropertyFilter> createdAtFilterComboBox;
     @FXML private ComboBox<PropertyFilter> updatedAtFilterComboBox;
@@ -59,15 +65,12 @@ public class DepartmentController implements Initializable {
     @FXML private DatePicker updatedAtMatchDatePicker;
     @FXML private DatePicker updatedAtMinDatePicker;
     @FXML private DatePicker updatedAtMaxDatePicker;
-    @FXML private TableView<Department> departmentsTableView;
 
-    @FXML private TableColumn<Department, Integer> idColumn;
-    @FXML private TableColumn<Department, String>  codeColumn;
-    @FXML private TableColumn<Department, String>  nameColumn;
-    @FXML private TableColumn<Department, Integer> noOfSeatsColumn;
-    @FXML private TableColumn<Department, Date>    createdAtColumn;
-    @FXML private TableColumn<Department, Date>    updatedAtColumn;
+    @FXML private Pagination pagination;
+
+    private TableView<Department> departmentsTableView;
     private ObservableList<Department> departmentsObservableList;
+
     @FXML
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -108,6 +111,7 @@ public class DepartmentController implements Initializable {
         );
 
         ValueProvider createdAtProvider = () -> createdAtMatchDatePicker.getValue();
+
         ValueProvider createdAtFirstProvider = () -> createdAtMinDatePicker.getValue();
         ValueProvider createdAtSecondProvider = () -> createdAtMaxDatePicker.getValue();
         createdAtFilterComboBox.getItems().addAll(
@@ -137,37 +141,76 @@ public class DepartmentController implements Initializable {
         createdAtMatchDatePicker.setVisible(true);
         updatedAtMatchDatePicker.setVisible(true);
 
+        departmentsTableView = new TableView<>();
+
+        TableColumn<Department, Integer> idColumn = new TableColumn<>();
         idColumn.setText("#Id");
         idColumn.setMinWidth(50);
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 
+        TableColumn<Department, String> codeColumn = new TableColumn<>();
         codeColumn.setText("Code");
         codeColumn.setMinWidth(100);
         codeColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
 
+        TableColumn<Department, String> nameColumn = new TableColumn<>();
         nameColumn.setText("Name");
         nameColumn.setMinWidth(150);
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
+        TableColumn<Department, Integer> noOfSeatsColumn = new TableColumn<>();
         noOfSeatsColumn.setText("No.Seats");
         noOfSeatsColumn.setMinWidth(30);
         noOfSeatsColumn.setCellValueFactory(new PropertyValueFactory<>("numberOfSeats"));
 
+        TableColumn<Department, Date> createdAtColumn = new TableColumn<>();
         createdAtColumn.setText("Created at");
         createdAtColumn.setMinWidth(150);
         createdAtColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
 
+        TableColumn<Department, Date> updatedAtColumn = new TableColumn<>();
         updatedAtColumn.setText("Updated at");
         updatedAtColumn.setMinWidth(150);
         updatedAtColumn.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
         this.departmentsObservableList = FXCollections.observableArrayList();
-        departmentsObservableList.addAll(departmentCrudService.getAll(1));
         departmentsTableView.setItems(departmentsObservableList);
         departmentsTableView
                 .getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> this.loadDepartment(newValue));
+        //noinspection unchecked
+        departmentsTableView.getColumns().addAll(
+                idColumn,
+                codeColumn,
+                nameColumn,
+                noOfSeatsColumn,
+                createdAtColumn,
+                updatedAtColumn
+        );
+        pagination.setPageFactory(this::createPage);
+    }
+
+    private Node createPage(int pageIndex) {
+        reloadDepartments(pageIndex + 1);
+        return new Pane(departmentsTableView);
+    }
+
+    private void reloadDepartments() {
+        reloadDepartments(pagination.getCurrentPageIndex() + 1);
+    }
+
+    private void reloadDepartments(Integer pageIndex) {
+        departmentsObservableList.clear();
+
+        int perPage = OrmRepository.PAGE_SIZE;
+        try {
+            perPage = Integer.parseInt(perPageTextField.getText());
+        } catch (Exception ignored) {
+
+        }
+        departmentsObservableList.addAll(departmentCrudService.getFiltered(getFilters(), pageIndex, perPage));
+        pagination.setPageCount(departmentCrudService.getNrOfPages(getFilters(), perPage));
     }
 
     private void loadDepartment(Department department) {
@@ -220,8 +263,7 @@ public class DepartmentController implements Initializable {
 
     @FXML
     void onSearchButton_clicked(ActionEvent event) {
-        this.departmentsObservableList.clear();
-        this.departmentsObservableList.addAll(this.departmentCrudService.getFiltered(getFilters()));
+        reloadDepartments();
     }
 
     @FXML
@@ -259,6 +301,30 @@ public class DepartmentController implements Initializable {
         } catch (Exception ex) {
             AlertBox.error(ex.getMessage());
         }
+    }
+
+    @FXML
+    private void onResetFiltersButton_clicked(ActionEvent event) {
+        idFilterComboBox.getSelectionModel().clearSelection();
+        codeFilterComboBox.getSelectionModel().clearSelection();
+        nameFilterComboBox.getSelectionModel().clearSelection();
+        noOfSeatsFilterComboBox.getSelectionModel().clearSelection();
+        createdAtFilterComboBox.getSelectionModel().clearSelection();
+        updatedAtFilterComboBox.getSelectionModel().clearSelection();
+
+        idMatchTextField.setText("");
+        idMinTextField.setText("");
+        idMaxTextField.setText("");
+        codeMatchTextField.setText("");
+        noOfSeatsMatchTextField.setText("");
+        noOfSeatsMinTextField.setText("");
+        noOfSeatsMaxTextField.setText("");
+        createdAtMatchDatePicker.setValue(null);
+        createdAtMinDatePicker.setValue(null);
+        createdAtMaxDatePicker.setValue(null);
+        updatedAtMatchDatePicker.setValue(null);
+        updatedAtMinDatePicker.setValue(null);
+        updatedAtMaxDatePicker.setValue(null);
     }
 
     List<PropertyFilter> getFilters() {

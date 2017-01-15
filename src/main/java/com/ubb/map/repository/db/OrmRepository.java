@@ -5,15 +5,17 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.ubb.map.domain.HasId;
+import com.ubb.map.domain.Timestampable;
 import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.RepositoryException;
 import com.ubb.map.repository.RepositoryInterface;
 import com.ubb.map.services.filters.types.PropertyFilter;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 public class OrmRepository<Id, T extends HasId<Id>> implements RepositoryInterface<Id, T> {
@@ -65,6 +67,9 @@ public class OrmRepository<Id, T extends HasId<Id>> implements RepositoryInterfa
     @Override
     public void update(T entity) {
         try {
+            if (entity instanceof Timestampable) {
+                ((Timestampable) entity).setUpdatedAt(new Date());
+            }
             this.dao.update(entity);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -118,23 +123,38 @@ public class OrmRepository<Id, T extends HasId<Id>> implements RepositoryInterfa
     @Override
     public Collection<T> getFiltered(List<PropertyFilter> filters, int page, int perPage) {
         QueryBuilder<T, Id> queryBuilder = this.dao.queryBuilder();
-        try {
 
-            Where where = queryBuilder.where();
-            int len = filters.size();
-            for (int i = 0; i < len; i++) {
-                filters.get(i).apply(where);
-                if (i != len - 1) {
+        return getPaginated(applyFilters(queryBuilder, filters), page, perPage);
+    }
+
+    private QueryBuilder<T, Id> applyFilters(QueryBuilder<T, Id> queryBuilder, List<PropertyFilter> filters) {
+        Where where = queryBuilder.where();
+        int len = filters.size();
+        Boolean appliedAtLeastOnce = false;
+        Boolean appliedLastTime = false;
+        for (PropertyFilter filter : filters) {
+            try {
+                if (appliedLastTime) {
                     where.and();
                 }
+                appliedLastTime = filter.apply(where);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-            if (len == 0) {
-                queryBuilder.setWhere(null);
-            }
-            return getPaginated(queryBuilder, page, perPage);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            appliedAtLeastOnce = appliedLastTime ? true : appliedAtLeastOnce;
         }
+        if (!appliedAtLeastOnce) {
+            queryBuilder.setWhere(null);
+        } else if (!appliedLastTime) {
+            try {
+                where.isNotNull("id");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return queryBuilder;
     }
 
     @Override
@@ -143,11 +163,23 @@ public class OrmRepository<Id, T extends HasId<Id>> implements RepositoryInterfa
     }
 
     public Collection<T> getPaginated(QueryBuilder<T, Id> queryBuilder, int page, int perPage) {
-        long offset = (page - 1) * perPage;
+        long offset = Math.max(0, (page - 1) * perPage);
         try {
             queryBuilder.offset(offset).limit((long) perPage);
 
             return dao.query(queryBuilder.prepare());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int countMatches(List<PropertyFilter> filters) {
+        try {
+            QueryBuilder<T, Id> qb = dao.queryBuilder();
+            qb = applyFilters(qb, filters);
+            qb.setCountOf(true);
+
+            return (int) dao.countOf(qb.prepare());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

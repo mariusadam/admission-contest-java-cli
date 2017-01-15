@@ -8,5 +8,12 @@ import java.sql.SQLException;
  * Created by marius on 16.12.2016.
  */
 public interface PropertyFilter {
-    void apply(Where<?, ?> where) throws SQLException;
+    /**
+     *
+     * @param where
+     * @return true if some filters where applied, false otherwise
+     *
+     * @throws SQLException
+     */
+    Boolean apply(Where<?, ?> where) throws SQLException;
 }

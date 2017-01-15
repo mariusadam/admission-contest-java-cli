@@ -4,6 +4,9 @@ import com.ubb.map.services.filters.types.NamedFilter;
 import com.ubb.map.services.filters.types.PropertyFilter;
 import com.ubb.map.services.filters.types.ValueProvider;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 /**
  * Created by marius on 16.12.2016.
  */

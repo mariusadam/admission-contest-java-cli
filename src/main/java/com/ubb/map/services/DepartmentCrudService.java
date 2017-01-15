@@ -99,7 +99,25 @@ public class DepartmentCrudService {
         return this.departmentRepository.getFiltered(filters, 1);
     }
 
+    public Collection<Department> getFiltered(List<PropertyFilter> filters, int page, int perPage) {
+        return this.departmentRepository.getFiltered(filters, page, perPage);
+    }
+
     public Collection<Department> getFiltered(List<PropertyFilter> filters, int page) {
         return this.departmentRepository.getFiltered(filters, page);
+    }
+
+    public int getNrOfPages(List<PropertyFilter> filters, int perPage) {
+        int matches =  departmentRepository.countMatches(filters);
+        if (matches == 0) {
+            return 0;
+        } else {
+            int result = matches / perPage;
+            if (matches % perPage != 0) {
+                result++;
+            }
+
+            return result;
+        }
     }
 }

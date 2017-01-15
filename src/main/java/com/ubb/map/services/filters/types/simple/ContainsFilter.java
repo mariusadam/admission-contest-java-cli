@@ -14,9 +14,13 @@ public class ContainsFilter extends SimpleFilter {
     }
 
     @Override
-    public void apply(Where<?, ?> where) throws SQLException {
-        if (valueProvider.provideValue() != null) {
-            where.like(getPropertyName(), String.format("%%%s%%", valueProvider.provideValue()));
+    public Boolean apply(Where<?, ?> where) throws SQLException {
+        Object obj = transformValue(valueProvider.provideValue());
+        if (obj != null) {
+            where.like(getPropertyName(), String.format("%%%s%%", obj));
+            return true;
         }
+
+        return false;
     }
 }

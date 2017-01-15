@@ -1,6 +1,7 @@
 package com.ubb.map.view.gui;
 
-import com.ubb.map.domain.*;
+import com.ubb.map.domain.Resource;
+import com.ubb.map.domain.User;
 import com.ubb.map.services.AclService;
 import com.ubb.map.services.UserService;
 import com.ubb.map.view.gui.candidate.CandidatesView;
@@ -53,7 +54,7 @@ public class MainController implements Initializable {
     @FXML private MenuItem rolesMenuIteam;
 
     private Map<String, Tab> createdTabs;
-    private User       currentUser;
+    private User currentUser;
     public MainController() {
         this.createdTabs = new Hashtable<>();
     }

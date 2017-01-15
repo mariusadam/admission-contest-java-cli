@@ -21,7 +21,7 @@ public class FxMain {
         Parent root = fxmlLoader.load(fxml);
 
         stage.setTitle("Hello World");
-        stage.setScene(new Scene(root, 1480, 800));
+        stage.setScene(new Scene(root));
         stage.setResizable(false);
         stage.show();
     }

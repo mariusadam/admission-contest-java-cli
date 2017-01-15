@@ -1,6 +1,5 @@
 package com.ubb.map.validator;
 
-import com.ubb.map.domain.Entity;
 import com.ubb.map.domain.Option;
 import com.ubb.map.exception.InvalidDepartmentException;
 import com.ubb.map.exception.InvalidObjectException;

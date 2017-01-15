@@ -1,10 +1,7 @@
 package com.ubb.map.validator;
 
 import com.ubb.map.domain.Department;
-import com.ubb.map.domain.Entity;
-import com.ubb.map.exception.InvalidCandidateException;
 import com.ubb.map.exception.InvalidDepartmentException;
-import com.ubb.map.exception.InvalidObjectException;
 
 import javax.inject.Singleton;
 

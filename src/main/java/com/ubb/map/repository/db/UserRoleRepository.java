@@ -1,7 +1,6 @@
 package com.ubb.map.repository.db;
 
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.support.ConnectionSource;
 import com.ubb.map.domain.Role;
 import com.ubb.map.domain.User;
@@ -9,14 +8,9 @@ import com.ubb.map.domain.UserRole;
 import com.ubb.map.repository.qualifiers.ConnectionSingleton;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Manager for UserRole entity

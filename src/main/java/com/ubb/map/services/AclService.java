@@ -1,6 +1,9 @@
 package com.ubb.map.services;
 
-import com.ubb.map.domain.*;
+import com.ubb.map.domain.Operation;
+import com.ubb.map.domain.Resource;
+import com.ubb.map.domain.Role;
+import com.ubb.map.domain.User;
 import com.ubb.map.repository.db.UserRoleRepository;
 
 import javax.inject.Inject;

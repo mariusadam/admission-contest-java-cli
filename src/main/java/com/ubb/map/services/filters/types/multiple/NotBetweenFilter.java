@@ -15,18 +15,20 @@ public class NotBetweenFilter extends MultipleFilter {
     }
 
     @Override
-    public void apply(Where<?, ?> where) throws SQLException {
-        Object first = firstProvider.provideValue().toString();
-        Object second = secondProvider.provideValue().toString();
+    public Boolean apply(Where<?, ?> where) throws SQLException {
+        Object first = transformValue(firstProvider.provideValue());
+        Object second = transformValue(secondProvider.provideValue());
 
-        if (!first.equals("") || !second.equals("")) {
-            if (first.equals("")) {
+        if (first != null || second != null) {
+            if (first == null) {
                 where.gt(getPropertyName(), second);
-            } else if (second.equals("")) {
+            } else if (second == null) {
                 where.lt(getPropertyName(), first);
             } else {
                 where.not().between(getPropertyName(), first, second);
             }
+            return true;
         }
+        return false;
    }
 }

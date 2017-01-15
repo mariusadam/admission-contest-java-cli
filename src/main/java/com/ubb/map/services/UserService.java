@@ -6,7 +6,6 @@ import com.ubb.map.repository.db.UserRepository;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.Random;

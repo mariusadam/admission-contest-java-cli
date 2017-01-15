@@ -2,7 +2,7 @@ package com.ubb.map.di.producers;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
-import com.ubb.map.domain.*;
+import com.ubb.map.domain.HasId;
 import com.ubb.map.repository.db.*;
 
 import java.sql.SQLException;
