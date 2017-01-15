@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ubb.map.view.gui.department.DepartmentController">
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ubb.map.view.gui.candidate.CandidateController">
    <children>
       <HBox alignment="CENTER" minHeight="300.0" prefHeight="388.0" prefWidth="1784.0" spacing="15.0">
          <children>
@@ -27,10 +27,10 @@
                                        <children>
                                           <Label text="Id" />
                                           <Label text="Name" GridPane.rowIndex="2" />
-                                          <Label text="Number of seats" GridPane.rowIndex="3" />
+                                          <Label text="Address" GridPane.rowIndex="3" />
                                           <ComboBox fx:id="idFilterComboBox" onAction="#onIdFilterComboBox" prefWidth="150.0" GridPane.columnIndex="1" />
                                           <ComboBox fx:id="nameFilterComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <ComboBox fx:id="noOfSeatsFilterComboBox" onAction="#onNoOfSeatsFilterComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <ComboBox fx:id="addressFilterComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                           <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2">
                                              <children>
                                                 <HBox fx:id="idFilterHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" visible="false">
@@ -42,10 +42,10 @@
                                                 <TextField fx:id="idMatchTextField" alignment="CENTER" />
                                              </children>
                                           </StackPane>
-                                          <TextField fx:id="codeMatchTextField" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                          <TextField fx:id="phoneMatchTextField" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                           <TextField fx:id="nameMatchTextField" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                          <ComboBox fx:id="codeFilterComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <Label text="Code" GridPane.rowIndex="1" />
+                                          <ComboBox fx:id="phoneFilterComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label text="Phone" GridPane.rowIndex="1" />
                                           <Label text="Created at" GridPane.rowIndex="4" />
                                           <Label text="Updated at" GridPane.rowIndex="5" />
                                           <ComboBox fx:id="createdAtFilterComboBox" onAction="#onCreatedAtFilterComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -72,17 +72,7 @@
                                                 <DatePicker fx:id="createdAtMatchDatePicker" visible="false" />
                                              </children>
                                           </StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                                             <children>
-                                                <TextField fx:id="noOfSeatsMatchTextField" visible="false" />
-                                                <HBox fx:id="noOfSeatsFilterHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                                                   <children>
-                                                      <TextField fx:id="noOfSeatsMinTextField" />
-                                                      <TextField fx:id="noOfSeatsMaxTextField" />
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                          </StackPane>
+                                          <TextField fx:id="addressMatchTextField" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                        </children>
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -127,12 +117,10 @@
                                     <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                     <GridPane alignment="CENTER">
                                        <children>
-                                          <Label text="Code:" GridPane.rowIndex="1" />
-                                          <Label layoutX="10.0" layoutY="18.0" text="Name:" GridPane.rowIndex="2" />
-                                          <Label layoutX="10.0" layoutY="48.0" text="Number of seats:" GridPane.rowIndex="3" />
-                                          <TextField fx:id="codeTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <TextField fx:id="noOfSeatsTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <Label text="Phone" GridPane.rowIndex="1" />
+                                          <Label layoutX="10.0" layoutY="18.0" text="Name:" GridPane.rowIndex="3" />
+                                          <TextField fx:id="phoneTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                           <HBox alignment="CENTER" spacing="30.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                              <children>
                                                 <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onAddButton_clicked" prefHeight="25.0" prefWidth="57.0" text="Add" />
@@ -145,6 +133,8 @@
                                           </HBox>
                                           <TextField fx:id="idTextField" GridPane.columnIndex="1" />
                                           <Label text="Id:" />
+                                          <Label text="Address" GridPane.rowIndex="2" />
+                                          <TextField fx:id="addressTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                        </children>
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="360.0" minWidth="10.0" prefWidth="150.0" />

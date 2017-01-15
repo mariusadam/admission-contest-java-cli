@@ -21,11 +21,9 @@ import java.util.Collection;
  * Created by marius on 10/16/16.
  */
 @Singleton
-public class OptionCrudService {
-    private RepositoryInterface<Integer, Option>     optionRepository;
+public class OptionCrudService extends BaseCrudService<Integer, Option>{
     private RepositoryInterface<Integer, Candidate>  candidateRepository;
     private RepositoryInterface<Integer, Department> departmentRepository;
-    private ValidatorInterface<Option>      validator;
 
     @Inject
     public OptionCrudService(
@@ -35,10 +33,9 @@ public class OptionCrudService {
             OptionValidator      validator
     )
     {
-        this.optionRepository = optionRepository;
+        super(optionRepository, validator);
         this.candidateRepository = candidateRepository;
         this.departmentRepository = departmentRepository;
-        this.validator = validator;
     }
 
     public Option create(String cid, String departmentId) throws InvalidObjectException, DuplicateEntryException {
@@ -59,13 +56,13 @@ public class OptionCrudService {
         );
 
         this.validator.validate(option);
-        this.optionRepository.insert(option);
+        this.repository.insert(option);
 
         return option;
     }
 
     public Option update(Integer optionId, String newCandidateId, String newDepartmentId) throws InvalidObjectException {
-        Option option = this.optionRepository.findById(optionId);
+        Option option = this.repository.findById(optionId);
 
         if (!newCandidateId.isEmpty()) {
             option.setCandidate(this.candidateRepository.findById(Integer.parseInt(newCandidateId)));
@@ -75,16 +72,8 @@ public class OptionCrudService {
             option.setDepartment(this.departmentRepository.findById(Integer.valueOf(newDepartmentId)));
         }
         this.validator.validate(option);
-        this.optionRepository.update(option);
+        this.repository.update(option);
 
         return option;
-    }
-
-    public Option delete(Integer id) {
-        return this.optionRepository.delete(id);
-    }
-
-    public Collection<Option> getAll() {
-        return this.optionRepository.getAll();
     }
 }

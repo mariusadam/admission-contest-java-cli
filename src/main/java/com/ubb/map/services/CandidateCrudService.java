@@ -4,37 +4,30 @@ import com.ubb.map.domain.Candidate;
 import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
 import com.ubb.map.helper.generator.RandomGenerator;
-import com.ubb.map.repository.RepositoryInterface;
 import com.ubb.map.repository.db.CandidateRepository;
 import com.ubb.map.validator.CandidateValidator;
-import com.ubb.map.validator.ValidatorInterface;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Collection;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
  *
  */
 @Singleton
-public class CandidateCrudService {
-    private RepositoryInterface<Integer, Candidate> candidateRepository;
-    private ValidatorInterface<Candidate>  validator;
-
+public class CandidateCrudService extends BaseCrudService<Integer, Candidate> {
     /**
      *
-     * @param candidateRepository  The optionRepository class for Candidate entities
+     * @param repository  The optionRepository class for Candidate entities
      * @param validator            The com.ubb.map.validator for the Candidate entity
      */
     @Inject
     public CandidateCrudService(
-            CandidateRepository candidateRepository,
+            CandidateRepository repository,
             CandidateValidator validator
     ) {
-        this.candidateRepository = candidateRepository;
-        this.validator = validator;
+        super(repository, validator);
     }
 
     /**
@@ -53,9 +46,17 @@ public class CandidateCrudService {
         );
 
         this.validator.validate(candidate);
-        this.candidateRepository.insert(candidate);
+        this.repository.insert(candidate);
 
         return candidate;
+    }
+
+    /**
+     *
+     * @return The newly update Candidate object
+     */
+    public Candidate update(Candidate c) throws InvalidObjectException {
+        return update(c.getId(), c.getName(), c.getPhone(), c.getAddress());
     }
 
     /**
@@ -67,7 +68,7 @@ public class CandidateCrudService {
      * @return The newly update Candidate object
      */
     public Candidate update(Integer id, String newName, String newPhone, String newAddress) throws InvalidObjectException {
-        Candidate candidate = this.candidateRepository.findById(id);
+        Candidate candidate = this.repository.findById(id);
 
         if (!newName.isEmpty()) {
             candidate.setName(newName);
@@ -79,24 +80,11 @@ public class CandidateCrudService {
             candidate.setAddress(newAddress);
         }
         this.validator.validate(candidate);
-        this.candidateRepository.update(candidate);
+        this.repository.update(candidate);
 
         return candidate;
     }
 
-    /**
-     *
-     * @param id                      The id of the candidate to be deleted
-     * @return {@link Candidate}      The deleted candidate
-     * @throws NoSuchElementException If the candidate with given id is not found
-     */
-    public Candidate delete(Integer id) {
-        return this.candidateRepository.delete(id);
-    }
-
-    public Collection<Candidate> getAll() {
-        return this.candidateRepository.getAll();
-    }
 
     public Collection<Candidate> filterByName(String name) {
         return this.getAll().stream().filter(candidate -> candidate.getName().toLowerCase().contains(name.toLowerCase())).collect(Collectors.toList());

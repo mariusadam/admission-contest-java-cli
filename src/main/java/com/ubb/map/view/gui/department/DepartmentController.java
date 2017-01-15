@@ -6,36 +6,33 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.ubb.map.domain.Department;
-import com.ubb.map.repository.db.OrmRepository;
+import com.ubb.map.services.BaseCrudService;
 import com.ubb.map.services.DepartmentCrudService;
+import com.ubb.map.services.filters.types.NullFilter;
 import com.ubb.map.services.filters.types.PropertyFilter;
 import com.ubb.map.services.filters.types.ValueProvider;
 import com.ubb.map.services.filters.types.multiple.BetweenFilter;
 import com.ubb.map.services.filters.types.multiple.NotBetweenFilter;
 import com.ubb.map.services.filters.types.simple.*;
 import com.ubb.map.view.gui.AlertBox;
+import com.ubb.map.view.gui.BaseController;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.util.Callback;
+import javafx.util.converter.IntegerStringConverter;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class DepartmentController implements Initializable {
+public class DepartmentController extends BaseController<Integer, Department> {
 
-    @Inject private DepartmentCrudService departmentCrudService;
+    @Inject private DepartmentCrudService mainCrudService;
 
-    @FXML private Button searchButton;
     @FXML private TextField idTextField;
     @FXML private TextField codeTextField;
     @FXML private TextField nameTextField;
@@ -48,17 +45,16 @@ public class DepartmentController implements Initializable {
     @FXML private TextField idMatchTextField;
     @FXML private TextField nameMatchTextField;
     @FXML private TextField noOfSeatsMatchTextField;
-    @FXML private TextField perPageTextField;
     @FXML private ComboBox<PropertyFilter> codeFilterComboBox;
     @FXML private ComboBox<PropertyFilter> createdAtFilterComboBox;
     @FXML private ComboBox<PropertyFilter> updatedAtFilterComboBox;
     @FXML private ComboBox<PropertyFilter> noOfSeatsFilterComboBox;
     @FXML private ComboBox<PropertyFilter> nameFilterComboBox;
     @FXML private ComboBox<PropertyFilter> idFilterComboBox;
-    @FXML private HBox noOfSeatsFilterHbox;
-    @FXML private HBox idFilterHbox;
-    @FXML private HBox createdAtFilterHbox;
-    @FXML private HBox updatedAtFilterHbox;
+    @FXML private HBox noOfSeatsFilterHBox;
+    @FXML private HBox idFilterHBox;
+    @FXML private HBox createdAtFilterHBox;
+    @FXML private HBox updatedAtFilterHBox;
     @FXML private DatePicker createdAtMatchDatePicker;
     @FXML private DatePicker createdAtMinDatePicker;
     @FXML private DatePicker createdAtMaxDatePicker;
@@ -66,18 +62,15 @@ public class DepartmentController implements Initializable {
     @FXML private DatePicker updatedAtMinDatePicker;
     @FXML private DatePicker updatedAtMaxDatePicker;
 
-    @FXML private Pagination pagination;
-
-    private TableView<Department> departmentsTableView;
-    private ObservableList<Department> departmentsObservableList;
-
     @FXML
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ValueProvider idProvider = () -> idMatchTextField.getText();
         ValueProvider firstIdProvider = () -> idMinTextField.getText();
         ValueProvider secondIdProvider = () -> idMaxTextField.getText();
+        PropertyFilter nullFilter = new NullFilter();
         idFilterComboBox.getItems().addAll(
+                nullFilter,
                 new EqualsFilter("id", idProvider),
                 new NotEqualsFilter("id", idProvider),
                 new BetweenFilter("id", firstIdProvider, secondIdProvider),
@@ -86,6 +79,7 @@ public class DepartmentController implements Initializable {
 
         ValueProvider codeProvider = () -> codeMatchTextField.getText();
         codeFilterComboBox.getItems().addAll(
+                nullFilter,
                 new EqualsFilter("code", codeProvider),
                 new NotEqualsFilter("code", codeProvider),
                 new ContainsFilter("code", codeProvider),
@@ -94,6 +88,7 @@ public class DepartmentController implements Initializable {
 
         ValueProvider nameProvider = () -> nameMatchTextField.getText();
         nameFilterComboBox.getItems().addAll(
+                nullFilter,
                 new EqualsFilter("name", nameProvider),
                 new NotEqualsFilter("name", nameProvider),
                 new ContainsFilter("name", nameProvider),
@@ -104,6 +99,7 @@ public class DepartmentController implements Initializable {
         ValueProvider noSeatsFirstProvider = () -> noOfSeatsMinTextField.getText();
         ValueProvider noSeatsSecondProvider = () -> noOfSeatsMaxTextField.getText();
         noOfSeatsFilterComboBox.getItems().addAll(
+                nullFilter,
                 new EqualsFilter("number_of_seats", noSeatsProvider),
                 new NotEqualsFilter("number_of_seats", noSeatsProvider),
                 new BetweenFilter("number_of_seats", noSeatsFirstProvider, noSeatsSecondProvider),
@@ -115,6 +111,7 @@ public class DepartmentController implements Initializable {
         ValueProvider createdAtFirstProvider = () -> createdAtMinDatePicker.getValue();
         ValueProvider createdAtSecondProvider = () -> createdAtMaxDatePicker.getValue();
         createdAtFilterComboBox.getItems().addAll(
+                nullFilter,
                 new EqualsFilter("created_at", createdAtProvider),
                 new NotEqualsFilter("created_at", createdAtProvider),
                 new BetweenFilter("created_at", createdAtFirstProvider, createdAtSecondProvider),
@@ -125,6 +122,7 @@ public class DepartmentController implements Initializable {
         ValueProvider updatedAtFirstProvider = () -> updatedAtMinDatePicker.getValue();
         ValueProvider updatedAtSecondProvider = () -> updatedAtMaxDatePicker.getValue();
         updatedAtFilterComboBox.getItems().addAll(
+                nullFilter,
                 new EqualsFilter("updated_at", updatedAtProvider),
                 new NotEqualsFilter("updated_at", updatedAtProvider),
                 new BetweenFilter("updated_at", updatedAtFirstProvider, updatedAtSecondProvider),
@@ -132,16 +130,25 @@ public class DepartmentController implements Initializable {
         );
 
         idTextField.setDisable(true);
-        idFilterHbox.setVisible(false);
-        noOfSeatsFilterHbox.setVisible(false);
-        createdAtFilterHbox.setVisible(false);
-        updatedAtFilterHbox.setVisible(false);
+        idFilterHBox.setVisible(false);
+        noOfSeatsFilterHBox.setVisible(false);
+        createdAtFilterHBox.setVisible(false);
+        updatedAtFilterHBox.setVisible(false);
         idMatchTextField.setVisible(true);
         noOfSeatsMatchTextField.setVisible(true);
         createdAtMatchDatePicker.setVisible(true);
         updatedAtMatchDatePicker.setVisible(true);
 
-        departmentsTableView = new TableView<>();
+        super.initialize(location, resources);
+    }
+
+    @Override
+    protected BaseCrudService<Integer, Department> getMainCrudService() {
+        return mainCrudService;
+    }
+
+    protected void initializeMainTableView() {
+        mainTableView = new TableView<>();
 
         TableColumn<Department, Integer> idColumn = new TableColumn<>();
         idColumn.setText("#Id");
@@ -152,16 +159,25 @@ public class DepartmentController implements Initializable {
         codeColumn.setText("Code");
         codeColumn.setMinWidth(100);
         codeColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
+        codeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        codeColumn.setOnEditCommit(t -> mainCrudService.update(t.getTableView().getItems().get(
+                t.getTablePosition().getRow()).setCode(t.getNewValue())));
 
         TableColumn<Department, String> nameColumn = new TableColumn<>();
         nameColumn.setText("Name");
         nameColumn.setMinWidth(150);
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        nameColumn.setOnEditCommit(t -> mainCrudService.update(t.getTableView().getItems().get(
+                t.getTablePosition().getRow()).setName(t.getNewValue())));
 
         TableColumn<Department, Integer> noOfSeatsColumn = new TableColumn<>();
         noOfSeatsColumn.setText("No.Seats");
         noOfSeatsColumn.setMinWidth(30);
         noOfSeatsColumn.setCellValueFactory(new PropertyValueFactory<>("numberOfSeats"));
+        noOfSeatsColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        noOfSeatsColumn.setOnEditCommit(t -> mainCrudService.update(t.getTableView().getItems().get(
+                t.getTablePosition().getRow()).setNumberOfSeats(t.getNewValue())));
 
         TableColumn<Department, Date> createdAtColumn = new TableColumn<>();
         createdAtColumn.setText("Created at");
@@ -173,14 +189,14 @@ public class DepartmentController implements Initializable {
         updatedAtColumn.setMinWidth(150);
         updatedAtColumn.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
-        this.departmentsObservableList = FXCollections.observableArrayList();
-        departmentsTableView.setItems(departmentsObservableList);
-        departmentsTableView
+        this.entityObservableList = FXCollections.observableArrayList();
+        mainTableView.setItems(entityObservableList);
+        mainTableView
                 .getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> this.loadDepartment(newValue));
         //noinspection unchecked
-        departmentsTableView.getColumns().addAll(
+        mainTableView.getColumns().addAll(
                 idColumn,
                 codeColumn,
                 nameColumn,
@@ -188,29 +204,6 @@ public class DepartmentController implements Initializable {
                 createdAtColumn,
                 updatedAtColumn
         );
-        pagination.setPageFactory(this::createPage);
-    }
-
-    private Node createPage(int pageIndex) {
-        reloadDepartments(pageIndex + 1);
-        return new Pane(departmentsTableView);
-    }
-
-    private void reloadDepartments() {
-        reloadDepartments(pagination.getCurrentPageIndex() + 1);
-    }
-
-    private void reloadDepartments(Integer pageIndex) {
-        departmentsObservableList.clear();
-
-        int perPage = OrmRepository.PAGE_SIZE;
-        try {
-            perPage = Integer.parseInt(perPageTextField.getText());
-        } catch (Exception ignored) {
-
-        }
-        departmentsObservableList.addAll(departmentCrudService.getFiltered(getFilters(), pageIndex, perPage));
-        pagination.setPageCount(departmentCrudService.getNrOfPages(getFilters(), perPage));
     }
 
     private void loadDepartment(Department department) {
@@ -230,49 +223,33 @@ public class DepartmentController implements Initializable {
         noOfSeatsTextField.setText("");
     }
 
-    private void ensureCorrectFieldsAreVisible(PropertyFilter filter, HBox hBoxContainer, Control textField) {
-        if (filter instanceof SimpleFilter) {
-            hBoxContainer.setVisible(false);
-            textField.setVisible(true);
-        } else {
-            textField.setVisible(false);
-            hBoxContainer.setVisible(true);
-        }
-    }
-
     @FXML
     void onIdFilterComboBox(ActionEvent event) {
-        ensureCorrectFieldsAreVisible(idFilterComboBox.getValue(), idFilterHbox, idMatchTextField);
+        ensureCorrectFieldsAreVisible(idFilterComboBox.getValue(), idFilterHBox, idMatchTextField);
 
     }
 
     @FXML
     void onNoOfSeatsFilterComboBox(ActionEvent event) {
-        ensureCorrectFieldsAreVisible(noOfSeatsFilterComboBox.getValue(), noOfSeatsFilterHbox, noOfSeatsMatchTextField);
+        ensureCorrectFieldsAreVisible(noOfSeatsFilterComboBox.getValue(), noOfSeatsFilterHBox, noOfSeatsMatchTextField);
     }
 
     @FXML
     void onCreatedAtFilterComboBox(ActionEvent event) {
-        ensureCorrectFieldsAreVisible(createdAtFilterComboBox.getValue(), createdAtFilterHbox, createdAtMatchDatePicker);
+        ensureCorrectFieldsAreVisible(createdAtFilterComboBox.getValue(), createdAtFilterHBox, createdAtMatchDatePicker);
     }
 
     @FXML
     void onUpdateAtFilterComboBox(ActionEvent event) {
-        ensureCorrectFieldsAreVisible(updatedAtFilterComboBox.getValue(), updatedAtFilterHbox, updatedAtMatchDatePicker);
-    }
-
-    @FXML
-    void onSearchButton_clicked(ActionEvent event) {
-        reloadDepartments();
+        ensureCorrectFieldsAreVisible(updatedAtFilterComboBox.getValue(), updatedAtFilterHBox, updatedAtMatchDatePicker);
     }
 
     @FXML
     private void onAddButton_clicked(ActionEvent event) {
         try {
-            departmentCrudService.create(codeTextField.getText(), nameTextField.getText(), noOfSeatsTextField.getText());
+            mainCrudService.create(codeTextField.getText(), nameTextField.getText(), noOfSeatsTextField.getText());
             clearDetails();
-            this.departmentsObservableList.clear();
-            this.departmentsObservableList.addAll(this.departmentCrudService.getFiltered(getFilters()));
+            reloadMainTable();
         } catch (Exception ex) {
             AlertBox.error(ex.getMessage());
         }
@@ -281,9 +258,8 @@ public class DepartmentController implements Initializable {
     @FXML
     private void onUpdateButton_clicked(ActionEvent event) {
         try {
-            departmentCrudService.update(idTextField.getText(), codeTextField.getText(), nameTextField.getText(), noOfSeatsTextField.getText());
-            this.departmentsObservableList.clear();
-            this.departmentsObservableList.addAll(this.departmentCrudService.getFiltered(getFilters()));
+            mainCrudService.update(idTextField.getText(), codeTextField.getText(), nameTextField.getText(), noOfSeatsTextField.getText());
+            reloadMainTable();
         } catch (Exception ex) {
             AlertBox.error(ex.getMessage());
         }
@@ -292,12 +268,11 @@ public class DepartmentController implements Initializable {
     @FXML
     private void onDeleteButton_clicked(ActionEvent event) {
         try {
-            for (Department dep : departmentsTableView.getSelectionModel().getSelectedItems()) {
-                departmentCrudService.delete(dep.getId().toString());
-                clearDetails();
-                this.departmentsObservableList.clear();
-                this.departmentsObservableList.addAll(this.departmentCrudService.getFiltered(getFilters()));
+            for (Department dep : mainTableView.getSelectionModel().getSelectedItems()) {
+                mainCrudService.delete(dep.getId().toString());
             }
+            clearDetails();
+            reloadMainTable();
         } catch (Exception ex) {
             AlertBox.error(ex.getMessage());
         }
@@ -327,7 +302,7 @@ public class DepartmentController implements Initializable {
         updatedAtMaxDatePicker.setValue(null);
     }
 
-    List<PropertyFilter> getFilters() {
+    protected List<PropertyFilter> getFilters() {
         return Stream.of(
                 idFilterComboBox.getSelectionModel().getSelectedItem(),
                 codeFilterComboBox.getSelectionModel().getSelectedItem(),

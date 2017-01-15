@@ -3,26 +3,18 @@ package com.ubb.map.services;
 import com.ubb.map.domain.Department;
 import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
-import com.ubb.map.repository.RepositoryInterface;
 import com.ubb.map.repository.db.DepartmentRepository;
-import com.ubb.map.services.filters.types.PropertyFilter;
 import com.ubb.map.validator.DepartmentValidator;
-import com.ubb.map.validator.ValidatorInterface;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.Collection;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
  * Service class handling crud operations on Department entity
  */
 @Singleton
-public class DepartmentCrudService {
-    private RepositoryInterface<Integer, Department> departmentRepository;
-    private ValidatorInterface<Department>          validator;
-
+public class DepartmentCrudService extends BaseCrudService<Integer, Department> {
     /**
      *
      * @param departmentRepository The optionRepository class for Department entities
@@ -33,8 +25,7 @@ public class DepartmentCrudService {
             DepartmentRepository departmentRepository,
             DepartmentValidator departmentValidator
     ) {
-        this.departmentRepository = departmentRepository;
-        this.validator = departmentValidator;
+        super(departmentRepository, departmentValidator);
     }
 
     /**
@@ -53,9 +44,17 @@ public class DepartmentCrudService {
         department.setNumberOfSeats(noOFSeats);
 
         this.validator.validate(department);
-        this.departmentRepository.insert(department);
+        this.repository.insert(department);
 
         return department;
+    }
+
+    /**
+     *
+     * @return {@link Department} The updated department
+     */
+    public Department update(Department d) throws InvalidObjectException {
+        return update(d.getId().toString(), d.getCode(), d.getName(), d.getNumberOfSeats().toString());
     }
 
     /**
@@ -66,13 +65,13 @@ public class DepartmentCrudService {
      * @return {@link Department} The updated department
      */
     public Department update(String id, String newCode, String newName, String newNumberOfSeats) throws InvalidObjectException {
-        Department department = this.departmentRepository.findById(Integer.valueOf(id));
+        Department department = this.repository.findById(Integer.valueOf(id));
 
         department.setName(newName);
         department.setCode(newCode);
         department.setNumberOfSeats(Integer.parseInt(newNumberOfSeats));
         this.validator.validate(department);
-        this.departmentRepository.update(department);
+        this.repository.update(department);
 
         return department;
     }
@@ -84,40 +83,6 @@ public class DepartmentCrudService {
      * @throws NoSuchElementException If the department with given id is not found
      */
     public Department delete(String id) {
-        return this.departmentRepository.delete(Integer.valueOf(id));
-    }
-
-    public Collection<Department> getAll() {
-        return this.departmentRepository.getAll();
-    }
-
-    public Collection<Department> getAll(int page) {
-        return departmentRepository.getAll(page);
-    }
-
-    public Collection<Department> getFiltered(List<PropertyFilter> filters) {
-        return this.departmentRepository.getFiltered(filters, 1);
-    }
-
-    public Collection<Department> getFiltered(List<PropertyFilter> filters, int page, int perPage) {
-        return this.departmentRepository.getFiltered(filters, page, perPage);
-    }
-
-    public Collection<Department> getFiltered(List<PropertyFilter> filters, int page) {
-        return this.departmentRepository.getFiltered(filters, page);
-    }
-
-    public int getNrOfPages(List<PropertyFilter> filters, int perPage) {
-        int matches =  departmentRepository.countMatches(filters);
-        if (matches == 0) {
-            return 0;
-        } else {
-            int result = matches / perPage;
-            if (matches % perPage != 0) {
-                result++;
-            }
-
-            return result;
-        }
+        return this.repository.delete(Integer.valueOf(id));
     }
 }

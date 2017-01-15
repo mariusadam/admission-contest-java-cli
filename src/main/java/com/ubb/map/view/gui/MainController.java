@@ -4,7 +4,7 @@ import com.ubb.map.domain.Resource;
 import com.ubb.map.domain.User;
 import com.ubb.map.services.AclService;
 import com.ubb.map.services.UserService;
-import com.ubb.map.view.gui.candidate.CandidatesView;
+import com.ubb.map.view.gui.candidate.CandidateController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,30 +31,50 @@ public class MainController implements Initializable {
     private final static String CANDIDATES_TAB = "Candidates";
     private final static String OPTIONS_TAB = "Options";
 
-    @Inject private WeldContainer weldContainer;
-    @Inject private CandidatesView candidatesView;
-    @Inject private AclService acl;
-    @Inject private UserService userService;
+    @Inject
+    private WeldContainer weldContainer;
+    @Inject
+    private CandidateController candidatesController;
+    @Inject
+    private AclService acl;
+    @Inject
+    private UserService userService;
 
-    @FXML private TabPane tabPane;
-    @FXML private StackPane stackPane;
-    @FXML private BorderPane borderPane;
-    @FXML private VBox loginPane;
-    @FXML private Text loginMessage;
-    @FXML private TextField emailTextField;
-    @FXML private PasswordField passwordTextField;
+    @FXML
+    private TabPane tabPane;
+    @FXML
+    private StackPane stackPane;
+    @FXML
+    private BorderPane borderPane;
+    @FXML
+    private VBox loginPane;
+    @FXML
+    private Text loginMessage;
+    @FXML
+    private TextField emailTextField;
+    @FXML
+    private PasswordField passwordTextField;
 
-    @FXML private MenuBar menuBar;
-    @FXML private Menu admissionMenu;
-    @FXML private MenuItem optionsMenuItem;
-    @FXML private MenuItem candidatesMenuItem;
-    @FXML private MenuItem departmentsMenuItem;
-    @FXML private Menu administrationMenu;
-    @FXML private MenuItem usersMenuItem;
-    @FXML private MenuItem rolesMenuIteam;
+    @FXML
+    private MenuBar menuBar;
+    @FXML
+    private Menu admissionMenu;
+    @FXML
+    private MenuItem optionsMenuItem;
+    @FXML
+    private MenuItem candidatesMenuItem;
+    @FXML
+    private MenuItem departmentsMenuItem;
+    @FXML
+    private Menu administrationMenu;
+    @FXML
+    private MenuItem usersMenuItem;
+    @FXML
+    private MenuItem rolesMenuIteam;
 
     private Map<String, Tab> createdTabs;
     private User currentUser;
+
     public MainController() {
         this.createdTabs = new Hashtable<>();
     }
@@ -66,10 +86,9 @@ public class MainController implements Initializable {
         passwordTextField.setText("abcd1234");
     }
 
-    private void initializeLogin()
-    {
+    private void initializeLogin() {
         this.loginMessage.textProperty().setValue("");
-        this.currentUser  = null;
+        this.currentUser = null;
         this.borderPane.setVisible(false);
         this.loginPane.setVisible(true);
     }
@@ -138,69 +157,52 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void onLoginAsOtherUserMenuItem_clicked(ActionEvent event)
-    {
+    private void onLoginAsOtherUserMenuItem_clicked(ActionEvent event) {
         this.createdTabs.clear();
         this.tabPane.getTabs().clear();
         this.initializeLogin();
     }
 
     @FXML
-    private void onLogoutAndExitMenuItem_clicked(ActionEvent event)
-    {
+    private void onLogoutAndExitMenuItem_clicked(ActionEvent event) {
         Platform.exit();
     }
 
-    private Tab getCandidatesTab() {
-        if (!this.createdTabs.containsKey(CANDIDATES_TAB)) {
-            this.createdTabs.put(CANDIDATES_TAB, new Tab(CANDIDATES_TAB, candidatesView.getPane()));
-        }
+    private Tab getCandidatesTab() throws IOException {
+            if (!this.createdTabs.containsKey(CANDIDATES_TAB)) {
+                Parent root = getFXMLLoader().load(getClass().getResourceAsStream("/view/gui/fxml/CandidateView.fxml"));
+                this.createdTabs.put(CANDIDATES_TAB, new Tab(CANDIDATES_TAB, root));
+            }
 
-        return this.createdTabs.get(CANDIDATES_TAB);
+            return this.createdTabs.get(CANDIDATES_TAB);
     }
 
-    private Tab getDepartmentsTab() {
-        try {
+    private Tab getDepartmentsTab() throws IOException {
             if (!this.createdTabs.containsKey(DEPARTMENTS_TAB)) {
                 Parent root = getFXMLLoader().load(getClass().getResourceAsStream("/view/gui/fxml/DepartmentView.fxml"));
                 this.createdTabs.put(DEPARTMENTS_TAB, new Tab(DEPARTMENTS_TAB, root));
             }
 
             return this.createdTabs.get(DEPARTMENTS_TAB);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
-    private Tab getOptionsTab() {
-        try {
+    private Tab getOptionsTab() throws IOException {
             if (!this.createdTabs.containsKey(OPTIONS_TAB)) {
                 Parent root = getFXMLLoader().load(getClass().getResourceAsStream("/view/gui/fxml/OptionView.fxml"));
                 this.createdTabs.put(OPTIONS_TAB, new Tab(OPTIONS_TAB, root));
             }
 
             return this.createdTabs.get(OPTIONS_TAB);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
-    private Tab getUsersTab() {
-        try {
+    private Tab getUsersTab() throws IOException {
             Parent root = getFXMLLoader().load(getClass().getResourceAsStream("/view/gui/fxml/OptionView.fxml"));
             return new Tab("Users", root);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
-    private Tab getRolesTab() {
-        try {
+    private Tab getRolesTab() throws IOException {
             Parent root = getFXMLLoader().load(getClass().getResourceAsStream("/view/gui/fxml/RoleView.fxml"));
             return new Tab("Roles", root);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private void ensureTabAdded(Tab tab) {
@@ -213,17 +215,17 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    void onManageOptionsMenuItem_clicked(ActionEvent event) {
+    void onManageOptionsMenuItem_clicked(ActionEvent event) throws IOException {
         this.ensureTabAdded(getOptionsTab());
     }
 
     @FXML
-    void onManageCandidatesMenuItem_clicked(ActionEvent event) {
+    void onManageCandidatesMenuItem_clicked(ActionEvent event) throws IOException {
         this.ensureTabAdded(getCandidatesTab());
     }
 
     @FXML
-    void onManageDepartmentsMenuItem_clicked(ActionEvent event) {
+    void onManageDepartmentsMenuItem_clicked(ActionEvent event) throws IOException {
         this.ensureTabAdded(getDepartmentsTab());
     }
 
