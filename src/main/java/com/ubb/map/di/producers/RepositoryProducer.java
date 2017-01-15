@@ -10,9 +10,9 @@ import java.sql.SQLException;
 import com.ubb.map.helper.config.Configuration;
 import com.ubb.map.repository.RepositoryInterface;
 import com.ubb.map.repository.qualifiers.*;
-import com.ubb.map.services.CandidateCrudService;
-import com.ubb.map.services.DepartmentCrudService;
-import com.ubb.map.services.OptionCrudService;
+import com.ubb.map.services.crud.CandidateCrudService;
+import com.ubb.map.services.crud.DepartmentCrudService;
+import com.ubb.map.services.crud.OptionCrudService;
 
 import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
@@ -50,17 +50,5 @@ public class RepositoryProducer {
 
     private <Id, T extends HasId<Id>> RepositoryInterface<Id, T> getDbRepo(Class<Id> idClass, Class<T> entityClass) {
         return new OrmRepository<>(getConnection(), entityClass);
-    }
-
-    public CandidateCrudService getCandidateConttroller() {
-        return null;
-    }
-
-    public DepartmentCrudService getDepartmentController() {
-        return null;
-    }
-
-    public OptionCrudService getOptionController() {
-        return null;
     }
 }

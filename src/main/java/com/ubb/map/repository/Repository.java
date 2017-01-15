@@ -3,7 +3,6 @@ package com.ubb.map.repository;
 import com.ubb.map.domain.HasId;
 import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.RepositoryException;
-import com.ubb.map.util.GenericArray;
 
 import java.util.*;
 
@@ -28,7 +27,7 @@ public class Repository<Id, T extends HasId<Id>> implements RepositoryInterface<
         if (this.items.containsKey(obj.getId())) {
             throw new DuplicateEntryException();
         }
-        this.items.put(obj.getId(),obj);
+        this.items.put(obj.getId(), obj);
     }
 
     /**
@@ -74,13 +73,9 @@ public class Repository<Id, T extends HasId<Id>> implements RepositoryInterface<
     }
 
     @Override
-    public void addCollection(Collection<T> collection) {
+    public void addCollection(Collection<T> collection) throws DuplicateEntryException {
         for (T obj : collection) {
-            try {
-                this.insert(obj);
-            } catch (DuplicateEntryException e) {
-                throw new RepositoryException(e);
-            }
+            this.insert(obj);
         }
     }
 
@@ -90,7 +85,6 @@ public class Repository<Id, T extends HasId<Id>> implements RepositoryInterface<
     }
 
     /**
-     *
      * @return {@link GenericArray} The object containing all the entities
      */
     @Override

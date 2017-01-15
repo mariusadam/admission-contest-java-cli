@@ -3,6 +3,8 @@ package com.ubb.map.domain;
 import java.io.Serializable;
 import com.j256.ormlite.field.DatabaseField;
 
+import javax.validation.constraints.NotNull;
+
 /**
  *
  */
@@ -37,7 +39,19 @@ public abstract class Entity extends TimestampableImpl implements HasId<Integer>
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Entity && this.id.equals(((Entity) obj).id);
+        if (!(obj instanceof Entity)) {
+            return false;
+        }
+
+        if (id == null && ((Entity) obj).id == null) {
+            return true;
+        }
+
+        if (id == null || ((Entity) obj).id == null) {
+            return false;
+        }
+
+        return id.equals(((Entity) obj).id);
     }
 
     public String toCsvFormat(String separator) {

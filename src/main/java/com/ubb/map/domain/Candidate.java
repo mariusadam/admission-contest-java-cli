@@ -3,15 +3,24 @@ package com.ubb.map.domain;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 @DatabaseTable(tableName = "candidate")
-public class Candidate extends Entity{
+public class Candidate extends Entity {
     @DatabaseField
+    @NotNull(message = "Name may not be null")
+    @Size(min = 5, max = 50, message = "Name must be between {min} and {max} characters")
     private String name;
 
     @DatabaseField
+    @NotNull(message = "Phone may not be null")
+    @Size(min = 10, max = 10, message = "Phone must have {max} characters")
     private String phone;
 
     @DatabaseField
+    @NotNull(message = "Address may not be null")
+    @Size(min = 1, max = 255, message = "Address must have between {min} and {max} characters")
     private String address;
 
     public Candidate() {

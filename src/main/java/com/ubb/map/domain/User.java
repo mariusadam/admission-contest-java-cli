@@ -3,6 +3,8 @@ package com.ubb.map.domain;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
@@ -11,20 +13,39 @@ import java.util.Date;
 @DatabaseTable(tableName = "users")
 public class User extends Entity {
     @DatabaseField(columnName = "last_name")
+    @NotNull
+    @Size(max = 30)
     private String           lastName;
+
     @DatabaseField(columnName = "first_name")
+    @NotNull
+    @Size(max = 30)
     private String           firstName;
+
     @DatabaseField(columnName = "is_active")
+    @NotNull
     private Boolean          isActive;
+
     @DatabaseField(columnName = "logged_in")
+    @NotNull
     private Boolean          loggedIn;
+
     @DatabaseField(columnName = "last_login")
     private Date             lastLogin;
+
     @DatabaseField
+    @NotNull
+    @Size(max = 255)
     private String           email;
+
     @DatabaseField
+    @NotNull
+    @Size(max = 128)
     private String           password;
+
     @DatabaseField
+    @NotNull
+    @Size(max = 32)
     private String           salt;
 
     private String           plainPassword;

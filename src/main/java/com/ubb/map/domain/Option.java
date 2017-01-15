@@ -3,15 +3,22 @@ package com.ubb.map.domain;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 @DatabaseTable(tableName = "option")
 public class Option extends Entity {
     public static final String CANDIDATE_ID_FIELD_NAME = "candidate_id";
     public static final String DEPARTMENT_ID_FIELD_NAME = "department_id";
 
     @DatabaseField(foreign = true, columnName = CANDIDATE_ID_FIELD_NAME)
+    @NotNull
+    @Valid
     private Candidate candidate;
 
     @DatabaseField(foreign = true, columnName = DEPARTMENT_ID_FIELD_NAME)
+    @NotNull
+    @Valid
     private Department department;
 
     public Option() {

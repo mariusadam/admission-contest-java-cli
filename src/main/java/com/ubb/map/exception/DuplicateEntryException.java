@@ -1,6 +1,6 @@
 package com.ubb.map.exception;
 
-public class DuplicateEntryException extends RuntimeException {
+public class DuplicateEntryException extends Exception {
     public DuplicateEntryException() {
     }
 

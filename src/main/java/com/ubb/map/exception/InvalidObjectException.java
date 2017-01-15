@@ -3,7 +3,7 @@ package com.ubb.map.exception;
 /**
  * Created by marius on 10/16/16.
  */
-public class InvalidObjectException extends RuntimeException {
+public class InvalidObjectException extends Exception {
     public InvalidObjectException() {
     }
 

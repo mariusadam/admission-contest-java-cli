@@ -3,15 +3,27 @@ package com.ubb.map.domain;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 @DatabaseTable(tableName = "department")
 public class Department extends Entity {
     @DatabaseField
+    @NotNull(message = "Code may not be null")
+    @Size(min=3,max = 20, message = "Code must have between {min} and {max} characters")
     private String code;
 
     @DatabaseField
+    @NotNull(message = "Name may not be null")
+    @Size(min=3, max = 50, message = "Name must have between {min} and {max} characters")
     private String name;
 
     @DatabaseField(columnName = "number_of_seats")
+    @NotNull(message = "Number of seats cannot be null")
+    @Max(value = 999, message = "Number of seats cannot be greater than {value}")
+    @Min(value = 1, message = "Number of seats cannot be lower than {value}")
     private Integer numberOfSeats;
 
     public Department() {

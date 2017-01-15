@@ -3,7 +3,7 @@ package com.ubb.map.exception;
 /**
  * Created by marius on 11/6/16.
  */
-public class RepositoryException extends RuntimeException {
+public class RepositoryException extends Exception {
     public RepositoryException() {
         super();
     }

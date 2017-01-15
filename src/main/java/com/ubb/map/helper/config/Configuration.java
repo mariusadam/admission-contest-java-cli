@@ -50,6 +50,7 @@ public class Configuration {
      * Saves the configuration.
      */
     public void save() {
+        //TODO make the configuration available in the interface
         try {
             yaml.dump(config, new PrintWriter(new File(configFile)));
         } catch (FileNotFoundException e) {

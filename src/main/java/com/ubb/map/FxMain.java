@@ -1,5 +1,7 @@
 package com.ubb.map;
 
+import com.j256.ormlite.logger.LocalLog;
+import com.j256.ormlite.logger.Log;
 import javafx.application.Application.Parameters;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
@@ -17,6 +19,7 @@ public class FxMain {
 
     public void start( Stage stage, Parameters parameters ) throws Exception
     {
+        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "debug");
         InputStream fxml = new BufferedInputStream(getClass().getResourceAsStream("/view/gui/fxml/MainView.fxml"));
         Parent root = fxmlLoader.load(fxml);
 

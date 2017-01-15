@@ -4,6 +4,9 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -13,15 +16,20 @@ import java.util.Collection;
 @DatabaseTable(tableName = "role")
 public class Role extends Entity{
     @DatabaseField
+    @NotNull
+    @Size(max = 255)
     private String                name;
 
     @DatabaseField
+    @NotNull
     private Integer               importance;
 
     @DatabaseField(dataType = DataType.SERIALIZABLE)
+    @NotNull
     private ArrayList<Resource> resources;
 
     @DatabaseField(dataType = DataType.SERIALIZABLE)
+    @NotNull
     private ArrayList<Operation> allowedOperations;
 
     public Role() {

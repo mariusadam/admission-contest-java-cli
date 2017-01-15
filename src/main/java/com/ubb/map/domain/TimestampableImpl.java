@@ -2,6 +2,7 @@ package com.ubb.map.domain;
 
 import com.j256.ormlite.field.DatabaseField;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
