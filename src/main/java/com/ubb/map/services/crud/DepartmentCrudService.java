@@ -11,6 +11,7 @@ import com.ubb.map.validator.DepartmentValidator;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.NoSuchElementException;
 
 /**
@@ -83,6 +84,10 @@ public class DepartmentCrudService extends BaseCrudService<Integer, Department> 
      */
     public Department delete(String id) throws SQLException, RepositoryException {
         return this.repository.delete(getIntOrNull(id));
+    }
+
+    public Collection<String> suggestCodes(String partialCode) throws SQLException {
+        return repository.suggestCodes(partialCode);
     }
 
     @Override

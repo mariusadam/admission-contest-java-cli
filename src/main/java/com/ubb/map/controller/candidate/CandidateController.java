@@ -243,11 +243,6 @@ public class CandidateController extends BaseController<Integer, Candidate> {
     }
 
     @FXML
-    void onSearchButton_clicked(ActionEvent event) {
-        reloadMainTable();
-    }
-
-    @FXML
     void onResetFiltersButton_clicked(ActionEvent event) {
         Stream.of(
                 idFilterComboBox,
