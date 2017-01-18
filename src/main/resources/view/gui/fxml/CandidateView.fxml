@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ubb.map.controller.candidate.CandidateController">
+   <children>
+      <HBox alignment="CENTER" minHeight="300.0" prefHeight="388.0" prefWidth="1784.0" spacing="15.0">
+         <children>
+            <Pagination fx:id="pagination" pageCount="20" />
+         </children>
+      </HBox>
+      <HBox prefHeight="411.0" prefWidth="1784.0">
+         <children>
+            <TitledPane animated="false" prefHeight="319.0" prefWidth="890.0" text="Filter">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="285.0" prefWidth="888.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox prefHeight="245.0" prefWidth="868.0">
+                                 <children>
+                                    <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                    <GridPane alignment="CENTER" prefHeight="180.0" prefWidth="888.0">
+                                       <children>
+                                          <Label text="Id" />
+                                          <Label text="Name" GridPane.rowIndex="2" />
+                                          <Label text="Address" GridPane.rowIndex="3" />
+                                          <ComboBox fx:id="idFilterComboBox" onAction="#onIdFilterComboBox" prefWidth="150.0" GridPane.columnIndex="1" />
+                                          <ComboBox fx:id="nameFilterComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <ComboBox fx:id="addressFilterComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2">
+                                             <children>
+                                                <HBox fx:id="idFilterHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" visible="false">
+                                                   <children>
+                                                      <TextField fx:id="idMinTextField" />
+                                                      <TextField fx:id="idMaxTextField" />
+                                                   </children>
+                                                </HBox>
+                                                <TextField fx:id="idMatchTextField" alignment="CENTER" />
+                                             </children>
+                                          </StackPane>
+                                          <TextField fx:id="phoneMatchTextField" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                          <TextField fx:id="nameMatchTextField" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                          <ComboBox fx:id="phoneFilterComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label text="Phone" GridPane.rowIndex="1" />
+                                          <Label text="Created at" GridPane.rowIndex="4" />
+                                          <Label text="Updated at" GridPane.rowIndex="5" />
+                                          <ComboBox fx:id="createdAtFilterComboBox" onAction="#onCreatedAtFilterComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <ComboBox fx:id="updatedAtFilterComboBox" onAction="#onUpdateAtFilterComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                          <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                             <children>
+                                                <DatePicker fx:id="updatedAtMatchDatePicker" />
+                                                <HBox fx:id="updatedAtFilterHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                                                   <children>
+                                                      <DatePicker fx:id="updatedAtMinDatePicker" />
+                                                      <DatePicker fx:id="updatedAtMaxDatePicker" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </StackPane>
+                                          <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                             <children>
+                                                <HBox fx:id="createdAtFilterHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                                                   <children>
+                                                      <DatePicker fx:id="createdAtMinDatePicker" />
+                                                      <DatePicker fx:id="createdAtMaxDatePicker" />
+                                                   </children>
+                                                </HBox>
+                                                <DatePicker fx:id="createdAtMatchDatePicker" visible="false" />
+                                             </children>
+                                          </StackPane>
+                                          <TextField fx:id="addressMatchTextField" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                       </children>
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="283.0" minWidth="10.0" prefWidth="258.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.0" minWidth="10.0" prefWidth="320.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                    </GridPane>
+                                    <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="53.0" prefWidth="868.0" spacing="20.0">
+                                 <children>
+                                    <Region prefHeight="200.0" prefWidth="200.0" />
+                                    <TextField fx:id="perPageTextField" prefWidth="150.0" promptText="Items per page" />
+                                    <Button alignment="CENTER" mnemonicParsing="false" onAction="#onSearchButton_clicked" prefHeight="25.0" prefWidth="151.0" text="Search" />
+                                    <Button mnemonicParsing="false" onAction="#onResetFiltersButton_clicked" prefHeight="25.0" prefWidth="151.0" text="Reset filters" />
+                                    <Region prefHeight="200.0" prefWidth="200.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
+            <VBox prefHeight="798.0" prefWidth="894.0">
+               <children>
+                  <TitledPane alignment="TOP_LEFT" animated="false" contentDisplay="CENTER" text="Details">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <HBox prefHeight="180.0" prefWidth="888.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                    <GridPane alignment="CENTER">
+                                       <children>
+                                          <Label text="Phone" GridPane.rowIndex="1" />
+                                          <Label layoutX="10.0" layoutY="18.0" text="Name:" GridPane.rowIndex="3" />
+                                          <TextField fx:id="phoneTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <HBox alignment="CENTER" spacing="30.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                             <children>
+                                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onAddButton_clicked" prefHeight="25.0" prefWidth="57.0" text="Add" />
+                                                <Button mnemonicParsing="false" onAction="#onUpdateButton_clicked" prefHeight="25.0" prefWidth="80.0" text="Update" />
+                                                <Button mnemonicParsing="false" onAction="#onDeleteButton_clicked" text="Delete selected" />
+                                             </children>
+                                             <padding>
+                                                <Insets top="15.0" />
+                                             </padding>
+                                          </HBox>
+                                          <TextField fx:id="idTextField" GridPane.columnIndex="1" />
+                                          <Label text="Id:" />
+                                          <Label text="Address" GridPane.rowIndex="2" />
+                                          <TextField fx:id="addressTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                       </children>
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="360.0" minWidth="10.0" prefWidth="150.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="750.0" minWidth="10.0" prefWidth="330.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                    </GridPane>
+                                    <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane animated="false" text="Exports">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="892.0" />
+                     </content>
+                  </TitledPane>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>

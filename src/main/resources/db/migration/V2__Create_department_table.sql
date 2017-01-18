@@ -1,5 +1,8 @@
 CREATE TABLE department (
-    id VARCHAR(20) PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    number_of_seats int(3) NOT NULL
+   id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `code` VARCHAR(20),
+    `name` VARCHAR(50) NOT NULL,
+    number_of_seats int(3) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 )

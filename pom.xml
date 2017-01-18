@@ -6,6 +6,9 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+
+        <flyway.user>java_user</flyway.user>
+        <flyway.password>abcd1234</flyway.password>
     </properties>
 
     <groupId>com.ubb</groupId>
@@ -32,12 +35,6 @@
             <version>20160810</version>
         </dependency>
 
-        <dependency>
-            <groupId>dnl.utils</groupId>
-            <artifactId>j-text-utils</artifactId>
-            <version>0.3</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
@@ -57,6 +54,60 @@
             <artifactId>guava</artifactId>
             <version>18.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.j256.ormlite</groupId>
+            <artifactId>ormlite-core</artifactId>
+            <version>5.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.j256.ormlite</groupId>
+            <artifactId>ormlite-jdbc</artifactId>
+            <version>5.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/javax.enterprise/cdi-api -->
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>2.0-EDR2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jboss.weld/weld-core -->
+        <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-core</artifactId>
+            <version>3.0.0.Alpha6</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jboss.weld.se/weld-se -->
+        <dependency>
+            <groupId>org.jboss.weld.se</groupId>
+            <artifactId>weld-se</artifactId>
+            <version>3.0.0.Alpha1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.3.1.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>8.40.9</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -66,9 +117,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>4.0.3</version>
                 <configuration>
-                    <url>jdbc:mysql://172.25.0.2:3306/admission_contest_database</url>
-                    <user>java_user</user>
-                    <password>abcd1234</password>
+                    <url>jdbc:mysql://localhost:3306/admission_contest_database</url>
                 </configuration>
             </plugin>
         </plugins>
