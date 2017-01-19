@@ -1,5 +1,6 @@
 package com.ubb.map.controller;
 
+import com.ubb.map.services.export.BaseExporter;
 import com.ubb.map.services.export.ExportType;
 import com.ubb.map.services.export.ExporterFactory;
 import javafx.beans.value.ChangeListener;
@@ -125,26 +126,15 @@ public class DialogBox {
         Node okButton = dialog.getDialogPane().lookupButton(okButtonType);
         okButton.setDisable(true);
         Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
-        cancelButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                worker.cancel();
-            }
-        });
-        int max = items.size();
+        cancelButton.setOnAction(event -> worker.cancel());
+
         // Do some validation (using the Java 8 lambda syntax).
         progressBar.progressProperty().addListener((observable, oldValue, newValue) -> {
-            okButton.setDisable(newValue.intValue() == max);
+            System.out.println(newValue.intValue());
+            okButton.setDisable(newValue.intValue() != BaseExporter.MAX_STEP);
         });
 
         dialog.getDialogPane().setContent(grid);
-
-//        dialog.setResultConverter(dialogButton -> {
-//            if (dialogButton == okButtonType) {
-//                return new Pair<>(username.getText(), password.getText());
-//            }
-//            return null;
-//        });
 
         Label label = new Label("Details:");
 

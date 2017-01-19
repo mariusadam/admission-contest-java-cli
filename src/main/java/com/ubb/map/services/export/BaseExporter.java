@@ -1,22 +1,15 @@
 package com.ubb.map.services.export;
 
-import com.itextpdf.kernel.color.Color;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.border.SolidBorder;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Tab;
-import com.itextpdf.layout.element.Table;
 import javafx.concurrent.Task;
 
-import java.io.File;
 import java.util.List;
 
 /**
  * Created by marius on 1/19/2017.
  */
 public abstract class BaseExporter<T> extends Task {
+    public static final int MAX_STEP = 100;
+    public static final int MAX_SLEEP_TIME = 10000; //4sec
     protected List<T> items;
     protected String destinationPath;
 
@@ -25,4 +18,11 @@ public abstract class BaseExporter<T> extends Task {
         this.destinationPath = destinationPath;
     }
 
+    protected double getPercentage(int currentStep, int total) {
+        return (MAX_STEP * currentStep * 1.0) / total;
+    }
+
+    protected int getSleepTimePerStep(int total) {
+        return (int)((MAX_SLEEP_TIME / 10.0) / total) * 10;
+    }
 }

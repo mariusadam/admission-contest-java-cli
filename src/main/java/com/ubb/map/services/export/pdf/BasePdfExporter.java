@@ -32,18 +32,18 @@ public abstract class BasePdfExporter<T> extends BaseExporter<T> {
         Table table;
         table = new Table(columnsCount);
         setTableHeader(table);
-        int sleepTime = 2000 / size;
+        int sleepTime = getSleepTimePerStep(size - 1);
         for (int i = 0; i < size; i++) {
             for (Callback<T, String> columnsCallback : columnsCallbacks) {
                 String content = columnsCallback.call(items.get(i));
                 table.addCell(content);
             }
             Thread.sleep(sleepTime);
-            updateMessage("Added " + items.get(i));
-            updateProgress(i, size - 1);
+            updateMessage("Added " + items.get(i) + "  ( " + getPercentage(i, size - 1) + " )");
+            updateProgress(getPercentage(i + 1, size - 1), MAX_STEP);
         }
-        updateMessage("");
-        updateMessage("Done exporting " + size + " objects to pdf");
+        updateMessage(System.lineSeparator());
+        updateMessage("Done exporting " + size + " objects to pdf to file " + destinationPath);
         doc.add(table);
         doc.close();
         return true;
