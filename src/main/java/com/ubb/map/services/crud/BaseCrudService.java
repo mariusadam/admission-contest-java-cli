@@ -26,8 +26,8 @@ public abstract class BaseCrudService<Id, T extends HasId<Id>> {
         return getRepository().getAll();
     }
 
-    public Collection<T> getAll(int page) throws SQLException {
-        return getRepository().getAll(page);
+    public List<T> getAll(List<PropertyFilter> filters) throws SQLException {
+        return getRepository().getAll(filters);
     }
 
     public Collection<T> getFiltered(List<PropertyFilter> filters, int page, int perPage) throws SQLException, RepositoryException {

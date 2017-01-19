@@ -156,7 +156,7 @@ public class MainController implements Initializable {
             currentUser.setLoggedIn(false);
             userService.update(currentUser);
         } catch (InvalidObjectException | DuplicateEntryException | SQLException e) {
-            AlertBox.error(e.getMessage());
+            DialogBox.error(e.getMessage());
         }
     }
     
