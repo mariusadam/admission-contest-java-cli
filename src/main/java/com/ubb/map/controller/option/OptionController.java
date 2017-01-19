@@ -1,8 +1,7 @@
 package com.ubb.map.controller.option;
 
-import com.ubb.map.controller.AlertBox;
+import com.ubb.map.controller.DialogBox;
 import com.ubb.map.controller.BaseController;
-import com.ubb.map.domain.Candidate;
 import com.ubb.map.domain.Department;
 import com.ubb.map.domain.Option;
 import com.ubb.map.exception.DuplicateEntryException;
@@ -18,19 +17,13 @@ import com.ubb.map.services.filters.multiple.BetweenFilter;
 import com.ubb.map.services.filters.multiple.NotBetweenFilter;
 import com.ubb.map.services.filters.simple.EqualsFilter;
 import com.ubb.map.services.filters.simple.NotEqualsFilter;
-import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
-import javafx.util.Callback;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -39,7 +32,6 @@ import javax.inject.Singleton;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -172,7 +164,7 @@ public class OptionController extends BaseController<Integer, Option> {
             try {
                 return departmentCrudService.suggestCodes(param.getUserText());
             } catch (SQLException e) {
-                AlertBox.error(e.getMessage());
+                DialogBox.error(e.getMessage());
                 return new ArrayList<>();
             }
         });
@@ -182,11 +174,16 @@ public class OptionController extends BaseController<Integer, Option> {
                 Department dep = optionCrudService.getDepartmentRepository().findByCode(event.getCompletion());
                 depIdTextField.setText(dep.getId().toString());
             } catch (SQLException | RepositoryException e) {
-                AlertBox.error(e.getMessage());
+                DialogBox.error(e.getMessage());
             }
         });
 
         super.initialize(location, resources);
+    }
+
+    @Override
+    protected Class<Option> getManagedEntity() {
+        return Option.class;
     }
 
     @Override
@@ -330,7 +327,7 @@ public class OptionController extends BaseController<Integer, Option> {
             );
             reloadMainTable();
         } catch (InvalidObjectException | DuplicateEntryException | SQLException | RepositoryException ex) {
-            AlertBox.error(ex.getMessage());
+            DialogBox.error(ex.getMessage());
         }
     }
 
@@ -346,7 +343,7 @@ public class OptionController extends BaseController<Integer, Option> {
             loadOption(o);
             reloadMainTable();
         } catch (InvalidObjectException | SQLException | RepositoryException ex) {
-            AlertBox.error(ex.getMessage());
+            DialogBox.error(ex.getMessage());
         }
     }
 
@@ -361,7 +358,7 @@ public class OptionController extends BaseController<Integer, Option> {
             clearDetails();
             reloadMainTable();
         } catch (RepositoryException | SQLException ex) {
-            AlertBox.error(ex.getMessage());
+            DialogBox.error(ex.getMessage());
         }
     }
 

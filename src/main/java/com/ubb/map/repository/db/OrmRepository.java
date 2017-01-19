@@ -46,8 +46,11 @@ public class OrmRepository<Id, T extends HasId<Id>> implements RepositoryInterfa
     }
 
     @Override
-    public Collection<T> getAll(int page) throws SQLException {
-        return getAll(page, PAGE_SIZE);
+    public List<T> getAll(List<PropertyFilter> filters) throws SQLException {
+        QueryBuilder<T, Id> qb = dao.queryBuilder();
+        applyFilters(qb, filters);
+
+        return qb.query();
     }
 
     @Override

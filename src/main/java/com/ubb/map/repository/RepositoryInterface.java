@@ -51,7 +51,7 @@ public interface RepositoryInterface<Id, T extends HasId<Id>> {
      */
     Collection<T> getAll() throws SQLException;
 
-    default Collection<T> getAll(int page) throws SQLException {
+    default List<T> getAll(List<PropertyFilter> page) throws SQLException {
         return null;
     }
 

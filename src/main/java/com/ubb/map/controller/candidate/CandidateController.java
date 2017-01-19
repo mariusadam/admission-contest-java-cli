@@ -23,7 +23,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
-import com.ubb.map.controller.AlertBox;
+import com.ubb.map.controller.DialogBox;
 
 import javax.inject.Inject;
 import java.net.URL;
@@ -39,33 +39,59 @@ import java.util.stream.Stream;
  * Created by marius on 11/20/16.
  */
 public class CandidateController extends BaseController<Integer, Candidate> {
-    @FXML private TextField idTextField;
-    @FXML private TextField addressTextField;
-    @FXML private TextField idMatchTextField;
-    @FXML private TextField phoneMatchTextField;
-    @FXML private TextField phoneTextField;
-    @FXML private TextField idMaxTextField;
-    @FXML private TextField nameTextField;
-    @FXML private TextField idMinTextField;
-    @FXML private TextField addressMatchTextField;
-    @FXML private TextField nameMatchTextField;
-    @FXML private DatePicker createdAtMinDatePicker;
-    @FXML private DatePicker updatedAtMinDatePicker;
-    @FXML private DatePicker createdAtMaxDatePicker;
-    @FXML private DatePicker updatedAtMaxDatePicker;
-    @FXML private DatePicker createdAtMatchDatePicker;
-    @FXML private DatePicker updatedAtMatchDatePicker;
-    @FXML private HBox idFilterHBox;
-    @FXML private HBox updatedAtFilterHBox;
-    @FXML private HBox createdAtFilterHBox;
-    @FXML private ComboBox<PropertyFilter> idFilterComboBox;
-    @FXML private ComboBox<PropertyFilter> nameFilterComboBox;
-    @FXML private ComboBox<PropertyFilter> phoneFilterComboBox;
-    @FXML private ComboBox<PropertyFilter> createdAtFilterComboBox;
-    @FXML private ComboBox<PropertyFilter> addressFilterComboBox;
-    @FXML private ComboBox<PropertyFilter> updatedAtFilterComboBox;
+    @FXML
+    private TextField idTextField;
+    @FXML
+    private TextField addressTextField;
+    @FXML
+    private TextField idMatchTextField;
+    @FXML
+    private TextField phoneMatchTextField;
+    @FXML
+    private TextField phoneTextField;
+    @FXML
+    private TextField idMaxTextField;
+    @FXML
+    private TextField nameTextField;
+    @FXML
+    private TextField idMinTextField;
+    @FXML
+    private TextField addressMatchTextField;
+    @FXML
+    private TextField nameMatchTextField;
+    @FXML
+    private DatePicker createdAtMinDatePicker;
+    @FXML
+    private DatePicker updatedAtMinDatePicker;
+    @FXML
+    private DatePicker createdAtMaxDatePicker;
+    @FXML
+    private DatePicker updatedAtMaxDatePicker;
+    @FXML
+    private DatePicker createdAtMatchDatePicker;
+    @FXML
+    private DatePicker updatedAtMatchDatePicker;
+    @FXML
+    private HBox idFilterHBox;
+    @FXML
+    private HBox updatedAtFilterHBox;
+    @FXML
+    private HBox createdAtFilterHBox;
+    @FXML
+    private ComboBox<PropertyFilter> idFilterComboBox;
+    @FXML
+    private ComboBox<PropertyFilter> nameFilterComboBox;
+    @FXML
+    private ComboBox<PropertyFilter> phoneFilterComboBox;
+    @FXML
+    private ComboBox<PropertyFilter> createdAtFilterComboBox;
+    @FXML
+    private ComboBox<PropertyFilter> addressFilterComboBox;
+    @FXML
+    private ComboBox<PropertyFilter> updatedAtFilterComboBox;
 
-    @Inject private CandidateCrudService candidateCrudService;
+    @Inject
+    private CandidateCrudService candidateCrudService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -145,6 +171,11 @@ public class CandidateController extends BaseController<Integer, Candidate> {
     }
 
     @Override
+    protected Class<Candidate> getManagedEntity() {
+        return Candidate.class;
+    }
+
+    @Override
     protected void initializeMainTableView() {
         TableColumn<Candidate, Integer> idColumn = new TableColumn<>("Id");
         idColumn.setMinWidth(50);
@@ -162,7 +193,7 @@ public class CandidateController extends BaseController<Integer, Candidate> {
                 c = candidateCrudService.update(c);
                 t.getTableView().getItems().set(index, c);
             } catch (SQLException | RepositoryException | InvalidObjectException e) {
-                AlertBox.error(e.getMessage());
+                DialogBox.error(e.getMessage());
             }
         });
 
@@ -178,7 +209,7 @@ public class CandidateController extends BaseController<Integer, Candidate> {
                 c = candidateCrudService.update(c);
                 t.getTableView().getItems().set(index, c);
             } catch (SQLException | RepositoryException | InvalidObjectException e) {
-                AlertBox.error(e.getMessage());
+                DialogBox.error(e.getMessage());
             }
         });
 
@@ -194,7 +225,7 @@ public class CandidateController extends BaseController<Integer, Candidate> {
                 c = candidateCrudService.update(c);
                 t.getTableView().getItems().set(index, c);
             } catch (SQLException | RepositoryException | InvalidObjectException e) {
-                AlertBox.error(e.getMessage());
+                DialogBox.error(e.getMessage());
             }
         });
 
@@ -279,7 +310,7 @@ public class CandidateController extends BaseController<Integer, Candidate> {
             );
             reloadMainTable();
         } catch (InvalidObjectException | DuplicateEntryException | SQLException ex) {
-            AlertBox.error(ex.getMessage());
+            DialogBox.error(ex.getMessage(), ex);
         }
     }
 
@@ -294,7 +325,7 @@ public class CandidateController extends BaseController<Integer, Candidate> {
             );
             reloadMainTable();
         } catch (InvalidObjectException | RepositoryException | SQLException ex) {
-            AlertBox.error(ex.getMessage());
+            DialogBox.error(ex.getMessage());
         }
     }
 
@@ -309,7 +340,7 @@ public class CandidateController extends BaseController<Integer, Candidate> {
             clearDetails();
             reloadMainTable();
         } catch (RepositoryException | SQLException ex) {
-            AlertBox.error(ex.getMessage());
+            DialogBox.error(ex.getMessage());
         }
     }
 

@@ -22,7 +22,7 @@ import com.ubb.map.services.filters.simple.ContainsFilter;
 import com.ubb.map.services.filters.simple.EqualsFilter;
 import com.ubb.map.services.filters.simple.NotContainsFilter;
 import com.ubb.map.services.filters.simple.NotEqualsFilter;
-import com.ubb.map.controller.AlertBox;
+import com.ubb.map.controller.DialogBox;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,36 +37,65 @@ import javax.inject.Singleton;
 
 @Singleton
 public class DepartmentController extends BaseController<Integer, Department> {
-    @FXML private TextField idTextField;
-    @FXML private TextField codeTextField;
-    @FXML private TextField nameTextField;
-    @FXML private TextField noOfSeatsTextField;
-    @FXML private TextField codeMatchTextField;
-    @FXML private TextField noOfSeatsMinTextField;
-    @FXML private TextField noOfSeatsMaxTextField;
-    @FXML private TextField idMinTextField;
-    @FXML private TextField idMaxTextField;
-    @FXML private TextField idMatchTextField;
-    @FXML private TextField nameMatchTextField;
-    @FXML private TextField noOfSeatsMatchTextField;
-    @FXML private ComboBox<PropertyFilter> codeFilterComboBox;
-    @FXML private ComboBox<PropertyFilter> createdAtFilterComboBox;
-    @FXML private ComboBox<PropertyFilter> updatedAtFilterComboBox;
-    @FXML private ComboBox<PropertyFilter> noOfSeatsFilterComboBox;
-    @FXML private ComboBox<PropertyFilter> nameFilterComboBox;
-    @FXML private ComboBox<PropertyFilter> idFilterComboBox;
-    @FXML private HBox noOfSeatsFilterHBox;
-    @FXML private HBox idFilterHBox;
-    @FXML private HBox createdAtFilterHBox;
-    @FXML private HBox updatedAtFilterHBox;
-    @FXML private DatePicker createdAtMatchDatePicker;
-    @FXML private DatePicker createdAtMinDatePicker;
-    @FXML private DatePicker createdAtMaxDatePicker;
-    @FXML private DatePicker updatedAtMatchDatePicker;
-    @FXML private DatePicker updatedAtMinDatePicker;
-    @FXML private DatePicker updatedAtMaxDatePicker;
+    @FXML
+    private TextField idTextField;
+    @FXML
+    private TextField codeTextField;
+    @FXML
+    private TextField nameTextField;
+    @FXML
+    private TextField noOfSeatsTextField;
+    @FXML
+    private TextField codeMatchTextField;
+    @FXML
+    private TextField noOfSeatsMinTextField;
+    @FXML
+    private TextField noOfSeatsMaxTextField;
+    @FXML
+    private TextField idMinTextField;
+    @FXML
+    private TextField idMaxTextField;
+    @FXML
+    private TextField idMatchTextField;
+    @FXML
+    private TextField nameMatchTextField;
+    @FXML
+    private TextField noOfSeatsMatchTextField;
+    @FXML
+    private ComboBox<PropertyFilter> codeFilterComboBox;
+    @FXML
+    private ComboBox<PropertyFilter> createdAtFilterComboBox;
+    @FXML
+    private ComboBox<PropertyFilter> updatedAtFilterComboBox;
+    @FXML
+    private ComboBox<PropertyFilter> noOfSeatsFilterComboBox;
+    @FXML
+    private ComboBox<PropertyFilter> nameFilterComboBox;
+    @FXML
+    private ComboBox<PropertyFilter> idFilterComboBox;
+    @FXML
+    private HBox noOfSeatsFilterHBox;
+    @FXML
+    private HBox idFilterHBox;
+    @FXML
+    private HBox createdAtFilterHBox;
+    @FXML
+    private HBox updatedAtFilterHBox;
+    @FXML
+    private DatePicker createdAtMatchDatePicker;
+    @FXML
+    private DatePicker createdAtMinDatePicker;
+    @FXML
+    private DatePicker createdAtMaxDatePicker;
+    @FXML
+    private DatePicker updatedAtMatchDatePicker;
+    @FXML
+    private DatePicker updatedAtMinDatePicker;
+    @FXML
+    private DatePicker updatedAtMaxDatePicker;
 
-    @Inject private DepartmentCrudService mainCrudService;
+    @Inject
+    private DepartmentCrudService mainCrudService;
 
     @FXML
     @Override
@@ -151,6 +180,11 @@ public class DepartmentController extends BaseController<Integer, Department> {
     }
 
     @Override
+    protected Class<Department> getManagedEntity() {
+        return Department.class;
+    }
+
+    @Override
     protected BaseCrudService<Integer, Department> getMainCrudService() {
         return mainCrudService;
     }
@@ -176,7 +210,7 @@ public class DepartmentController extends BaseController<Integer, Department> {
                 d = mainCrudService.update(d);
                 t.getTableView().getItems().set(index, d);
             } catch (SQLException | RepositoryException | InvalidObjectException e) {
-                AlertBox.error(e.getMessage());
+                DialogBox.error(e.getMessage());
             }
         });
 
@@ -193,7 +227,7 @@ public class DepartmentController extends BaseController<Integer, Department> {
                 d = mainCrudService.update(d);
                 t.getTableView().getItems().set(index, d);
             } catch (SQLException | RepositoryException | InvalidObjectException e) {
-                AlertBox.error(e.getMessage());
+                DialogBox.error(e.getMessage());
             }
         });
 
@@ -210,7 +244,7 @@ public class DepartmentController extends BaseController<Integer, Department> {
                 d = mainCrudService.update(d);
                 t.getTableView().getItems().set(index, d);
             } catch (SQLException | RepositoryException | InvalidObjectException e) {
-                AlertBox.error(e.getMessage());
+                DialogBox.error(e.getMessage());
             }
         });
 
@@ -286,7 +320,7 @@ public class DepartmentController extends BaseController<Integer, Department> {
             clearDetails();
             reloadMainTable();
         } catch (InvalidObjectException | DuplicateEntryException | SQLException ex) {
-            AlertBox.error(ex.getMessage());
+            DialogBox.error(ex.getMessage());
         }
     }
 
@@ -296,7 +330,7 @@ public class DepartmentController extends BaseController<Integer, Department> {
             mainCrudService.update(idTextField.getText(), codeTextField.getText(), nameTextField.getText(), noOfSeatsTextField.getText());
             reloadMainTable();
         } catch (Exception ex) {
-            AlertBox.error(ex.getMessage());
+            DialogBox.error(ex.getMessage());
         }
     }
 
@@ -309,7 +343,7 @@ public class DepartmentController extends BaseController<Integer, Department> {
             clearDetails();
             reloadMainTable();
         } catch (Exception ex) {
-            AlertBox.error(ex.getMessage());
+            DialogBox.error(ex.getMessage());
         }
     }
 
