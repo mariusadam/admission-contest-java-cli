@@ -1,9 +1,7 @@
 package com.ubb.map.services.export;
 
-import com.ubb.map.domain.Candidate;
-import com.ubb.map.domain.Department;
-import com.ubb.map.domain.Entity;
-import com.ubb.map.domain.Option;
+import com.ubb.map.domain.*;
+import javafx.util.Callback;
 
 import java.util.HashMap;
 import java.util.Map;

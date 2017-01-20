@@ -1,7 +1,6 @@
-package com.ubb.map.repository.qualifiers;
+package com.ubb.map.di.qualifiers;
 
 import javax.inject.Qualifier;
-import javax.inject.Singleton;
 import java.lang.annotation.*;
 
 @Target({ElementType.TYPE, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})

@@ -3,7 +3,7 @@ package com.ubb.map.repository.db;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.ubb.map.domain.User;
-import com.ubb.map.repository.qualifiers.Connection;
+import com.ubb.map.di.qualifiers.Connection;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

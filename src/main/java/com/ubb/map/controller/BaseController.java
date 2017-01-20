@@ -7,6 +7,8 @@ import com.ubb.map.services.crud.HydrationType;
 import com.ubb.map.services.export.CountType;
 import com.ubb.map.services.filters.PropertyFilter;
 import com.ubb.map.services.filters.simple.SimpleFilter;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,7 +16,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 import java.net.URL;
 import java.util.List;

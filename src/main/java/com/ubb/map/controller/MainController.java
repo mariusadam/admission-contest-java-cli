@@ -152,7 +152,7 @@ public class MainController implements Initializable {
         }
         executor.shutdown();
         // Wait until all tabs are loaded
-        while (!executor.isTerminated()) {}
+//        while (!executor.isTerminated()) {}
     }
 
     private void configureMenuAccess() {

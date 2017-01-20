@@ -96,17 +96,23 @@ public class DialogBox {
     }
 
     public static <T> void exportUsingThread(String fileName, List<T> items, Class<T> entity) {
+        //obtain the worker in the current thread so that exception is handled
+        Task worker = ExporterFactory.createForFileName(fileName, items, entity);
         new Thread(new Task() {
             @Override
             protected Object call() throws Exception {
-                Platform.runLater(() -> export(fileName, items, entity));
+                Platform.runLater(() -> export(worker, fileName, items, entity));
                 return true;
             }
         }).start();
     }
 
-    public static <T> void export(String fileName, List<T> items, Class<T> entity) {
+    protected static <T> void export(String fileName, List<T> items, Class<T> entity) {
         Task worker = ExporterFactory.createForFileName(fileName, items, entity);
+        export(worker, fileName, items, entity);
+    }
+
+    protected static <T> void export(Task worker, String fileName, List<T> items, Class<T> entity) {
         // Create the custom dialog.
         Dialog dialog = new Dialog();
         GridPane grid = new GridPane();

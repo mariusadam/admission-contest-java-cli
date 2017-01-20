@@ -6,7 +6,7 @@ import com.ubb.map.domain.HasId;
 import com.ubb.map.helper.config.Configuration;
 import com.ubb.map.repository.RepositoryInterface;
 import com.ubb.map.repository.db.OrmRepository;
-import com.ubb.map.repository.qualifiers.Connection;
+import com.ubb.map.di.qualifiers.Connection;
 
 import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
