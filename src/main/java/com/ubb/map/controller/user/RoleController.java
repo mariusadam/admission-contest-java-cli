@@ -7,8 +7,9 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class RoleController implements Initializable{
-    @FXML private TextField idTextField;
+public class RoleController implements Initializable {
+    @FXML
+    private TextField idTextField;
 
     @FXML
     @Override

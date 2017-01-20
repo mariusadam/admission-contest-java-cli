@@ -31,25 +31,33 @@ public abstract class BasePdfExporter<T> extends BaseExporter<T> {
         Document doc = new Document(pdfDoc);
         Table table;
         table = new Table(columnsCount);
-        setTableHeader(table);
-        int sleepTime = getSleepTimePerStep(size - 1);
+        getTableHeader().stream().map(cell -> {
+            cell.setBorderBottom(new SolidBorder(Color.BLACK, 2));
+            cell.setBorderLeft(new SolidBorder(Color.BLACK, 2));
+            cell.setBorderTop(new SolidBorder(Color.BLACK, 2));
+            return cell;
+        }).forEach(table::addHeaderCell);
+
+        int sleepTime = getSleepTimePerStep(size);
         for (int i = 0; i < size; i++) {
             for (Callback<T, String> columnsCallback : columnsCallbacks) {
                 String content = columnsCallback.call(items.get(i));
                 table.addCell(content);
             }
-            Thread.sleep(sleepTime);
-            updateMessage("Added " + items.get(i) + "  ( " + getPercentage(i, size - 1) + " )");
-            updateProgress(getPercentage(i + 1, size - 1), MAX_STEP);
+            if (i != size - 1) {
+                Thread.sleep(sleepTime);
+            }
+            updateProgress(getPercentage(i, size), MAX_STEP);
+            updateMessage("Added " + items.get(i));
         }
-        updateMessage(System.lineSeparator());
-        updateMessage("Done exporting " + size + " objects to pdf to file " + destinationPath);
         doc.add(table);
+        updateProgress(MAX_STEP, MAX_STEP);
+        updateMessage("Done exporting " + size + " objects to pdf to file " + destinationPath);
         doc.close();
         return true;
     }
 
-    protected abstract void setTableHeader(Table table);
+    protected abstract List<Cell> getTableHeader();
 
     protected abstract List<Callback<T, String>> getColumnsCallBacks();
 }

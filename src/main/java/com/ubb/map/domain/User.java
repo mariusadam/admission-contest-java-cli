@@ -15,40 +15,40 @@ public class User extends Entity {
     @DatabaseField(columnName = "last_name")
     @NotNull
     @Size(max = 30)
-    private String           lastName;
+    private String lastName;
 
     @DatabaseField(columnName = "first_name")
     @NotNull
     @Size(max = 30)
-    private String           firstName;
+    private String firstName;
 
     @DatabaseField(columnName = "is_active")
     @NotNull
-    private Boolean          isActive;
+    private Boolean isActive;
 
     @DatabaseField(columnName = "logged_in")
     @NotNull
-    private Boolean          loggedIn;
+    private Boolean loggedIn;
 
     @DatabaseField(columnName = "last_login")
-    private Date             lastLogin;
+    private Date lastLogin;
 
     @DatabaseField
     @NotNull
     @Size(max = 255)
-    private String           email;
+    private String email;
 
     @DatabaseField
     @NotNull
     @Size(max = 128)
-    private String           password;
+    private String password;
 
     @DatabaseField
     @NotNull
     @Size(max = 32)
-    private String           salt;
+    private String salt;
 
-    private String           plainPassword;
+    private String plainPassword;
 
     public User() {
 

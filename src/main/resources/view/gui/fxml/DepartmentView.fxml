@@ -165,9 +165,34 @@
                         </AnchorPane>
                      </content>
                   </TitledPane>
-                  <TitledPane animated="false" text="Exports">
+                  <TitledPane animated="false" prefHeight="198.0" prefWidth="894.0" text="Exports">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="892.0" />
+                        <AnchorPane prefHeight="187.0" prefWidth="892.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="224.0" prefWidth="892.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Region prefHeight="200.0" prefWidth="200.0" />
+                                    <GridPane alignment="CENTER" prefHeight="142.0" prefWidth="699.0">
+                                       <children>
+                                          <Label text="Export results as" />
+                                          <ComboBox fx:id="exportComboBox" GridPane.columnIndex="1" />
+                                          <Button alignment="CENTER" mnemonicParsing="false" onAction="#onStartExportButton_clicked" text="Start export" GridPane.columnIndex="2" />
+                                       </children>
+                                       <columnConstraints>
+                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                    </GridPane>
+                                    <Region prefHeight="200.0" prefWidth="200.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
                      </content>
                   </TitledPane>
                </children>

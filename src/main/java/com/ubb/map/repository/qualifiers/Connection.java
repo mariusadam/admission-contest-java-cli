@@ -8,5 +8,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Qualifier
-@Singleton
-public @interface ConnectionSingleton {}
+public @interface Connection {
+}

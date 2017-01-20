@@ -1,6 +1,5 @@
-package com.ubb.map.services.export.pdf;
+package com.ubb.map.services.export.csv;
 
-import com.itextpdf.layout.element.Cell;
 import com.ubb.map.domain.Candidate;
 import com.ubb.map.services.export.ColumnsConfigurator;
 import javafx.util.Callback;
@@ -12,20 +11,20 @@ import java.util.stream.Stream;
 /**
  * Created by marius on 1/19/2017.
  */
-public class CandidatePdfExporter extends BasePdfExporter<Candidate> {
-    public CandidatePdfExporter(List<Candidate> items, String destinationPath) {
+public class CandidateCsvExporter extends BaseCsvExporter<Candidate> {
+    public CandidateCsvExporter(List<Candidate> items, String destinationPath) {
         super(items, destinationPath);
     }
 
     @Override
-    protected List<Cell> getTableHeader() {
+    protected List<String> getColumnsNames() {
         return Stream.of(
-                new Cell().add("Id"),
-                new Cell().add("Name"),
-                new Cell().add("Phone"),
-                new Cell().add("Address"),
-                new Cell().add("Created at"),
-                new Cell().add("Updated at")
+                "Id",
+                "Name",
+                "Phone",
+                "Address",
+                "Created at",
+                "Updated at"
         ).collect(Collectors.toList());
     }
 

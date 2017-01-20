@@ -1,7 +1,7 @@
 package com.ubb.map.controller.option;
 
-import com.ubb.map.controller.DialogBox;
 import com.ubb.map.controller.BaseController;
+import com.ubb.map.controller.DialogBox;
 import com.ubb.map.domain.Department;
 import com.ubb.map.domain.Option;
 import com.ubb.map.exception.DuplicateEntryException;

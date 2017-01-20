@@ -1,12 +1,13 @@
 package com.ubb.map.controller.candidate;
 
 import com.ubb.map.controller.BaseController;
+import com.ubb.map.controller.DialogBox;
+import com.ubb.map.domain.Candidate;
 import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
 import com.ubb.map.exception.RepositoryException;
 import com.ubb.map.services.crud.BaseCrudService;
 import com.ubb.map.services.crud.CandidateCrudService;
-import com.ubb.map.domain.Candidate;
 import com.ubb.map.services.filters.NullFilter;
 import com.ubb.map.services.filters.PropertyFilter;
 import com.ubb.map.services.filters.ValueProvider;
@@ -23,7 +24,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
-import com.ubb.map.controller.DialogBox;
 
 import javax.inject.Inject;
 import java.net.URL;

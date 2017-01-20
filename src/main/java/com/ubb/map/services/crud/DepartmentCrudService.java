@@ -20,6 +20,7 @@ import java.util.NoSuchElementException;
 @Singleton
 public class DepartmentCrudService extends BaseCrudService<Integer, Department> {
     private DepartmentRepository repository;
+
     /**
      * @param departmentRepository The optionRepository class for Department entities
      * @param departmentValidator  The com.ubb.map.validator for Department entity

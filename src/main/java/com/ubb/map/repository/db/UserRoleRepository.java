@@ -5,7 +5,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.ubb.map.domain.Role;
 import com.ubb.map.domain.User;
 import com.ubb.map.domain.UserRole;
-import com.ubb.map.repository.qualifiers.ConnectionSingleton;
+import com.ubb.map.repository.qualifiers.Connection;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -22,7 +22,7 @@ public class UserRoleRepository extends OrmRepository<Integer, UserRole> {
     private RoleRepository roleRepository;
 
     @Inject
-    public UserRoleRepository(@ConnectionSingleton ConnectionSource connection) {
+    public UserRoleRepository(@Connection ConnectionSource connection) {
         super(connection, UserRole.class);
     }
 

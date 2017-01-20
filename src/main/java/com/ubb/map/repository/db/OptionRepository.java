@@ -2,7 +2,7 @@ package com.ubb.map.repository.db;
 
 import com.j256.ormlite.support.ConnectionSource;
 import com.ubb.map.domain.Option;
-import com.ubb.map.repository.qualifiers.ConnectionSingleton;
+import com.ubb.map.repository.qualifiers.Connection;
 
 import javax.inject.Inject;
 
@@ -12,7 +12,7 @@ import javax.inject.Inject;
 public class OptionRepository extends OrmRepository<Integer, Option> {
 
     @Inject
-    public OptionRepository(@ConnectionSingleton ConnectionSource connection) {
+    public OptionRepository(@Connection ConnectionSource connection) {
         super(connection, Option.class);
     }
 }

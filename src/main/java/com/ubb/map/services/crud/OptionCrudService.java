@@ -1,12 +1,10 @@
 package com.ubb.map.services.crud;
 
-import com.ubb.map.domain.Candidate;
 import com.ubb.map.domain.Department;
 import com.ubb.map.domain.Option;
 import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
 import com.ubb.map.exception.RepositoryException;
-import com.ubb.map.helper.generator.RandomGenerator;
 import com.ubb.map.repository.RepositoryInterface;
 import com.ubb.map.repository.db.CandidateRepository;
 import com.ubb.map.repository.db.DepartmentRepository;
@@ -19,25 +17,23 @@ import javax.inject.Singleton;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * Created by marius on 10/16/16.
  */
 @Singleton
-public class OptionCrudService extends BaseCrudService<Integer, Option>{
+public class OptionCrudService extends BaseCrudService<Integer, Option> {
     private OptionRepository repository;
-    private CandidateRepository  candidateRepository;
+    private CandidateRepository candidateRepository;
     private DepartmentRepository departmentRepository;
+
     @Inject
     public OptionCrudService(
-            OptionRepository     optionRepository,
-            CandidateRepository  candidateRepository,
+            OptionRepository optionRepository,
+            CandidateRepository candidateRepository,
             DepartmentRepository departmentRepository,
-            OptionValidator      validator
-    )
-    {
+            OptionValidator validator
+    ) {
         super(validator);
         this.repository = optionRepository;
         this.candidateRepository = candidateRepository;
@@ -100,12 +96,20 @@ public class OptionCrudService extends BaseCrudService<Integer, Option>{
     @Override
     public Collection<Option> getFiltered(List<PropertyFilter> filters, int page, int perPage) throws SQLException, RepositoryException {
         Collection<Option> options = super.getFiltered(filters, page, perPage);
-        for (Option option : options) {
-            option.setCandidate(candidateRepository.findById(option.getCandidate().getId()));
-            option.setDepartment(departmentRepository.findById(option.getDepartment().getId()));
-        }
+        hydrateFull(options);
 
         return options;
+    }
+
+    @Override
+    protected void hydrateFull(Collection<Option> options) throws SQLException, RepositoryException {
+        for (Option option : options) {
+            if (!option.isHydrated()) {
+                option.setCandidate(candidateRepository.findById(option.getCandidate().getId()));
+                option.setDepartment(departmentRepository.findById(option.getDepartment().getId()));
+                option.setHydrated();
+            }
+        }
     }
 
     @Override

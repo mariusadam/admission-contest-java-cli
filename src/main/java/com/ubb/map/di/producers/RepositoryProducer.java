@@ -3,45 +3,36 @@ package com.ubb.map.di.producers;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.ubb.map.domain.HasId;
-import com.ubb.map.repository.db.*;
-
-import java.sql.SQLException;
-
 import com.ubb.map.helper.config.Configuration;
 import com.ubb.map.repository.RepositoryInterface;
-import com.ubb.map.repository.qualifiers.*;
-import com.ubb.map.services.crud.CandidateCrudService;
-import com.ubb.map.services.crud.DepartmentCrudService;
-import com.ubb.map.services.crud.OptionCrudService;
+import com.ubb.map.repository.db.OrmRepository;
+import com.ubb.map.repository.qualifiers.Connection;
 
 import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
+import java.sql.SQLException;
 
 @Singleton
 public class RepositoryProducer {
     private final static String DEFAULT_CONFIG_PATH = "src/main/resources/config/config.yml";
     private Configuration config;
-    private ConnectionSource connection;
 
     public RepositoryProducer() {
         this(DEFAULT_CONFIG_PATH);
     }
 
     public RepositoryProducer(String configPath) {
-        this.config   = new Configuration(configPath);
+        this.config = new Configuration(configPath);
     }
 
-    @Produces @ConnectionSingleton
+    @Produces
+    @Connection
     public ConnectionSource getConnection() {
-        if (this.connection == null) {
-            try {
-                this.connection = new JdbcConnectionSource(getDatabaseConfig("url"), getDatabaseConfig("user"), getDatabaseConfig("pass"));
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try {
+            return new JdbcConnectionSource(getDatabaseConfig("url"), getDatabaseConfig("user"), getDatabaseConfig("pass"));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-
-        return this.connection;
     }
 
     private String getDatabaseConfig(String key) {

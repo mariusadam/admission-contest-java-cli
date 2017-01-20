@@ -2,7 +2,6 @@ package com.ubb.map.domain;
 
 import com.j256.ormlite.field.DatabaseField;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -14,7 +13,7 @@ public abstract class TimestampableImpl implements Timestampable {
 
     @DatabaseField(columnName = "updated_at")
     private Date updatedAt;
-    
+
     @Override
     public Timestampable setCreatedAt(Date date) {
         this.createdAt = date;

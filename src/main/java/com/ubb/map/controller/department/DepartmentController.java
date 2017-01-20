@@ -1,12 +1,7 @@
 package com.ubb.map.controller.department;
 
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.ubb.map.controller.BaseController;
+import com.ubb.map.controller.DialogBox;
 import com.ubb.map.domain.Department;
 import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
@@ -22,7 +17,6 @@ import com.ubb.map.services.filters.simple.ContainsFilter;
 import com.ubb.map.services.filters.simple.EqualsFilter;
 import com.ubb.map.services.filters.simple.NotContainsFilter;
 import com.ubb.map.services.filters.simple.NotEqualsFilter;
-import com.ubb.map.controller.DialogBox;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,6 +28,14 @@ import javafx.util.converter.IntegerStringConverter;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Singleton
 public class DepartmentController extends BaseController<Integer, Department> {

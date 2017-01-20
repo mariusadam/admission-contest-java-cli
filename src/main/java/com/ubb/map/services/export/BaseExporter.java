@@ -9,7 +9,7 @@ import java.util.List;
  */
 public abstract class BaseExporter<T> extends Task {
     public static final int MAX_STEP = 100;
-    public static final int MAX_SLEEP_TIME = 10000; //4sec
+    public static final int MAX_SLEEP_TIME = 4000; //4sec
     protected List<T> items;
     protected String destinationPath;
 
@@ -23,6 +23,6 @@ public abstract class BaseExporter<T> extends Task {
     }
 
     protected int getSleepTimePerStep(int total) {
-        return (int)((MAX_SLEEP_TIME / 10.0) / total) * 10;
+        return (int) ((MAX_SLEEP_TIME / 10.0) / total) * 10;
     }
 }

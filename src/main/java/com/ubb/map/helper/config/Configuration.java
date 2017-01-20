@@ -1,12 +1,12 @@
 package com.ubb.map.helper.config;
 
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.Map;
-
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * Configuration values are stored, loaded, and saved here.
@@ -61,8 +61,7 @@ public class Configuration {
     /**
      * Gets a configuration value.
      *
-     * @param name
-     *            The name of the configuration property.
+     * @param name The name of the configuration property.
      * @return The configuration value.
      */
     public Object get(String name) {
@@ -72,13 +71,11 @@ public class Configuration {
     /**
      * Gets a configuration value.
      *
-     * @param name
-     *            The name of the configuration property.
-     * @param defaultValue
-     *            The default value to use if the configuration property does
-     *            not exist.
+     * @param name         The name of the configuration property.
+     * @param defaultValue The default value to use if the configuration property does
+     *                     not exist.
      * @return The configuration value if the configuration property exists,
-     *         otherwise the defaultValue.
+     * otherwise the defaultValue.
      */
     public Object get(String name, Object defaultValue) {
         if (config.containsKey((Object) name)) {

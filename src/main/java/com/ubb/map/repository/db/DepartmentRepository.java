@@ -3,16 +3,13 @@ package com.ubb.map.repository.db;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.ubb.map.domain.Department;
-import com.ubb.map.domain.Option;
 import com.ubb.map.exception.RepositoryException;
-import com.ubb.map.repository.qualifiers.ConnectionSingleton;
+import com.ubb.map.repository.qualifiers.Connection;
 
 import javax.inject.Inject;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -20,7 +17,7 @@ import java.util.stream.Collectors;
  */
 public class DepartmentRepository extends OrmRepository<Integer, Department> {
     @Inject
-    public DepartmentRepository(@ConnectionSingleton ConnectionSource connection) {
+    public DepartmentRepository(@Connection ConnectionSource connection) {
         super(connection, Department.class);
     }
 

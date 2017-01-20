@@ -12,12 +12,12 @@ import javax.validation.constraints.Size;
 public class Department extends Entity {
     @DatabaseField
     @NotNull(message = "Code may not be null")
-    @Size(min=3,max = 20, message = "Code must have between {min} and {max} characters")
+    @Size(min = 3, max = 20, message = "Code must have between {min} and {max} characters")
     private String code;
 
     @DatabaseField
     @NotNull(message = "Name may not be null")
-    @Size(min=3, max = 50, message = "Name must have between {min} and {max} characters")
+    @Size(min = 3, max = 50, message = "Name must have between {min} and {max} characters")
     private String name;
 
     @DatabaseField(columnName = "number_of_seats")

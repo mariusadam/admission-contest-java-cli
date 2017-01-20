@@ -5,9 +5,7 @@ import com.ubb.map.exception.DuplicateEntryException;
 import com.ubb.map.exception.InvalidObjectException;
 import com.ubb.map.repository.RepositoryInterface;
 import com.ubb.map.repository.db.UserRepository;
-import com.ubb.map.services.crud.BaseCrudService;
 import com.ubb.map.validator.UserValidator;
-import com.ubb.map.validator.ValidatorInterface;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -20,7 +18,7 @@ import java.util.Random;
  * Service class handling crud operations on User entity
  */
 @Singleton
-public class UserService extends BaseCrudService<Integer, User>{
+public class UserService extends BaseCrudService<Integer, User> {
     private final static int SALT_SIZE = 32;
     private UserRepository repository;
     private Random random;
@@ -38,7 +36,7 @@ public class UserService extends BaseCrudService<Integer, User>{
         return u;
     }
 
-    public String encodePassword(String plainPassword, String salt){
+    public String encodePassword(String plainPassword, String salt) {
         String generatedPassword;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -49,8 +47,7 @@ public class UserService extends BaseCrudService<Integer, User>{
                 sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
             }
             generatedPassword = sb.toString();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return generatedPassword;

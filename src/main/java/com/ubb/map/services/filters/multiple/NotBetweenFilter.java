@@ -30,5 +30,5 @@ public class NotBetweenFilter extends MultipleFilter {
             return true;
         }
         return false;
-   }
+    }
 }

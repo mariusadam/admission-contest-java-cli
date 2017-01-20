@@ -3,6 +3,7 @@ package com.ubb.map.controller;
 import com.ubb.map.domain.HasId;
 import com.ubb.map.repository.db.OrmRepository;
 import com.ubb.map.services.crud.BaseCrudService;
+import com.ubb.map.services.crud.HydrationType;
 import com.ubb.map.services.export.CountType;
 import com.ubb.map.services.filters.PropertyFilter;
 import com.ubb.map.services.filters.simple.SimpleFilter;
@@ -14,7 +15,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.List;
@@ -24,9 +24,12 @@ import java.util.ResourceBundle;
  * Created by marius on 15.01.2017.
  */
 public abstract class BaseController<Id, T extends HasId<Id>> implements Initializable {
-    @FXML protected TextField perPageTextField;
-    @FXML protected Pagination pagination;
-    @FXML protected ComboBox<CountType> exportComboBox;
+    @FXML
+    protected TextField perPageTextField;
+    @FXML
+    protected Pagination pagination;
+    @FXML
+    protected ComboBox<CountType> exportComboBox;
     protected TableView<T> mainTableView;
     protected ObservableList<T> entityObservableList;
 
@@ -94,7 +97,8 @@ public abstract class BaseController<Id, T extends HasId<Id>> implements Initial
             } else {
                 items = entityObservableList;
             }
-            DialogBox.export(DialogBox.chooseDirectory(mainTableView.getScene()), items, getManagedEntity());
+            getMainCrudService().hydrate(items, HydrationType.FULL);
+            DialogBox.exportUsingThread(DialogBox.chooseDirectory(mainTableView.getScene()), items, getManagedEntity());
         } catch (Exception e) {
             DialogBox.error(e);
         }

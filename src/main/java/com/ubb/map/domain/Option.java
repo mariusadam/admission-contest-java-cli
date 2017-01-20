@@ -30,7 +30,6 @@ public class Option extends Entity {
     }
 
     /**
-     *
      * @param id         The unique id identifying an entity
      * @param candidate  The candidate
      * @param department The department
@@ -69,5 +68,13 @@ public class Option extends Entity {
                 separator,
                 department.getId().toString()
         );
+    }
+
+    /**
+     * @return {@link String}
+     */
+    @Override
+    public String toString() {
+        return "Option with id " + id;
     }
 }

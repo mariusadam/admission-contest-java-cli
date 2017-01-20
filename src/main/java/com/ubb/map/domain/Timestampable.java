@@ -7,7 +7,10 @@ import java.util.Date;
  */
 public interface Timestampable {
     Timestampable setCreatedAt(Date date);
+
     Date getCreatedAt();
+
     Timestampable setUpdatedAt(Date date);
+
     Date getUpdatedAt();
 }

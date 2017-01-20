@@ -23,11 +23,16 @@ public enum ExportType {
 
     public String getExtension() {
         switch (this) {
-            case PDF : return ".pdf";
-            case CSV: return ".csv";
-            case JSON: return ".json";
-            case XML: return ".xml";
-            default: return ".*";
+            case PDF:
+                return ".pdf";
+            case CSV:
+                return ".csv";
+            case JSON:
+                return ".json";
+            case XML:
+                return ".xml";
+            default:
+                return ".*";
         }
     }
 

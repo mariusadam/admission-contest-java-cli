@@ -1,9 +1,7 @@
 package com.ubb.map.validator;
 
-import com.ubb.map.exception.InvalidCandidateException;
 import com.ubb.map.exception.InvalidObjectException;
 
-import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;

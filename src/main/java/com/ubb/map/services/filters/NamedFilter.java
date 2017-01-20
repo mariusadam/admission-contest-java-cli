@@ -29,7 +29,7 @@ public abstract class NamedFilter {
     protected Object transformValue(Object value) {
         if (value != null) {
             if (value instanceof LocalDate) {
-                value = Date.from(((LocalDate)value).atStartOfDay(ZoneId.systemDefault()).toInstant());
+                value = Date.from(((LocalDate) value).atStartOfDay(ZoneId.systemDefault()).toInstant());
             } else if (Objects.equals(value.toString(), "")) {
                 value = null;
             }

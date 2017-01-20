@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 @Singleton
 public class CandidateCrudService extends BaseCrudService<Integer, Candidate> {
     private CandidateRepository repository;
+
     /**
-     *
-     * @param repository  The optionRepository class for Candidate entities
-     * @param validator            The com.ubb.map.validator for the Candidate entity
+     * @param repository The optionRepository class for Candidate entities
+     * @param validator  The com.ubb.map.validator for the Candidate entity
      */
     @Inject
     public CandidateCrudService(
@@ -35,7 +35,6 @@ public class CandidateCrudService extends BaseCrudService<Integer, Candidate> {
     }
 
     /**
-     *
      * @param name    The name of the candidate
      * @param phone   The phone number of the candidate
      * @param address The address of the candidate
@@ -55,7 +54,6 @@ public class CandidateCrudService extends BaseCrudService<Integer, Candidate> {
     }
 
     /**
-     *
      * @return The newly update Candidate object
      */
     public Candidate update(Candidate c) throws InvalidObjectException, SQLException, RepositoryException {
@@ -63,7 +61,6 @@ public class CandidateCrudService extends BaseCrudService<Integer, Candidate> {
     }
 
     /**
-     *
      * @param realId     The id of the candidate to be updated
      * @param newName    The new name of the candidate
      * @param newPhone   The new phone of the candidate
@@ -89,7 +86,6 @@ public class CandidateCrudService extends BaseCrudService<Integer, Candidate> {
     }
 
     /**
-     *
      * @param id         The id of the candidate to be updated
      * @param newName    The new name of the candidate
      * @param newPhone   The new phone of the candidate

@@ -2,7 +2,7 @@ package com.ubb.map;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.jboss.weld.environment.se.*;
+import org.jboss.weld.environment.se.Weld;
 
 public class MainGui extends Application {
     private Weld weld;
@@ -17,8 +17,8 @@ public class MainGui extends Application {
     }
 
     @Override
-    public void start( Stage stage ) throws Exception {
-        weld.initialize().instance().select(FxMain.class ).get().start( stage, getParameters() );
+    public void start(Stage stage) throws Exception {
+        weld.initialize().instance().select(FxMain.class).get().start(stage, getParameters());
     }
 
     @Override

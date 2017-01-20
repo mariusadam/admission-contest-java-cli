@@ -1,22 +1,22 @@
 package com.ubb.map.domain;
 
-import java.io.Serializable;
 import com.j256.ormlite.field.DatabaseField;
 
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  *
  */
-public abstract class Entity extends TimestampableImpl implements HasId<Integer>, Serializable{
+public abstract class Entity extends TimestampableImpl implements HasId<Integer>, Serializable {
     @DatabaseField(generatedId = true)
     protected Integer id;
+
+    protected boolean hydrated;
 
     public Entity() {
     }
 
     /**
-     *
      * @param id The unique id identifying an entity
      */
     public Entity(Integer id) {
@@ -56,5 +56,17 @@ public abstract class Entity extends TimestampableImpl implements HasId<Integer>
 
     public String toCsvFormat(String separator) {
         return null;
+    }
+
+    public boolean isHydrated() {
+        return hydrated;
+    }
+
+    public void setHydrated() {
+        setHydrated(true);
+    }
+
+    public void setHydrated(boolean flag) {
+        hydrated = flag;
     }
 }

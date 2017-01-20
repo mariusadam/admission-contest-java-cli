@@ -1,20 +1,16 @@
 package com.ubb.map.controller;
 
-import com.ubb.map.services.export.BaseExporter;
 import com.ubb.map.services.export.ExportType;
 import com.ubb.map.services.export.ExporterFactory;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
@@ -25,7 +21,7 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.Optional;
 
-import static javafx.scene.control.ButtonBar.*;
+import static javafx.scene.control.ButtonBar.ButtonData;
 
 /**
  * Created by marius on 11/20/2016.
@@ -66,7 +62,6 @@ public class DialogBox {
 
             // Set expandable Exception into the dialog pane.
             alertWindow.getDialogPane().setExpandableContent(expContent);
-
         }
         return alertWindow.showAndWait();
     }
@@ -100,75 +95,73 @@ public class DialogBox {
         return file.getAbsolutePath();
     }
 
+    public static <T> void exportUsingThread(String fileName, List<T> items, Class<T> entity) {
+        new Thread(new Task() {
+            @Override
+            protected Object call() throws Exception {
+                Platform.runLater(() -> export(fileName, items, entity));
+                return true;
+            }
+        }).start();
+    }
 
     public static <T> void export(String fileName, List<T> items, Class<T> entity) {
         Task worker = ExporterFactory.createForFileName(fileName, items, entity);
-        assert worker != null;
         // Create the custom dialog.
         Dialog dialog = new Dialog();
-        dialog.setTitle("Export Dialog");
-        dialog.setHeaderText("Please wait while the data is being exported...");
+        GridPane grid = new GridPane();
+        VBox mainContent = new VBox();
         // Set the button types.
         ButtonType okButtonType = new ButtonType("OK", ButtonData.OK_DONE);
+
+        dialog.getDialogPane().setExpandableContent(grid);
+        dialog.setTitle("Export Dialog");
+        dialog.setHeaderText("Please wait while the data is being exported...");
         dialog.getDialogPane().getButtonTypes().addAll(okButtonType, ButtonType.CANCEL);
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
-
-        grid.add(new Label("Username:"), 0, 0);
-        ProgressBar progressBar = new ProgressBar(0);
-        //add progress bar here
-        grid.add(progressBar, 0, 0);
+        dialog.getDialogPane().setContent(mainContent);
+        dialog.getDialogPane().setExpandableContent(grid);
+        dialog.initModality(Modality.WINDOW_MODAL);
+//        grid.setHgap(10);
+//        grid.setVgap(10);
+//        grid.setPadding(new Insets(20, 150, 50, 10));
 
         // Enable/Disable ok button depending on whether export finished
         Node okButton = dialog.getDialogPane().lookupButton(okButtonType);
-        okButton.setDisable(true);
         Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
+        okButton.setDisable(true);
         cancelButton.setOnAction(event -> worker.cancel());
 
+        ProgressBar progressBar = new ProgressBar(0);
+        progressBar.setPrefWidth(700);
+        progressBar.progressProperty().unbind();
+        progressBar.progressProperty().bind(worker.progressProperty());
         // Do some validation (using the Java 8 lambda syntax).
         progressBar.progressProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println(newValue.intValue());
-            okButton.setDisable(newValue.intValue() != BaseExporter.MAX_STEP);
+            okButton.setDisable(newValue.intValue() != 1.0);
         });
-
-        dialog.getDialogPane().setContent(grid);
+        mainContent.getChildren().addAll(progressBar);
 
         Label label = new Label("Details:");
-
         TextArea textArea = new TextArea();
+
         textArea.setEditable(false);
         textArea.setWrapText(true);
-
         textArea.setMaxWidth(Double.MAX_VALUE);
         textArea.setMaxHeight(Double.MAX_VALUE);
+
         GridPane.setVgrow(textArea, Priority.ALWAYS);
         GridPane.setHgrow(textArea, Priority.ALWAYS);
         GridPane.setVgrow(progressBar, Priority.ALWAYS);
         GridPane.setHgrow(progressBar, Priority.ALWAYS);
 
-        grid.add(label, 0, 1);
-        grid.add(textArea, 0, 2);
+//        grid.add(progressBar, 0, 0);
+        grid.add(label, 0, 0);
+        grid.add(textArea, 0, 1);
 
-        progressBar.setPrefWidth(1000);
-        progressBar.progressProperty().unbind();
-        progressBar.progressProperty().bind(worker.progressProperty());
-        worker.messageProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                textArea.appendText(newValue + System.lineSeparator());
-            }
-        });
+        worker.messageProperty().addListener(
+                (observable, oldValue, newValue) -> textArea.appendText(newValue + System.lineSeparator()));
         Thread t = new Thread(worker);
         t.start();
-        dialog.showAndWait();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            error(e);
-        }
-
+        dialog.show();
     }
 }

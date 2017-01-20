@@ -9,10 +9,8 @@ import java.sql.SQLException;
  */
 public interface PropertyFilter {
     /**
-     *
      * @param where
      * @return true if some filters where applied, false otherwise
-     *
      * @throws SQLException
      */
     Boolean apply(Where<?, ?> where) throws SQLException;

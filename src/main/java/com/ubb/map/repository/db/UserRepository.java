@@ -3,7 +3,7 @@ package com.ubb.map.repository.db;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.ubb.map.domain.User;
-import com.ubb.map.repository.qualifiers.ConnectionSingleton;
+import com.ubb.map.repository.qualifiers.Connection;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class UserRepository extends OrmRepository<Integer, User> {
 
     @Inject
-    public UserRepository(@ConnectionSingleton ConnectionSource connection) {
+    public UserRepository(@Connection ConnectionSource connection) {
         super(connection, User.class);
     }
 

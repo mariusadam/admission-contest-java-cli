@@ -21,7 +21,7 @@ public abstract class BaseCrudService<Id, T extends HasId<Id>> {
     public BaseCrudService(ValidatorInterface<T> validator) {
         this.validator = validator;
     }
-    
+
     public Collection<T> getAll() throws SQLException {
         return getRepository().getAll();
     }
@@ -35,8 +35,7 @@ public abstract class BaseCrudService<Id, T extends HasId<Id>> {
     }
 
     /**
-     *
-     * @param id                      The id of the object to be deleted
+     * @param id The id of the object to be deleted
      * @return {@link Candidate}      The deleted object
      * @throws NoSuchElementException If the object with given id is not found
      */
@@ -45,7 +44,7 @@ public abstract class BaseCrudService<Id, T extends HasId<Id>> {
     }
 
     public int getNrOfPages(List<PropertyFilter> filters, int perPage) throws SQLException {
-        int matches =  getRepository().countMatches(filters);
+        int matches = getRepository().countMatches(filters);
         if (matches == 0) {
             return 0;
         } else {
@@ -64,6 +63,16 @@ public abstract class BaseCrudService<Id, T extends HasId<Id>> {
         } catch (NumberFormatException ignored) {
             return null;
         }
+    }
+
+    public void hydrate(List<T> items, HydrationType hydrationType) throws SQLException, RepositoryException {
+        if (hydrationType == HydrationType.FULL) {
+            hydrateFull(items);
+        }
+    }
+
+    protected void hydrateFull(Collection<T> items) throws SQLException, RepositoryException {
+
     }
 
     protected abstract RepositoryInterface<Id, T> getRepository();
