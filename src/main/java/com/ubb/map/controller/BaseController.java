@@ -96,7 +96,7 @@ public abstract class BaseController<Id, T extends HasId<Id>> implements Initial
         try {
             CountType countType = exportComboBox.getValue();
             List<T> items;
-            if (countType == CountType.ALL) {
+            if (countType == CountType.All_MATCHING) {
                 items = getMainCrudService().getAll(getFilters());
             } else {
                 items = entityObservableList;

@@ -8,7 +8,7 @@ CREATE TABLE `users`
      `last_login` DATETIME NULL DEFAULT NULL,
      `email`      VARCHAR(255) UNIQUE,
      `password`   VARCHAR(128),
-     `salt`       VARCHAR(32),
+     `salt`       VARCHAR(100),
      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
      PRIMARY KEY (`id`)

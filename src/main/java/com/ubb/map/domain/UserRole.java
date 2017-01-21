@@ -24,6 +24,11 @@ public class UserRole extends Entity {
     public UserRole() {
     }
 
+    public UserRole(User u, Role r) {
+        user = u;
+        role = r;
+    }
+
     public User getUser() {
         return user;
     }

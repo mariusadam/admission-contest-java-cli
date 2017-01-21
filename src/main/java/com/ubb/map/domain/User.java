@@ -2,8 +2,10 @@ package com.ubb.map.domain;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -14,12 +16,12 @@ import java.util.Date;
 public class User extends Entity {
     @DatabaseField(columnName = "last_name")
     @NotNull
-    @Size(max = 30)
+    @Size(max = 30, message = "Last name is invalid")
     private String lastName;
 
     @DatabaseField(columnName = "first_name")
     @NotNull
-    @Size(max = 30)
+    @Size(max = 30, message = "First name is invalid")
     private String firstName;
 
     @DatabaseField(columnName = "is_active")
@@ -27,27 +29,27 @@ public class User extends Entity {
     private Boolean isActive;
 
     @DatabaseField(columnName = "logged_in")
-    @NotNull
     private Boolean loggedIn;
 
     @DatabaseField(columnName = "last_login")
     private Date lastLogin;
 
     @DatabaseField
-    @NotNull
-    @Size(max = 255)
+    @NotNull(message = "Email is invalid")
+    @Email
+    @Size(max = 255, message = "Email is invalid")
     private String email;
 
     @DatabaseField
-    @NotNull
+    @NotNull(message = "Password cannot be null")
     @Size(max = 128)
     private String password;
 
     @DatabaseField
     @NotNull
-    @Size(max = 32)
     private String salt;
 
+    @Size(min = 6, max = 32, message = "Password is invalid")
     private String plainPassword;
 
     public User() {

@@ -20,7 +20,7 @@ public class Role extends Entity {
     private String name;
 
     @DatabaseField
-    @NotNull
+    @NotNull(message = "Importance cannot be null")
     private Integer importance;
 
     @DatabaseField(dataType = DataType.SERIALIZABLE)
@@ -34,6 +34,11 @@ public class Role extends Entity {
     public Role() {
         this.allowedOperations = new ArrayList<>();
         this.resources = new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
     public String getName() {

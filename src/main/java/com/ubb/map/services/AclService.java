@@ -8,6 +8,7 @@ import com.ubb.map.repository.db.UserRoleRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.List;
 
 /**
  * Service class handling operations regarding users access to
@@ -47,8 +48,9 @@ public class AclService {
     }
 
     public Boolean isAllowed(User user, Resource resource) {
-        for (Operation operation : Operation.values()) {
-            if (this.isAllowed(user, resource, operation)) {
+        List<Role> roleList = userRoleRepo.getRoles(user);
+        for (Role role: roleList) {
+            if (role.getResources().contains(resource)) {
                 return true;
             }
         }

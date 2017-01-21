@@ -20,7 +20,7 @@ public class FxMain {
     }
 
     public void start(Stage stage, Parameters parameters) throws Exception {
-        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "debug");
+        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "trace");
         InputStream fxml = new BufferedInputStream(getClass().getResourceAsStream("/view/gui/fxml/MainView.fxml"));
         Parent root = fxmlLoader.load(fxml);
 

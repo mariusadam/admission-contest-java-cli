@@ -32,10 +32,6 @@ import java.util.concurrent.Executors;
 
 @Singleton
 public class MainController implements Initializable {
-    private final static String DEPARTMENTS_TAB = "Departments";
-    private final static String CANDIDATES_TAB = "Candidates";
-    private final static String OPTIONS_TAB = "Options";
-
     @FXML
     private TabPane tabPane;
     @FXML
@@ -75,7 +71,7 @@ public class MainController implements Initializable {
     private AclService acl;
     @Inject
     private UserService userService;
-    private Map<String, Tab> tabsCache;
+    private Map<TabType, Tab> tabsCache;
     private User currentUser;
 
 
@@ -107,6 +103,8 @@ public class MainController implements Initializable {
                 loginMessage.textProperty().setValue("Invalid email or password!.");
             } else {
                 currentUser = user;
+                currentUser.setLastLogin(new Date());
+                userService.update(currentUser);
                 loginMessage.textProperty().setValue("Login success");
                 configureMenuAccess();
                 loadTabs();
@@ -117,7 +115,7 @@ public class MainController implements Initializable {
                 user.setLastLogin(new Date());
                 userService.update(user);
             }
-        } catch (SQLException | DuplicateEntryException | InvalidObjectException e) {
+        } catch (Exception e) {
             loginMessage.textProperty().setValue(e.getMessage());
         }
     }
@@ -134,6 +132,7 @@ public class MainController implements Initializable {
         tasks.add(() -> {
             try {
                 getDepartmentsTab();
+                getRolesTab();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -141,6 +140,7 @@ public class MainController implements Initializable {
         tasks.add(() -> {
             try {
                 getOptionsTab();
+                getUsersTab();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -198,19 +198,19 @@ public class MainController implements Initializable {
         }
     }
 
-    @FXML
-    private void onLoginAsOtherUserMenuItem_clicked(ActionEvent event) {
-        tabsCache.clear();
-        tabPane.getTabs().clear();
-        logOut();
-        initializeLogin();
-    }
+//    @FXML
+//    private void onLoginAsOtherUserMenuItem_clicked(ActionEvent event) {
+//        tabsCache.clear();
+//        tabPane.getTabs().clear();
+//        logOut();
+//        initializeLogin();
+//    }
 
     private void logOut() {
         try {
             currentUser.setLoggedIn(false);
             userService.update(currentUser);
-        } catch (InvalidObjectException | DuplicateEntryException | SQLException e) {
+        } catch (Exception e) {
             DialogBox.error(e.getMessage());
         }
     }
@@ -222,42 +222,48 @@ public class MainController implements Initializable {
     }
 
     private Tab getCandidatesTab() throws IOException {
-        if (tabsCache.get(CANDIDATES_TAB) == null) {
+        if (tabsCache.get(TabType.CANDIDATES) == null) {
             Parent root = getFXMLLoader().load(getClass().getResourceAsStream("/view/gui/fxml/CandidateView.fxml"));
-            tabsCache.put(CANDIDATES_TAB, new Tab(CANDIDATES_TAB, root));
+            tabsCache.put(TabType.CANDIDATES, new Tab(TabType.CANDIDATES.toString(), root));
         }
 
-        return tabsCache.get(CANDIDATES_TAB);
+        return tabsCache.get(TabType.CANDIDATES);
     }
 
     private Tab getDepartmentsTab() throws IOException {
-        if (tabsCache.get(DEPARTMENTS_TAB) == null) {
+        if (tabsCache.get(TabType.DEPARTMENTS) == null) {
             Parent root = getFXMLLoader().load(getClass().getResourceAsStream("/view/gui/fxml/DepartmentView.fxml"));
-            tabsCache.put(DEPARTMENTS_TAB, new Tab(DEPARTMENTS_TAB, root));
+            tabsCache.put(TabType.DEPARTMENTS, new Tab(TabType.DEPARTMENTS.toString(), root));
         }
 
-        return tabsCache.get(DEPARTMENTS_TAB);
+        return tabsCache.get(TabType.DEPARTMENTS);
     }
 
     private Tab getOptionsTab() throws IOException {
-        if (tabsCache.get(OPTIONS_TAB) == null) {
+        if (tabsCache.get(TabType.OPTIONS) == null) {
             Parent root = getFXMLLoader().load(getClass().getResourceAsStream("/view/gui/fxml/OptionView.fxml"));
-            tabsCache.put(OPTIONS_TAB, new Tab(OPTIONS_TAB, root));
+            tabsCache.put(TabType.OPTIONS, new Tab(TabType.OPTIONS.toString(), root));
         }
 
-        return tabsCache.get(OPTIONS_TAB);
+        return tabsCache.get(TabType.OPTIONS);
     }
 
     private Tab getUsersTab() throws IOException {
-        //TODO
-        Parent root = getFXMLLoader().load(getClass().getResourceAsStream("/view/gui/fxml/OptionView.fxml"));
-        return new Tab("Users", root);
+        if (tabsCache.get(TabType.USERS) == null) {
+            Parent root = getFXMLLoader().load(getClass().getResourceAsStream("/view/gui/fxml/UserView.fxml"));
+            tabsCache.put(TabType.USERS, new Tab(TabType.USERS.toString(), root));
+        }
+
+        return tabsCache.get(TabType.USERS);
     }
 
     private Tab getRolesTab() throws IOException {
-        //TODO
-        Parent root = getFXMLLoader().load(getClass().getResourceAsStream("/view/gui/fxml/RoleView.fxml"));
-        return new Tab("Roles", root);
+        if (tabsCache.get(TabType.ROLES) == null) {
+            Parent root = getFXMLLoader().load(getClass().getResourceAsStream("/view/gui/fxml/RoleView.fxml"));
+            tabsCache.put(TabType.ROLES, new Tab(TabType.ROLES.toString(), root));
+        }
+
+        return tabsCache.get(TabType.ROLES);
     }
 
     private void ensureTabAdded(Tab tab) {
@@ -291,6 +297,16 @@ public class MainController implements Initializable {
     @FXML
     void onManageDepartmentsMenuItem_clicked(ActionEvent event) throws IOException {
         ensureTabAdded(getDepartmentsTab());
+    }
+
+    @FXML
+    void onManageUsersMenuItem_clicked(ActionEvent event) throws IOException {
+        ensureTabAdded(getUsersTab());
+    }
+
+    @FXML
+    void onManageRolesMenuItem_clicked(ActionEvent event) throws IOException {
+        ensureTabAdded(getRolesTab());
     }
 
     private FXMLLoader getFXMLLoader() {

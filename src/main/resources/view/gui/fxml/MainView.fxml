@@ -21,7 +21,6 @@
                <menus>
                   <Menu mnemonicParsing="false" text="Session">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#onLoginAsOtherUserMenuItem_clicked" text="Login as other user" />
                         <MenuItem mnemonicParsing="false" onAction="#onLogoutAndExitMenuItem_clicked" text="Logout and exit" />
                      </items>
                   </Menu>
@@ -34,8 +33,8 @@
                   </Menu>
                   <Menu fx:id="administrationMenu" mnemonicParsing="false" text="Administration">
                      <items>
-                        <MenuItem fx:id="usersMenuItem" mnemonicParsing="false" text="Manage Users" />
-                        <MenuItem fx:id="rolesMenuItem" mnemonicParsing="false" text="Manage Roles" />
+                        <MenuItem mnemonicParsing="false" onAction="#onManageUsersMenuItem_clicked" text="Manage Users" />
+                        <MenuItem mnemonicParsing="false" onAction="#onManageRolesMenuItem_clicked" text="Manage Roles" />
                      </items>
                   </Menu>
                </menus>
